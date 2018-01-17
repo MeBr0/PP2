@@ -21,6 +21,7 @@ namespace Randomm
             int e = w.Next(1, 2);
             Console.WriteLine(z);
             Console.WriteLine(e);
+            Console.WriteLine(e + z);
 
         }
     }
