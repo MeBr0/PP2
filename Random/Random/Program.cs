@@ -16,8 +16,12 @@ namespace Randomm
             int y = int.Parse(b[1]);
 
             Random r = new Random();
+            Random w = new Random();
             int z = r.Next(x, y);
+            int e = w.Next(1, 2);
             Console.WriteLine(z);
+            Console.WriteLine(e);
+
         }
     }
 }
