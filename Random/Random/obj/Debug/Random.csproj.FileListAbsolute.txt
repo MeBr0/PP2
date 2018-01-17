@@ -1,0 +1,7 @@
+C:\Users\Lenovo\source\repos\Random\Random\obj\Debug\Random.csprojResolveAssemblyReference.cache
+C:\Users\Lenovo\source\repos\Random\Random\obj\Debug\Random.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\source\repos\Random\Random\bin\Debug\Random.exe.config
+C:\Users\Lenovo\source\repos\Random\Random\bin\Debug\Random.exe
+C:\Users\Lenovo\source\repos\Random\Random\bin\Debug\Random.pdb
+C:\Users\Lenovo\source\repos\Random\Random\obj\Debug\Random.exe
+C:\Users\Lenovo\source\repos\Random\Random\obj\Debug\Random.pdb
