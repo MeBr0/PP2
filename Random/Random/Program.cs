@@ -22,6 +22,9 @@ namespace Randomm
             Console.WriteLine(z);
             Console.WriteLine(e);
             Console.WriteLine(e + z);
+            Console.WriteLine(e + z);
+            Console.WriteLine(e + z);
+            Console.WriteLine(e + z);
 
         }
     }
