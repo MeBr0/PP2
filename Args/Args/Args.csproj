@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{81805CCA-36E3-4F62-B97F-301CC61E3804}</ProjectGuid>
+    <ProjectGuid>{731CCA86-33B3-4DB3-BEA8-29D3D868AB60}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Random</RootNamespace>
-    <AssemblyName>Random</AssemblyName>
+    <RootNamespace>Args</RootNamespace>
+    <AssemblyName>Args</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
