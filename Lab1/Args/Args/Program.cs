@@ -22,7 +22,7 @@ namespace Args
             {
                 if (IsPrime(int.Parse(x)))
                 {
-                    Console.Write(x + " ");
+                    Console.WriteLine(x);
                 }
             }
         }
