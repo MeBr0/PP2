@@ -17,6 +17,9 @@ namespace Max_and_Min
             string a = sr.ReadLine();
             string[] b = a.Split(' ');
 
+            sr.Close();
+            fs.Close();
+
             int max = int.Parse(b[0]);
             int min = int.Parse(b[0]);
 
