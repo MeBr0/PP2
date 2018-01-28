@@ -11,7 +11,10 @@ namespace Far_Manager
         static void Main(string[] args)
         {
             Console.SetWindowSize(40, 40);
-            Far FAR = new Far(@"C:\Users\Lenovo\Desktop\Study\1 semestr\ICT"); //root directory
+            Console.CursorVisible = false;
+            Console.Title = "Far Manager(Custom)";
+            Console.SetBufferSize(41, 50);
+            Far FAR = new Far(@"C:\"); //root directory
             bool q = false;            //boolean for quiting
 
             while (!q) //repeat until pressed Escape

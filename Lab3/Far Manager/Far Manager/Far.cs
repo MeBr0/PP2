@@ -35,7 +35,14 @@ namespace Far_Manager
                     break;
             }
             DrawStatus();
-            Console.SetCursorPosition(0, current.items.Count);
+            ShiftCursor();
+        }
+
+        private void ShiftCursor() //Shift cursor to bottom
+        {
+            int shift = 40 - current.ind;
+            if (shift < 0) Console.SetCursorPosition(1, 39 + shift);
+            else Console.SetCursorPosition(1, 39);
         }
 
         void DrawExplorer() //Draw in Explorer Mode
@@ -66,14 +73,14 @@ namespace Far_Manager
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                Console.WriteLine(current.items[i].Name);
+                Console.WriteLine(" " + current.items[i].Name);
             }
         }
 
         void DrawFileReader() //Draw in FileReader Mode
         {
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Clear();
             FileStream fs = null;
             StreamReader sr = null;
@@ -82,11 +89,11 @@ namespace Far_Manager
                 fs = new FileStream(current.GetSelectedItemInfo(), FileMode.Open, FileAccess.Read);
                 sr = new StreamReader(fs);
 
-                Console.WriteLine(sr.ReadToEnd());
+                Console.WriteLine(" " + sr.ReadToEnd());
             }
             catch (Exception e) //if not, write an error
             {
-                Console.WriteLine("cannot open file!");
+                Console.WriteLine(" cannot open file!");
             }
             finally //close files if open
             {
@@ -101,15 +108,33 @@ namespace Far_Manager
             }
         }
 
-        void DrawStatus()
+        void DrawStatus() //Draw Status Bar
         {
-            Console.SetCursorPosition(32, 1);
+            Console.SetCursorPosition(0, 37);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" ");
-            if (mode == FarMode.Explorer) Console.Write("dir");
-            else Console.Write("file");
-            Console.WriteLine("      ");
+            Console.Write(" Mode: " + mode);
+            for(int i = 0; i < 34 - mode.ToString().Length; ++i)
+            {
+                Console.Write(" ");
+            }
+            if (current.GetSelectedItemInfo().Length <= 38)
+            {
+                Console.Write(" " + current.GetSelectedItemInfo());
+                for (int i = 0; i < 40 - current.GetSelectedItemInfo().Length; ++i)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
+            {
+                Console.Write(" ");
+                for(int i = 0; i < 35; ++i)
+                {
+                    Console.Write(current.GetSelectedItemInfo()[i]);
+                }
+                Console.Write("...  ");
+            }
         }
 
         public void Process(ConsoleKeyInfo pressed)
