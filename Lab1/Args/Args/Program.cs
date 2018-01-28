@@ -10,7 +10,7 @@ namespace Args
     {
         static bool IsPrime(int a)
         {
-            for(int i=0; i<=Math.Sqrt(a); ++i)
+            for(int i=2; i<=Math.Sqrt(a); ++i)
             {
                 if (a % i == 0) return false;
             }
@@ -18,7 +18,9 @@ namespace Args
         }
         static void Main(string[] args)
         {
-            foreach(string x in args)
+            string a = Console.ReadLine();
+            string[] b = a.Split(' ');
+            foreach(string x in b) 
             {
                 if (IsPrime(int.Parse(x)))
                 {
