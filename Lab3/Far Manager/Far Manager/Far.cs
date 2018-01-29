@@ -40,9 +40,87 @@ namespace Far_Manager
 
         private void ShiftCursor() //Shift cursor to bottom
         {
-            int shift = 40 - current.ind;
-            if (shift < 0) Console.SetCursorPosition(1, 39 + shift);
-            else Console.SetCursorPosition(1, 39);
+            int shift = 36 - current.ind;
+            if (shift < 0) Console.SetCursorPosition(39, 37 - shift);
+            else Console.SetCursorPosition(39, 39);
+        }
+
+        void DrawStatus() //Draw Status Bar
+        {
+            int shift = 36 - current.ind;
+            if (shift < 0) Console.SetCursorPosition(0, 37 - shift);
+            else Console.SetCursorPosition(0, 37);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            DrawStatus1(); //Draw current Mode 
+            DrawStatus2(); //Draw Full Name of object
+            DrawStatus3(); //Draw Number of directories and files if avilable
+        }
+        void DrawStatus1()
+        {
+            Console.Write(" Mode: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(mode);
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int i = 0; i < 34 - mode.ToString().Length; ++i)
+            {
+                Console.Write(" ");
+            }
+        }
+
+        void DrawStatus2()
+        {
+            if (current.GetSelectedItemInfo().Length <= 38)
+            {
+                Console.Write(" " + current.GetSelectedItemInfo());
+                for (int i = 0; i < 40 - current.GetSelectedItemInfo().Length; ++i)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
+            {
+                Console.Write(" ");
+                for (int i = 0; i < 35; ++i)
+                {
+                    Console.Write(current.GetSelectedItemInfo()[i]);
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("...  ");
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+        }
+
+        void DrawStatus3()
+        {
+            try
+            {
+                DirectoryInfo a = new DirectoryInfo(current.GetSelectedItemInfo());
+                int b = a.GetFiles().Length;
+                int c = a.GetDirectories().Length;
+                Console.Write(" Directories: ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(c);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(" Files: ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(b);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(" ");
+                int d = 17 - c.ToString().Length - b.ToString().Length;
+                for (int i = 0; i < d; ++i)
+                {
+                    Console.Write(" ");
+                }
+            }
+            catch (Exception e)
+            {
+                for (int i = 0; i < 40; ++i)
+                {
+                    Console.Write(" ");
+                }
+            }
         }
 
         void DrawExplorer() //Draw in Explorer Mode
@@ -105,35 +183,6 @@ namespace Far_Manager
                 {
                     fs.Close();
                 }
-            }
-        }
-
-        void DrawStatus() //Draw Status Bar
-        {
-            Console.SetCursorPosition(0, 37);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" Mode: " + mode);
-            for(int i = 0; i < 34 - mode.ToString().Length; ++i)
-            {
-                Console.Write(" ");
-            }
-            if (current.GetSelectedItemInfo().Length <= 38)
-            {
-                Console.Write(" " + current.GetSelectedItemInfo());
-                for (int i = 0; i < 40 - current.GetSelectedItemInfo().Length; ++i)
-                {
-                    Console.Write(" ");
-                }
-            }
-            else
-            {
-                Console.Write(" ");
-                for(int i = 0; i < 35; ++i)
-                {
-                    Console.Write(current.GetSelectedItemInfo()[i]);
-                }
-                Console.Write("...  ");
             }
         }
 
