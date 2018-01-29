@@ -26,7 +26,7 @@ namespace Args
         {
             string a = Console.ReadLine(); //input string
             string[] b = a.Split(' ');     //split primary string into array of strings
-            foreach(string x in b)         //go through array b
+            foreach(string x in b)         //go through array b (string[] args)
             {
                 if (IsPrime(int.Parse(x))) //if number is prime, then print it
                 {
