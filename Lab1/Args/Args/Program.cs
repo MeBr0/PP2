@@ -15,6 +15,7 @@ namespace Args
         /// <returns>True if prime, False if not prime</returns>
         static bool IsPrime(int a)
         {
+            if (a == 1) return false;
             for(int i=2; i<=Math.Sqrt(a); ++i)
             {
                 if (a % i == 0) return false;
