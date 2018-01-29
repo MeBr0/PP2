@@ -41,7 +41,7 @@ namespace Far_Manager
         private void ShiftCursor() //Shift cursor to bottom
         {
             int shift = 36 - current.ind;
-            if (shift < 0) Console.SetCursorPosition(39, 37 - shift);
+            if (shift < 0 || mode == FarMode.FileReader) Console.SetCursorPosition(39, 37 - shift);
             else Console.SetCursorPosition(39, 39);
         }
 
@@ -55,7 +55,7 @@ namespace Far_Manager
 
             DrawStatus1(); //Draw current Mode 
             DrawStatus2(); //Draw Full Name of object
-            DrawStatus3(); //Draw Number of directories and files if avilable
+            DrawStatus3(); //Draw Number of directories and files if avialable
         }
         void DrawStatus1()
         {
@@ -151,7 +151,11 @@ namespace Far_Manager
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                Console.WriteLine(" " + current.items[i].Name);
+                Console.Write(" " + current.items[i].Name);
+                for(int j = 0; j < 40 - current.items[i].Name.Length; ++j)
+                {
+                    Console.Write(" ");
+                }
             }
         }
 
@@ -191,28 +195,31 @@ namespace Far_Manager
             switch (pressed.Key)
             {
                 case ConsoleKey.UpArrow:   //ind up
-                    current.Process(-1);
+                    if (mode == FarMode.Explorer) current.Process(-1);
                     break;
                 case ConsoleKey.DownArrow: //ind down
-                    current.Process(1);
+                    if (mode == FarMode.Explorer) current.Process(1);
                     break;
                 case ConsoleKey.Enter:
-                    try
+                    if (mode == FarMode.Explorer)
                     {
-                        if (current.items[current.ind].GetType() == typeof(DirectoryInfo)) //open directory
+                        try
                         {
-                            mode = FarMode.Explorer;
-                            History.Push(current);
-                            current = new Layer(current.GetSelectedItemInfo(), 0);
+                            if (current.items[current.ind].GetType() == typeof(DirectoryInfo)) //open directory
+                            {
+                                mode = FarMode.Explorer;
+                                History.Push(current);
+                                current = new Layer(current.GetSelectedItemInfo(), 0);
+                            }
+                            else                                                               //open file
+                            {
+                                mode = FarMode.FileReader;
+                            }
                         }
-                        else                                                               //open file
+                        catch (Exception e)
                         {
-                            mode = FarMode.FileReader;
+                            current = History.Pop();
                         }
-                    }
-                    catch(Exception e)
-                    {
-                        current = History.Pop();
                     }
                     break;
                 case ConsoleKey.Backspace:                           
