@@ -54,7 +54,7 @@ namespace Class
         }
         public override string ToString()
         {
-            return a + "+" + b + "*i";
+            return a + "+" + b + "i";
         }
     }
 }
