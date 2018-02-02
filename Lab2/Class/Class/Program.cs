@@ -20,6 +20,7 @@ namespace Class
             Complex q = new Complex(int.Parse(s3[0]), int.Parse(s3[1]));
             Complex w = new Complex(int.Parse(s4[0]), int.Parse(s4[1]));
             Complex e = new Complex();
+            Complex r = new Complex();
 
             switch (s5)
             {
