@@ -38,7 +38,7 @@ namespace Far_Manager
             ShiftCursor();
         }
 
-        private void ShiftCursor() //Shift cursor to bottom
+        private void ShiftCursor() //Shift cursor
         {
             if (current.ind > 36 || mode == FarMode.FileReader) Console.SetCursorPosition(39, 1 + current.ind);
             else
@@ -50,8 +50,7 @@ namespace Far_Manager
 
         void DrawStatus() //Draw Status Bar
         {
-            int shift = 36 - current.ind;
-            if (shift < 0) Console.SetCursorPosition(0, 37 - shift);
+            if (current.ind > 36) Console.SetCursorPosition(0, 1 + current.ind);
             else Console.SetCursorPosition(0, 37);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -60,6 +59,7 @@ namespace Far_Manager
             DrawStatus2(); //Draw Full Name of object
             DrawStatus3(); //Draw Number of directories and files if avialable
         }
+
         void DrawStatus1()
         {
             Console.Write(" Mode: ");
@@ -85,13 +85,18 @@ namespace Far_Manager
             else
             {
                 Console.Write(" ");
-                for (int i = 0; i < 35; ++i)
+                for (int i = 0; i < 3; ++i)
                 {
                     Console.Write(current.GetSelectedItemInfo()[i]);
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("...  ");
+                Console.Write("...");
                 Console.ForegroundColor = ConsoleColor.Green;
+                for (int i = current.GetSelectedItemInfo().Length - 32; i < current.GetSelectedItemInfo().Length; ++i)
+                {
+                    Console.Write(current.GetSelectedItemInfo()[i]);
+                }
+                Console.Write("  ");
             }
         }
 
@@ -100,18 +105,17 @@ namespace Far_Manager
             try
             {
                 DirectoryInfo a = new DirectoryInfo(current.GetSelectedItemInfo());
-                int b = a.GetFiles().Length;
-                int c = a.GetDirectories().Length;
+
                 Console.Write(" Directories: ");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(c);
+                Console.Write(a.GetDirectories().Length);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(" Files: ");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(b);
+                Console.Write(a.GetFiles().Length);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(" ");
-                int d = 17 - c.ToString().Length - b.ToString().Length;
+                int d = 17 - a.GetDirectories().Length.ToString().Length - a.GetFiles().Length.ToString().Length;
                 for (int i = 0; i < d; ++i)
                 {
                     Console.Write(" ");
@@ -154,11 +158,22 @@ namespace Far_Manager
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-
-                Console.Write(" " + current.items[i].Name);
-                for (int j = 0; j < 40 - current.items[i].Name.Length; ++j)
+                if (current.items[i].Name.Length <= 38)
+                {
+                    Console.Write(" " + current.items[i].Name);
+                    for (int j = 0; j < 40 - current.items[i].Name.Length; ++j)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                else
                 {
                     Console.Write(" ");
+                    for (int j = 0; j < 35; ++j)
+                    {
+                        Console.Write(current.items[i].Name[j]);
+                    }
+                    Console.Write("...  ");
                 }
             }
         }
@@ -180,7 +195,7 @@ namespace Far_Manager
             }
             catch (Exception e) //if not, write an error
             {
-                Console.WriteLine(" cannot open file!");
+                Console.WriteLine(e.InnerException);
             }
             finally //close files if open
             {
@@ -197,15 +212,15 @@ namespace Far_Manager
 
         public void Shift(int q)
         {
-            Console.SetCursorPosition(0, current.ind);
+            Console.SetCursorPosition(0, current.ind); //Redraw current row
             current.SetColor();
             current.DrawSingleRow();
 
-            current.ind += q;
+            current.ind += q;                          //shift ind
             if (current.ind == current.items.Count) current.ind = 0;
             if (current.ind == -1) current.ind = current.items.Count - 1;
 
-            Console.SetCursorPosition(0, current.ind);
+            Console.SetCursorPosition(0, current.ind);  //Draw new current row
             current.SetColorInd();
             current.DrawSingleRowInd();
 

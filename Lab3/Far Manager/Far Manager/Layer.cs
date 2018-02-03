@@ -61,19 +61,43 @@ namespace Far_Manager
 
         public void DrawSingleRowInd()
         {
-            Console.Write(" " + this.items[this.ind].Name);
-            for (int j = 0; j < 39 - this.items[this.ind].Name.Length; ++j)
+            if (this.items[this.ind].Name.Length <= 38)
+            {
+                Console.Write(" " + this.items[this.ind].Name);
+                for (int j = 0; j < 39 - this.items[this.ind].Name.Length; ++j)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
             {
                 Console.Write(" ");
+                for (int i = 0; i < 36; ++i)
+                {
+                    Console.Write(this.items[this.ind].Name[i]);
+                }
+                Console.Write("..  ");
             }
         }
 
         public void DrawSingleRow()
         {
-            Console.Write(" " + this.items[this.ind].Name);
-            for (int j = 0; j < 40 - this.items[this.ind].Name.Length; ++j)
+            if (this.items[this.ind].Name.Length <= 38)
+            {
+                Console.Write(" " + this.items[this.ind].Name);
+                for (int j = 0; j < 40 - this.items[this.ind].Name.Length; ++j)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
             {
                 Console.Write(" ");
+                for (int i = 0; i < 36; ++i)
+                {
+                    Console.Write(this.items[this.ind].Name[i]);
+                }
+                Console.Write("..  ");
             }
         }
         public string GetSelectedItemInfo()
