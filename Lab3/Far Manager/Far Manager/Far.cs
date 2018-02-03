@@ -40,9 +40,12 @@ namespace Far_Manager
 
         private void ShiftCursor() //Shift cursor to bottom
         {
-            int shift = 36 - current.ind;
-            if (shift < 0 || mode == FarMode.FileReader) Console.SetCursorPosition(39, 37 - shift);
-            else Console.SetCursorPosition(39, 39);
+            if (current.ind > 36 || mode == FarMode.FileReader) Console.SetCursorPosition(39, 1 + current.ind);
+            else
+            {
+                Console.SetCursorPosition(39, 0);
+                Console.SetCursorPosition(39, 37);
+            }
         }
 
         void DrawStatus() //Draw Status Bar
@@ -66,7 +69,7 @@ namespace Far_Manager
             for (int i = 0; i < 34 - mode.ToString().Length; ++i)
             {
                 Console.Write(" ");
-            }
+            }  
         }
 
         void DrawStatus2()
@@ -129,9 +132,9 @@ namespace Far_Manager
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Clear();
 
-            for(int i=0; i<current.items.Count; ++i)
+            for (int i = 0; i < current.items.Count; ++i)
             {
-                if(i == current.ind && current.items[i].GetType() == typeof(DirectoryInfo))
+                if (i == current.ind && current.items[i].GetType() == typeof(DirectoryInfo))
                 {
                     Console.BackgroundColor = ConsoleColor.Cyan;
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -151,8 +154,9 @@ namespace Far_Manager
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
+
                 Console.Write(" " + current.items[i].Name);
-                for(int j = 0; j < 40 - current.items[i].Name.Length; ++j)
+                for (int j = 0; j < 40 - current.items[i].Name.Length; ++j)
                 {
                     Console.Write(" ");
                 }
@@ -164,6 +168,7 @@ namespace Far_Manager
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Clear();
+
             FileStream fs = null;
             StreamReader sr = null;
             try //try to open
@@ -190,16 +195,42 @@ namespace Far_Manager
             }
         }
 
+        public void Shift(int q)
+        {
+            Console.SetCursorPosition(0, current.ind);
+            current.SetColor();
+            current.DrawSingleRow();
+
+            current.ind += q;
+            if (current.ind == current.items.Count) current.ind = 0;
+            if (current.ind == -1) current.ind = current.items.Count - 1;
+
+            Console.SetCursorPosition(0, current.ind);
+            current.SetColorInd();
+            current.DrawSingleRowInd();
+
+        }
+
         public void Process(ConsoleKeyInfo pressed)
         {
             switch (pressed.Key)
             {
                 case ConsoleKey.UpArrow:   //ind up
-                    if (mode == FarMode.Explorer) current.Process(-1);
-                    break;
+                    if (mode == FarMode.Explorer)
+                    {
+                        this.Shift(-1);
+                        DrawStatus();
+                        ShiftCursor();
+                    }
+                        break;
                 case ConsoleKey.DownArrow: //ind down
-                    if (mode == FarMode.Explorer) current.Process(1);
-                    break;
+                    if (mode == FarMode.Explorer)
+                    {
+                        this.Shift(1);
+                        DrawStatus();
+                        ShiftCursor();
+                    }
+                        break;
                 case ConsoleKey.Enter:
                     if (mode == FarMode.Explorer)
                     {
@@ -210,21 +241,32 @@ namespace Far_Manager
                                 mode = FarMode.Explorer;
                                 History.Push(current);
                                 current = new Layer(current.GetSelectedItemInfo(), 0);
+                                this.Draw();
                             }
                             else                                                               //open file
                             {
                                 mode = FarMode.FileReader;
+                                this.Draw();
                             }
                         }
                         catch (Exception e)
                         {
                             current = History.Pop();
+                            this.Draw();
                         }
                     }
                     break;
-                case ConsoleKey.Backspace:                           
-                    if (mode == FarMode.Explorer) current = History.Pop();             //back to directory
-                    else mode = FarMode.Explorer;                                      //back to directory from file
+                case ConsoleKey.Backspace:
+                    if (mode == FarMode.Explorer)
+                    {
+                        current = History.Pop();
+                        this.Draw();                                                   //back to directory
+                    }
+                    else
+                    {
+                        mode = FarMode.Explorer;
+                        this.Draw();
+                    }                                                                   //back to directory from file
                     break;
             }
         }

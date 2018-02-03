@@ -17,9 +17,10 @@ namespace Far_Manager
             Far FAR = new Far(@"C:\"); //root directory
             bool q = false;            //boolean for quiting
 
+            FAR.Draw();
+
             while (!q) //repeat until pressed Escape
             {
-                FAR.Draw();
                 ConsoleKeyInfo pressed = Console.ReadKey();
 
                 switch (pressed.Key)
