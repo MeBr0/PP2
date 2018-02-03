@@ -55,12 +55,30 @@ namespace Far_Manager
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Green;
 
-            DrawStatus1(); //Draw current Mode 
-            DrawStatus2(); //Draw Full Name of object
-            DrawStatus3(); //Draw Number of directories and files if avialable
+            DrawRow1(); //Draw current Mode 
+            DrawRow2(); //Draw Full Name of object
+            DrawRow3(); //Draw Number of directories and files if avialable
+            ClearRow4();
         }
 
-        void DrawStatus1()
+        void ClearRow4()
+        {
+            try
+            {
+                if(current.ind > 35)
+                {
+                    Console.Write(current.items[current.ind + 3].Name);
+                }
+            }
+            catch
+            {
+                for(int i = 0; i < 40; ++i)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                }
+            }
+        }
+        void DrawRow1()
         {
             Console.Write(" Mode: ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -69,10 +87,10 @@ namespace Far_Manager
             for (int i = 0; i < 34 - mode.ToString().Length; ++i)
             {
                 Console.Write(" ");
-            }  
+            }
         }
 
-        void DrawStatus2()
+        void DrawRow2()
         {
             if (current.GetSelectedItemInfo().Length <= 38)
             {
@@ -100,22 +118,22 @@ namespace Far_Manager
             }
         }
 
-        void DrawStatus3()
+        void DrawRow3()
         {
             try
             {
                 DirectoryInfo a = new DirectoryInfo(current.GetSelectedItemInfo());
+                int q = a.GetDirectories().Length;
 
                 Console.Write(" Directories: ");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(a.GetDirectories().Length);
+                Console.Write(q);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(" Files: ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(a.GetFiles().Length);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(" ");
-                int d = 17 - a.GetDirectories().Length.ToString().Length - a.GetFiles().Length.ToString().Length;
+                int d = 18 - a.GetDirectories().Length.ToString().Length - a.GetFiles().Length.ToString().Length;
                 for (int i = 0; i < d; ++i)
                 {
                     Console.Write(" ");
@@ -237,7 +255,7 @@ namespace Far_Manager
                         DrawStatus();
                         ShiftCursor();
                     }
-                        break;
+                    break;
                 case ConsoleKey.DownArrow: //ind down
                     if (mode == FarMode.Explorer)
                     {
@@ -245,7 +263,7 @@ namespace Far_Manager
                         DrawStatus();
                         ShiftCursor();
                     }
-                        break;
+                    break;
                 case ConsoleKey.Enter:
                     if (mode == FarMode.Explorer)
                     {
