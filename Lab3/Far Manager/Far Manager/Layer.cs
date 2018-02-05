@@ -24,6 +24,27 @@ namespace Far_Manager
             items.AddRange(dirInfo.GetFiles());
         }
 
+        public string Rename()
+        {
+            FileInfo fi = items[ind] as FileInfo;
+            string s = Console.ReadLine();
+            string w = items[ind].FullName.Remove(items[ind].FullName.Length - items[ind].Name.Length);
+            string newFileName = $@"{s}{items[ind].Extension}";
+
+            if (items[ind].GetType() == typeof(FileInfo))
+            {
+                string r = Path.Combine(fi.DirectoryName, newFileName);
+                File.Move(items[ind].FullName, r);
+            }
+            else
+            {
+                string r = Path.Combine(w, newFileName);
+                Directory.Move(items[ind].FullName, r);
+            }
+
+            return newFileName;
+        }
+
         public void Process(int q)
         {
             this.ind += q;
@@ -75,6 +96,27 @@ namespace Far_Manager
                 for (int i = 0; i < 36; ++i)
                 {
                     Console.Write(this.items[this.ind].Name[i]);
+                }
+                Console.Write("..  ");
+            }
+        }
+
+        public void RefreshSingleRowInd(string s)
+        {
+            if (s.Length <= 38)
+            {
+                Console.Write(" " + s);
+                for (int j = 0; j < 39 - s.Length; ++j)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
+            {
+                Console.Write(" ");
+                for (int i = 0; i < 36; ++i)
+                {
+                    Console.Write(s[i]);
                 }
                 Console.Write("..  ");
             }

@@ -28,6 +28,7 @@ namespace Far_Manager
                     case ConsoleKey.Escape:
                         q = true;
                         break;
+                    case ConsoleKey.R:
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.Enter:

@@ -10,7 +10,8 @@ namespace Far_Manager
     enum FarMode //enum for Far modes
     {
         Explorer,
-        FileReader
+        FileReader,
+        Rename
     }
     class Far
     {
@@ -33,9 +34,32 @@ namespace Far_Manager
                 case FarMode.FileReader:
                     DrawFileReader();
                     break;
+                case FarMode.Rename:
+                    DrawRenameWindow();
+                    break;
             }
             DrawStatus();
             ShiftCursor();
+        }
+
+        private void DrawRenameWindow()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Clear();
+
+            current.Rename();
+            mode = FarMode.Explorer;
+            Refresh();
+            Draw();
+        }
+    
+        private void Refresh()
+        {
+            current = History.Pop();
+            History.Push(current);
+            current = new Layer(current.GetSelectedItemInfo(), 0);
+
         }
 
         private void ShiftCursor() //Shift cursor
@@ -61,23 +85,6 @@ namespace Far_Manager
             ClearRow4();
         }
 
-        void ClearRow4()
-        {
-            try
-            {
-                if(current.ind > 35)
-                {
-                    Console.Write(current.items[current.ind + 3].Name);
-                }
-            }
-            catch
-            {
-                for(int i = 0; i < 40; ++i)
-                {
-                    Console.BackgroundColor = ConsoleColor.DarkBlue;
-                }
-            }
-        }
         void DrawRow1()
         {
             Console.Write(" Mode: ");
@@ -144,6 +151,24 @@ namespace Far_Manager
                 for (int i = 0; i < 40; ++i)
                 {
                     Console.Write(" ");
+                }
+            }
+        }
+
+        void ClearRow4()
+        {
+            try
+            {
+                if (current.ind > 35)
+                {
+                    Console.Write(current.items[current.ind + 3].Name);
+                }
+            }
+            catch
+            {
+                for (int i = 0; i < 40; ++i)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
                 }
             }
         }
@@ -234,9 +259,7 @@ namespace Far_Manager
             current.SetColor();
             current.DrawSingleRow();
 
-            current.ind += q;                          //shift ind
-            if (current.ind == current.items.Count) current.ind = 0;
-            if (current.ind == -1) current.ind = current.items.Count - 1;
+            current.Process(q);
 
             Console.SetCursorPosition(0, current.ind);  //Draw new current row
             current.SetColorInd();
@@ -251,7 +274,7 @@ namespace Far_Manager
                 case ConsoleKey.UpArrow:   //ind up
                     if (mode == FarMode.Explorer)
                     {
-                        this.Shift(-1);
+                        Shift(-1);
                         DrawStatus();
                         ShiftCursor();
                     }
@@ -259,7 +282,7 @@ namespace Far_Manager
                 case ConsoleKey.DownArrow: //ind down
                     if (mode == FarMode.Explorer)
                     {
-                        this.Shift(1);
+                        Shift(1);
                         DrawStatus();
                         ShiftCursor();
                     }
@@ -274,18 +297,18 @@ namespace Far_Manager
                                 mode = FarMode.Explorer;
                                 History.Push(current);
                                 current = new Layer(current.GetSelectedItemInfo(), 0);
-                                this.Draw();
+                                Draw();
                             }
                             else                                                               //open file
                             {
                                 mode = FarMode.FileReader;
-                                this.Draw();
+                                Draw();
                             }
                         }
                         catch (Exception e)
                         {
                             current = History.Pop();
-                            this.Draw();
+                            Draw();
                         }
                     }
                     break;
@@ -293,13 +316,17 @@ namespace Far_Manager
                     if (mode == FarMode.Explorer)
                     {
                         current = History.Pop();
-                        this.Draw();                                                   //back to directory
+                        Draw();                                                   //back to directory
                     }
                     else
                     {
                         mode = FarMode.Explorer;
-                        this.Draw();
+                        Draw();
                     }                                                                   //back to directory from file
+                    break;
+                case ConsoleKey.R:
+                    mode = FarMode.Rename;
+                    Draw();
                     break;
             }
         }
