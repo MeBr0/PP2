@@ -47,14 +47,14 @@ namespace Far_Manager
 
         public void Process(int q)
         {
-            this.ind += q;
-            if (this.ind < 0) this.ind = items.Count() - 1;
-            if (this.ind > items.Count - 1) this.ind = 0;
+            ind += q;
+            if (ind < 0) ind = items.Count() - 1;
+            if (ind > items.Count - 1) ind = 0;
         }
 
         public void SetColorInd()
         {
-            if (this.items[this.ind].GetType() == typeof(DirectoryInfo))
+            if (items[ind].GetType() == typeof(DirectoryInfo))
             {
                 Console.BackgroundColor = ConsoleColor.Cyan;
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -68,7 +68,7 @@ namespace Far_Manager
 
         public void SetColor()
         {
-            if (this.items[this.ind].GetType() == typeof(DirectoryInfo))
+            if (items[ind].GetType() == typeof(DirectoryInfo))
             {
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -82,10 +82,10 @@ namespace Far_Manager
 
         public void DrawSingleRowInd()
         {
-            if (this.items[this.ind].Name.Length <= 38)
+            if (items[ind].Name.Length <= 38)
             {
-                Console.Write(" " + this.items[this.ind].Name);
-                for (int j = 0; j < 39 - this.items[this.ind].Name.Length; ++j)
+                Console.Write(" " + items[ind].Name);
+                for (int j = 0; j < 39 - items[ind].Name.Length; ++j)
                 {
                     Console.Write(" ");
                 }
@@ -95,7 +95,7 @@ namespace Far_Manager
                 Console.Write(" ");
                 for (int i = 0; i < 36; ++i)
                 {
-                    Console.Write(this.items[this.ind].Name[i]);
+                    Console.Write(items[ind].Name[i]);
                 }
                 Console.Write("..  ");
             }
@@ -124,10 +124,10 @@ namespace Far_Manager
 
         public void DrawSingleRow()
         {
-            if (this.items[this.ind].Name.Length <= 38)
+            if (items[ind].Name.Length <= 38)
             {
-                Console.Write(" " + this.items[this.ind].Name);
-                for (int j = 0; j < 40 - this.items[this.ind].Name.Length; ++j)
+                Console.Write(" " + items[ind].Name);
+                for (int j = 0; j < 40 - items[ind].Name.Length; ++j)
                 {
                     Console.Write(" ");
                 }
@@ -137,7 +137,7 @@ namespace Far_Manager
                 Console.Write(" ");
                 for (int i = 0; i < 36; ++i)
                 {
-                    Console.Write(this.items[this.ind].Name[i]);
+                    Console.Write(items[ind].Name[i]);
                 }
                 Console.Write("..  ");
             }

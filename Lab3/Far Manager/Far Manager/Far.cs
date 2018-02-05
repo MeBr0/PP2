@@ -50,7 +50,7 @@ namespace Far_Manager
 
             current.Rename();
             mode = FarMode.Explorer;
-            Refresh();
+            //Refresh();
             Draw();
         }
     
