@@ -10,12 +10,12 @@ namespace Snake
     class Wall
     {
         List<Point> body;
-        string sign;
+        char c;
         ConsoleColor color;
 
-        public void ReadLevel(int level)
+        public void ReadLevel(int a)
         {
-            FileStream fs = new FileStream("level1.txt", FileMode.Open, FileAccess.Read);
+            FileStream fs = new FileStream("level" + a + ".txt", FileMode.Open, FileAccess.Read);
             StreamReader sr = new StreamReader(fs);
             try
             {
@@ -23,7 +23,7 @@ namespace Snake
                 {
                     string s = sr.ReadLine();
                     for (int j = 0; j < s.Length; j++)
-                        if (s[j] == '#') body.Add(new Point(j, i));
+                        if (s[j] == c) body.Add(new Point(j, i));
                 }
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace Snake
         {
             body = new List<Point>();
             color = ConsoleColor.White;
-            sign = "#";
+            c = '#';
             ReadLevel(level);
         }
 
@@ -52,7 +52,7 @@ namespace Snake
             {
                 Console.SetCursorPosition(p.x, p.y);
                 Console.ForegroundColor = color;
-                Console.Write(sign);
+                Console.Write(c);
             }
         }
     }

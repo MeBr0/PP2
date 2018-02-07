@@ -9,23 +9,25 @@ namespace Snake
     class Snake
     {
         List<Point> body;
-        public string sign;
+        public char c;
         public ConsoleColor color;
         public int cnt;
         public Snake()
         {
             cnt = 0;
-            sign = "*";
+            c = '*';
             body = new List<Point>();
+            body.Add(new Point(12, 10));
+            body.Add(new Point(11, 10));
             body.Add(new Point(10, 10));
             color = ConsoleColor.Yellow;
         }
 
         public void Move(int dx, int dy)
         {
-            cnt++;
-            if (cnt % 20 == 0)
-                body.Add(new Point(0, 0));
+            //cnt++;
+            //if (cnt % 20 == 0)
+            //    body.Add(new Point(0, 0));
 
             for (int i = body.Count - 1; i > 0; i--)
             {
@@ -35,19 +37,30 @@ namespace Snake
 
             body[0].x += dx;
             body[0].y += dy;
-            if (body[0].x < 0)
-                body[0].x = Console.WindowWidth - 1;
-            if (body[0].x >= Console.WindowWidth)
-                body[0].x = 0;
-            if (body[0].y < 0)
-                body[0].y = Console.WindowHeight - 1;
-            if (body[0].y >= Console.WindowHeight)
-                body[0].y = 0;
+
+            if (body[0].x < 1)
+                body[0].x = 38;
+            if (body[0].x > 38)
+                body[0].x = 1;
+            if (body[0].y < 1)
+                body[0].y = 18;
+            if (body[0].y > 18)
+                body[0].y = 1;
         }
 
-        public void Shift()
+        public void Shift(int dx, int dy)
         {
+            Console.SetCursorPosition(body[body.Count - 1].x, body[body.Count - 1].y);
+            Console.Write(' ');
+            Console.SetCursorPosition(body[0].x, body[0].y);
+            Console.ForegroundColor = color;
+            Console.Write('*');
 
+            Move(dx, dy);
+
+            Console.SetCursorPosition(body[0].x, body[0].y);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write('*');
         }
 
         public void Draw()
@@ -61,7 +74,7 @@ namespace Snake
                 else
                     Console.ForegroundColor = color;
                 Console.SetCursorPosition(p.x, p.y);
-                Console.Write(sign);
+                Console.Write(c);
                 index++;
             }
         }

@@ -16,27 +16,25 @@ namespace Snake
             bool gameOver = false;
             Console.CursorVisible = false;
             wall.Draw();
+            snake.Draw();
 
             while (!gameOver)
             {
-                snake.Draw();
-                
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.UpArrow)
-                    snake.Move(0, -1);
+                    snake.Shift(0, -1);
                 if (keyInfo.Key == ConsoleKey.DownArrow)
-                    snake.Move(0, 1);
+                    snake.Shift(0, 1);
                 if (keyInfo.Key == ConsoleKey.LeftArrow)
-                    snake.Move(-1, 0);
+                    snake.Shift(-1, 0);
                 if (keyInfo.Key == ConsoleKey.RightArrow)
-                    snake.Move(1, 0);
+                    snake.Shift(1, 0);
                 if (keyInfo.Key == ConsoleKey.Escape)
                     gameOver = true;
 
-                if (snake.cnt == 60)
-                    wall = new Wall(2);
+                //if (snake.cnt == 60)
+                //    wall = new Wall(2);
 
-                Console.Clear();
             }
         }
     }
