@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class Point
+    public class Point
     {
-        public int x, y;
+        public int X { get; set; }
+        public int Y { get; set; }
 
-        public Point(int a, int b)
+        public override bool Equals(object obj)
         {
-            x = a;
-            y = b;
+            Point b = obj as Point;
+            if (b.X == this.X && b.Y == this.Y) return true;
+            return false;
         }
     }
 }

@@ -7,53 +7,47 @@ using System.IO;
 
 namespace Snake
 {
-    class Wall
+    class Wall : GameObject
     {
-        List<Point> body;
-        char c;
-        ConsoleColor color;
-
-        public void ReadLevel(int a)
+        public Wall(Point firstPoint, ConsoleColor color, char sign) : base(firstPoint, color, sign)
         {
-            FileStream fs = new FileStream("level" + a + ".txt", FileMode.Open, FileAccess.Read);
+
+        }
+
+        public void LoadLevel(GameLevel level)
+        {
+            string fname = "";
+
+            switch (level)
+            {
+                case GameLevel.First:
+                    fname = @"LVLs\Lvl1.txt";
+                    break;
+                case GameLevel.Second:
+                    break;
+                default:
+                    break;
+            }
+
+            FileStream fs = new FileStream(fname, FileMode.OpenOrCreate, FileAccess.Read);
             StreamReader sr = new StreamReader(fs);
-            try
+            string line;
+            int y = 0;
+
+            while ((line = sr.ReadLine()) != null)
             {
-                for (int i = 0; i < 20; i++)
+                for (int x = 0; x < line.Length; ++x)
                 {
-                    string s = sr.ReadLine();
-                    for (int j = 0; j < s.Length; j++)
-                        if (s[j] == c) body.Add(new Point(j, i));
+                    if (line[x] == '#')
+                    {
+                        this.body.Add(new Point { X = x, Y = y });
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-            finally
-            {
-                sr.Close();
-                fs.Close();
+                y++;
             }
 
-        }
-
-        public Wall(int level)
-        {
-            body = new List<Point>();
-            color = ConsoleColor.White;
-            c = '#';
-            ReadLevel(level);
-        }
-
-        public void Draw()
-        {
-            foreach (Point p in body)
-            {
-                Console.SetCursorPosition(p.x, p.y);
-                Console.ForegroundColor = color;
-                Console.Write(c);
-            }
+            sr.Close();
+            fs.Close();
         }
     }
 }

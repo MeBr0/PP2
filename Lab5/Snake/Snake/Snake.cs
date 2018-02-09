@@ -6,78 +6,56 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class Snake
+    public class Snake : GameObject
     {
-        List<Point> body;
-        public char c;
-        public ConsoleColor color;
-        public int cnt;
-        public Snake()
+        public bool IsAlive;
+        ConsoleColor headcolor = ConsoleColor.Green;
+        public Snake(Point firstPoint, ConsoleColor color, char sign) : base(firstPoint, color, sign)
         {
-            cnt = 0;
-            c = '*';
-            body = new List<Point>();
-            body.Add(new Point(12, 10));
-            body.Add(new Point(11, 10));
-            body.Add(new Point(10, 10));
-            color = ConsoleColor.Yellow;
-        }
 
+        }
         public void Move(int dx, int dy)
         {
-            //cnt++;
-            //if (cnt % 20 == 0)
-            //    body.Add(new Point(0, 0));
 
-            for (int i = body.Count - 1; i > 0; i--)
+            for (int i = body.Count - 1; i > 0; --i)
             {
-                body[i].x = body[i - 1].x;
-                body[i].y = body[i - 1].y;
+                body[i].X = body[i - 1].X;
+                body[i].Y = body[i - 1].Y;
             }
 
-            body[0].x += dx;
-            body[0].y += dy;
-
-            if (body[0].x < 1)
-                body[0].x = 38;
-            if (body[0].x > 38)
-                body[0].x = 1;
-            if (body[0].y < 1)
-                body[0].y = 18;
-            if (body[0].y > 18)
-                body[0].y = 1;
+            body[0] = new Point { X = body[0].X + dx, Y = body[0].Y + dy };
+            ShiftHead();
         }
-
+        void ShiftHead()
+        {
+            if (body[0].X >= Game.boardH) body[0].X = 0;
+            else if (body[0].X < 0) body[0].X = Game.boardH - 1;
+            if (body[0].Y >= Game.boardW) body[0].Y = 0;
+            else if (body[0].Y < 0) body[0].Y = Game.boardW - 1;
+        }
         public void Shift(int dx, int dy)
         {
-            Console.SetCursorPosition(body[body.Count - 1].x, body[body.Count - 1].y);
-            Console.Write(' ');
-            Console.SetCursorPosition(body[0].x, body[0].y);
+            Console.SetCursorPosition(body[body.Count - 1].X, body[body.Count - 1].Y);
             Console.ForegroundColor = color;
-            Console.Write('*');
+            Console.Write(' ');
 
             Move(dx, dy);
-
-            Console.SetCursorPosition(body[0].x, body[0].y);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write('*');
-        }
-
-        public void Draw()
-        {
-            Console.ForegroundColor = color;
-            int index = 0;
-            foreach (Point p in body)
+            try
             {
-                if (index == 0)
-                    Console.ForegroundColor = ConsoleColor.Green;
-                else
-                    Console.ForegroundColor = color;
-                Console.SetCursorPosition(p.x, p.y);
-                Console.Write(c);
-                index++;
+                Console.SetCursorPosition(body[1].X, body[1].Y);
+                Console.ForegroundColor = color;
+                Console.Write(sign);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                Console.SetCursorPosition(body[0].X, body[0].Y);
+                Console.ForegroundColor = headcolor;
+                Console.Write(sign);
             }
         }
-
     }
 }
