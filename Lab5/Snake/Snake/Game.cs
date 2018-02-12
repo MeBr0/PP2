@@ -17,7 +17,7 @@ namespace Snake
         public static int boardW = 35;
         public static int boardH = 35;
 
-        bool[,] field = new bool[10, 10];
+        char[,] field = new char[35, 35];
 
         Snake snake;
         Food food;
@@ -39,9 +39,9 @@ namespace Snake
         {
             gameLevel = GameLevel.First;
 
-            snake = new Snake(new Point { X = 10, Y = 10 },
+            snake = new Snake(new Point { X = 17, Y = 17 },
                             ConsoleColor.Blue, 'o');
-            food = new Food(new Point { X = 20, Y = 10 },
+            food = new Food(new Point { X = new Random().Next(0, Game.boardW), Y = new Random().Next(0, Game.boardH)},
                            ConsoleColor.Red, 'Q');
             food.IsAlive = true;
             wall = new Wall(null, ConsoleColor.Gray, '#');
@@ -72,6 +72,81 @@ namespace Snake
 
         }
 
+        void Collision()
+        {
+            if (snake.body[0].Equals(food.body[0]))
+            {
+                snake.body.Add(new Point { X = food.body[0].X, Y = food.body[0].Y });
+                CreateFood();
+                food.Draw();
+            }
+            else
+            {
+                foreach (Point p in wall.body)
+                {
+                    if (p.Equals(snake.body[0]))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("GAME OVER!!!");
+                        IsAlive = false;
+                        break;
+                    }
+                }
+                foreach (Point p in snake.body)
+                {
+                    if (p.Equals(snake.body[0]) && p != snake.body[0])
+                    {
+                        Console.Clear();
+                        Console.WriteLine("GAME OVER!!!");
+                        IsAlive = false;
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        void CreateFood()
+        {
+            food.body.Clear();
+            while (true)
+            {
+                int _y = new Random().Next(0, Game.boardH);
+                int _x = new Random().Next(0, Game.boardW);
+
+                bool t = false;
+                bool t2 = false;
+
+                Point p = new Point { X = _x, Y = _y };
+                for (int i = 0; i < snake.body.Count; ++i)
+                {
+                    if (snake.body[i] == p)
+                    {
+                        t = true;
+                        break;
+                    }    
+                }
+                if (!t)
+                {
+                    for (int i = 0; i < wall.body.Count; ++i)
+                    {
+                        if (wall.body[i] == p)
+                        {
+                            t2 = true;
+                            break;
+                        }
+                    }
+                }
+                if (!t && !t2)
+                {
+                    food.body.Add(p);
+                    break;
+                }
+            }
+            
+        }
+
+
         public void Process(ConsoleKeyInfo pressedButton)
         {
             switch (pressedButton.Key)
@@ -91,26 +166,8 @@ namespace Snake
                 case ConsoleKey.Escape:
                     break;
             }
-
-            if (snake.body[0].Equals(food.body[0]))
-            {
-                snake.body.Add(new Point { X = food.body[0].X, Y = food.body[0].Y });
-                food.CreateNewFood();
-                food.Draw();
-            }
-            else
-            {
-                foreach (Point p in wall.body)
-                {
-                    if (p.Equals(snake.body[0]))
-                    {
-                        Console.Clear();
-                        Console.WriteLine("GAME OVER!!!");
-                        IsAlive = false;
-                        break;
-                    }
-                }
-            }
+            Collision();
+            
         }
     }
 }

@@ -13,11 +13,20 @@ namespace Snake
 
         }
         public bool IsAlive;
+
         public void CreateNewFood()
         {
             body.Clear();
+            //bool found = false;
+            //int _x = -1;
+            //int _y = -1;
+            //while (!found)
+            //{
             int _y = new Random().Next(0, Game.boardH);
             int _x = new Random().Next(0, Game.boardW);
+
+            
+            //}
             body.Add(new Point { X = _x, Y = _y });
 
         }

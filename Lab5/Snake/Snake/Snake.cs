@@ -25,6 +25,7 @@ namespace Snake
 
             body[0] = new Point { X = body[0].X + dx, Y = body[0].Y + dy };
             ShiftHead();
+            Draw();
         }
         void ShiftHead()
         {
@@ -35,6 +36,8 @@ namespace Snake
         }
         public void Shift(int dx, int dy)
         {
+
+
             Console.SetCursorPosition(body[body.Count - 1].X, body[body.Count - 1].Y);
             Console.ForegroundColor = color;
             Console.Write(' ');
