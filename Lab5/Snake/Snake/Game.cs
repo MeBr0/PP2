@@ -11,14 +11,12 @@ namespace Snake
     {
         public static int boardW = 35;
         public static int boardH = 35;
-
         int speed = 200;
+        public bool Alive;
 
         Snake snake;
         Food food;
         Wall wall;
-
-        public bool Alive;
 
         GameLvl lvl;
 
@@ -54,7 +52,7 @@ namespace Snake
             t.Start();
         }
 
-        public void Action()
+        void Action()
         {
             while (Alive)
             {
@@ -86,8 +84,6 @@ namespace Snake
                     snake.DY = 0;
                     break;
             }
-
-            
         }
 
         void ReScore()
@@ -211,8 +207,13 @@ namespace Snake
                 }
             }
             food.body.Add(q);
-        }
+        }   
 
-        
+        public void SetUpWindow()
+        {
+            Console.SetWindowSize(Game.boardW, Game.boardH);
+            Console.SetBufferSize(Game.boardW, Game.boardH);
+            Console.CursorVisible = false;
+        }
     }
 }
