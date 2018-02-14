@@ -14,9 +14,12 @@ namespace Snake
 
         }
 
+        public int count;
+
         public void LoadLevel(GameLvl lvl)
         {
             string path = "";
+            count = 0;
 
             switch (lvl)
             {
@@ -24,8 +27,20 @@ namespace Snake
                     path = @"LVLs\lvl1.txt";
                     break;
                 case GameLvl.second:
+                    path = @"LVLs\lvl2.txt";
+                    break;
+                case GameLvl.third:
+                    path = @"LVLs\lvl3.txt";
+                    break;
+                case GameLvl.fourth:
+                    path = @"LVLs\lvl4.txt";
+                    break;
+                case GameLvl.fifth:
+                    path = @"LVLs\lvl5.txt";
                     break;
             }
+
+            body.Clear();
 
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
             StreamReader sr = new StreamReader(fs);
