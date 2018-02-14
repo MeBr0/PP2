@@ -81,6 +81,7 @@ namespace Snake
             }
             else
             {
+
                 switch (btn.Key)
                 {
                     case ConsoleKey.UpArrow:
