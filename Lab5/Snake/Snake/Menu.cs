@@ -9,8 +9,8 @@ namespace Snake
 {
     class Menu: GameObject
     {
-        string[] List = {"NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT"};
-        int ind = 0;
+        public string[] List = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };
+        public int ind = 0;
         public Menu(Point first, ConsoleColor color, char c) : base(first, color, c)
         {
 

@@ -29,26 +29,12 @@ namespace Snake
             Console.SetBufferSize(Game.boardW, Game.boardH);
             Console.CursorVisible = false;
 
-            Mode mode = Mode.menu;
-            GameLvl lvl = GameLvl.first;
-            Menu menu = new Menu(null, ConsoleColor.Blue, '#');
-            menu.LoadRamp();
-            menu.Draw();
-            /*Game game = new Game(lvl);
-            game.SetUpWindow();
-            game.Draw();
-            game.StartLevel();*/
-            /*while (game.Alive && mode == Mode.play)
+            Engine engine = new Engine();
+            while (engine.Switch)
             {
                 ConsoleKeyInfo btn = Console.ReadKey();
-                game.Process(btn);
-            }*/
-            while (mode == Mode.menu)
-            {
-                ConsoleKeyInfo btn = Console.ReadKey();
-                menu.Process(btn);
+                engine.Process(btn);
             }
-
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Snake
             CreateNewLvl(lvl);
         }
 
-        void CreateNewLvl(GameLvl lvl)
+        public void CreateNewLvl(GameLvl lvl)
         {
             Alive = true;
             if(lvl == GameLvl.first)
@@ -65,24 +65,42 @@ namespace Snake
 
         public void Process(ConsoleKeyInfo btn)
         {
-            switch (btn.Key)
+            if (Alive)
             {
-                case ConsoleKey.UpArrow:
-                    snake.DX = 0;
-                    snake.DY = -1;
-                    break;
-                case ConsoleKey.DownArrow:
-                    snake.DX = 0;
-                    snake.DY = 1;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    snake.DX = -1;
-                    snake.DY = 0;
-                    break;
-                case ConsoleKey.RightArrow:
-                    snake.DX = 1;
-                    snake.DY = 0;
-                    break;
+                switch (btn.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if(snake.DY != 1)
+                        {
+                            snake.DX = 0;
+                            snake.DY = -1;
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (snake.DY != -1)
+                        {
+                            snake.DX = 0;
+                            snake.DY = 1;
+                        }
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if(snake.DX != 1)
+                        {
+                            snake.DX = -1;
+                            snake.DY = 0;
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if(snake.DX != -1)
+                        {
+                            snake.DX = 1;
+                            snake.DY = 0;
+                        }
+                        break;
+                    case ConsoleKey.S:
+
+                        break;
+                }
             }
         }
 
