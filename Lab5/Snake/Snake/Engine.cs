@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Snake
 {
@@ -30,6 +32,16 @@ namespace Snake
         public void Draw()
         {
 
+        }
+
+        void SaveGame()
+        {
+            FileStream fs = new FileStream(@"XML\snake.xml", FileMode.OpenOrCreate, FileAccess.Write);
+            XmlSerializer xs = new XmlSerializer(typeof(Game));
+
+            xs.Serialize(fs, game);
+
+            fs.Close();
         }
 
         public void Process(ConsoleKeyInfo btn)
@@ -75,8 +87,10 @@ namespace Snake
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.LeftArrow:
                     case ConsoleKey.RightArrow:
-                    case ConsoleKey.S:
                         game.Process(btn);
+                        break;
+                    case ConsoleKey.Tab:
+                        SaveGame();
                         break;
                 }
             }

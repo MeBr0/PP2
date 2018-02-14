@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class Wall: GameObject
+    public class Wall: GameObject
     {
         public Wall(Point first, ConsoleColor color, char c) : base(first, color, c)
+        {
+
+        }
+
+        public Wall()
         {
 
         }

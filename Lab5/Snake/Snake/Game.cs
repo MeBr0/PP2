@@ -1,28 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Snake
 {
-    class Game
+    public class Game
     {
         public static int boardW = 35;
         public static int boardH = 35;
-        int speed = 200;
+        public int speed = 200;
         public bool Alive;
-
-        Snake snake;
-        Food food;
-        Wall wall;
+        
+        public Snake snake;
+        public Food food;
+        public Wall wall;
 
         GameLvl lvl;
 
         public Game(GameLvl lvl)
         {
             CreateNewLvl(lvl);
+        }
+
+        public Game()
+        {
+
         }
 
         public void CreateNewLvl(GameLvl lvl)
@@ -96,9 +103,6 @@ namespace Snake
                             snake.DX = 1;
                             snake.DY = 0;
                         }
-                        break;
-                    case ConsoleKey.S:
-
                         break;
                 }
             }

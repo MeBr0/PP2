@@ -13,5 +13,10 @@ namespace Snake
 
         }
 
+        public Food()
+        {
+
+        }
+
     }
 }

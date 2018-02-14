@@ -19,6 +19,11 @@ namespace Snake
             this.c = c;
             this.color = color;
         }
+        
+        public GameObject()
+        {
+
+        }
 
         public void Draw()
         {

@@ -9,7 +9,13 @@ namespace Snake
     public class Snake: GameObject
     {
         public int DX = 0, DY = 0;
+
         public Snake(Point first, ConsoleColor color, char c) : base(first, color, c)
+        {
+
+        }
+
+        public Snake()
         {
 
         }

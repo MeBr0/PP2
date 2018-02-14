@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    enum GameLvl
+    public enum GameLvl
     {
         first,
         second,
@@ -16,7 +16,7 @@ namespace Snake
         fifth
     }
 
-    enum Mode
+    public enum Mode
     {
         play,
         menu
