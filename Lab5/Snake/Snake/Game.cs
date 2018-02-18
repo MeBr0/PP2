@@ -52,22 +52,11 @@ namespace Snake
             wall.LoadLevel(lvl);
         }
 
-        public void StartLevel()
+        public void SnakeAction()
         {
-            ThreadStart ts = new ThreadStart(Action);
-            Thread t = new Thread(ts);
-            t.Start();
-        }
-
-        void Action()
-        {
-            while (Alive)
-            {
-                snake.Move();
-                HeadCollision();
-                CheckScore();
-                Thread.Sleep(speed);
-            }
+            snake.Move();
+            HeadCollision();
+            CheckScore();
         }
 
         public void Process(ConsoleKeyInfo btn)
@@ -145,8 +134,6 @@ namespace Snake
 
         void Over()
         {
-            Console.Clear();
-            Console.WriteLine("GAME OVER!!!");
             Alive = false;
         }
 

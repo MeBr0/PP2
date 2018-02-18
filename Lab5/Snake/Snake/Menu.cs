@@ -37,13 +37,13 @@ namespace Snake
 
         void Shift(int a)
         {
-            Console.SetCursorPosition(12, 14 + ind);
+            Console.SetCursorPosition(12, 15 + ind);
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("->" + List[ind]);
 
             Check(a);
 
-            Console.SetCursorPosition(12, 14 + ind);
+            Console.SetCursorPosition(12, 15 + ind);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("->" + List[ind]);
         }
@@ -88,10 +88,9 @@ namespace Snake
 
         void DrawMenu()
         {
-            
             for(int i = 0; i < List.Length; ++i)
             {
-                Console.SetCursorPosition(12, 14 + i);
+                Console.SetCursorPosition(12, 15 + i);
                 if (i == ind)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;

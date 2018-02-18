@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -14,6 +15,7 @@ namespace Snake
         Mode mode;
         Menu menu;
         Game game;
+        public int speed = 200;
 
         public bool Switch;
 
@@ -22,6 +24,7 @@ namespace Snake
             Switch = true;
             mode = Mode.menu;
             lvl = GameLvl.first;
+
             menu = new Menu(null, ConsoleColor.Blue, '#');
             menu.LoadRamp();
             game = new Game(lvl);
@@ -35,6 +38,16 @@ namespace Snake
         }
 
         void SaveGame()
+        {
+            FileStream fs = new FileStream(@"XML\snake.xml", FileMode.OpenOrCreate, FileAccess.Write);
+            XmlSerializer xs = new XmlSerializer(typeof(Game));
+
+            xs.Serialize(fs, game);
+
+            fs.Close();
+        }
+
+        void LoadGame()
         {
             FileStream fs = new FileStream(@"XML\snake.xml", FileMode.OpenOrCreate, FileAccess.Write);
             XmlSerializer xs = new XmlSerializer(typeof(Game));
@@ -61,7 +74,6 @@ namespace Snake
                                 mode = Mode.play;
                                 game.CreateNewLvl(lvl);
                                 game.Draw();
-                                game.StartLevel();
                                 break;
                             case 1:
                                 break;
@@ -81,7 +93,6 @@ namespace Snake
             }
             else
             {
-
                 switch (btn.Key)
                 {
                     case ConsoleKey.UpArrow:
@@ -95,8 +106,47 @@ namespace Snake
                         break;
                 }
             }
-
         }
 
+        void CheckAlive()
+        {
+            if (!game.Alive)
+            {
+                Console.Clear();
+                mode = Mode.menu;
+                menu.Draw();
+            }
+        }
+
+        public void StartProcess()
+        {
+            ThreadStart ts = new ThreadStart(Action);
+            Thread t = new Thread(ts);
+            t.Start();
+        }
+
+        void Action()
+        {
+            while (true)
+            {
+                if (mode == Mode.play)
+                {
+                    game.SnakeAction();
+                    CheckAlive();
+                }
+                else
+                {
+
+                }
+                Thread.Sleep(speed);
+            }
+        }
+
+        public static void SetUpWindow()
+        {
+            Console.SetWindowSize(Game.boardW, Game.boardH);
+            Console.SetBufferSize(Game.boardW, Game.boardH);
+            Console.CursorVisible = false;
+        }
     }
 }

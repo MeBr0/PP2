@@ -25,11 +25,10 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(Game.boardW, Game.boardH);
-            Console.SetBufferSize(Game.boardW, Game.boardH);
-            Console.CursorVisible = false;
+            Engine.SetUpWindow();
 
             Engine engine = new Engine();
+            engine.StartProcess();
             while (engine.Switch)
             {
                 ConsoleKeyInfo btn = Console.ReadKey();
