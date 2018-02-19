@@ -47,42 +47,46 @@ namespace Snake
         }
         
         public void Move()
-        {
-            Console.SetCursorPosition(body[body.Count - 1].X, body[body.Count - 1].Y);
-            Console.WriteLine(" ");
-
-            for(int i = body.Count - 1; i > 0; --i)
-            {
-                body[i].X = body[i - 1].X;
-                body[i].Y = body[i - 1].Y;
-            }
-
-            body[0].X += DX;
-            body[0].Y += DY;
-
-            Check();
-
-
-            Console.SetCursorPosition(body[0].X, body[0].Y);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(c);
-
-            if (body.Count != 1)
+        {           
+            if(DX != 0 || DY != 0)
             {
                 Console.SetCursorPosition(body[body.Count - 1].X, body[body.Count - 1].Y);
-                Console.ForegroundColor = color;
-                Console.WriteLine(c);
-            }
-            try
-            {
-                Console.SetCursorPosition(body[1].X, body[1].Y);
-                Console.ForegroundColor = color;
-                Console.WriteLine(c);
-            }
-            catch
-            {
+                Console.WriteLine(" ");
 
+                for (int i = body.Count - 1; i > 0; --i)
+                {
+                    body[i].X = body[i - 1].X;
+                    body[i].Y = body[i - 1].Y;
+                }
+
+                body[0].X += DX;
+                body[0].Y += DY;
+
+                Check();
+
+
+                Console.SetCursorPosition(body[0].X, body[0].Y);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(c);
+
+                if (body.Count != 1)
+                {
+                    Console.SetCursorPosition(body[body.Count - 1].X, body[body.Count - 1].Y);
+                    Console.ForegroundColor = color;
+                    Console.WriteLine(c);
+                }
+                try
+                {
+                    Console.SetCursorPosition(body[1].X, body[1].Y);
+                    Console.ForegroundColor = color;
+                    Console.WriteLine(c);
+                }
+                catch
+                {
+
+                }
             }
+            
         }
 
         void Check()
