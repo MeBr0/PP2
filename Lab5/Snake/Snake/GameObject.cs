@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public abstract class GameObject
-    {
-        public List<Point> body { get; set; }
-        public char c { get; }
-        public ConsoleColor color { get; }
+    public abstract class GameObject //абстрактный класс содержащий основные элементы объектов
+    {                                //abstract - не может быть создано экземпляров этого класса
+        public List<Point> body { get; set; } //массив точек
+        public char c { get; }                //знак 
+        public ConsoleColor color { get; }    //цвет
 
-        public GameObject(Point first, ConsoleColor color, char c)
+        public GameObject(Point first, ConsoleColor color, char c) //базовый конструктор
         {
             this.body = new List<Point>();
             if (first != null) this.body.Add(first);
@@ -20,12 +20,12 @@ namespace Snake
             this.color = color;
         }
         
-        public GameObject()
+        public GameObject() //пустой конструктор для сериализации
         {
 
         }
 
-        public void Draw()
+        public void Draw() //базовая функция для рисования
         {
             Console.ForegroundColor = color;
             foreach(Point p in body)

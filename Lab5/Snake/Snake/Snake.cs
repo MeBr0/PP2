@@ -8,21 +8,21 @@ using System.Xml.Serialization;
 
 namespace Snake
 {
-    public class Snake: GameObject
+    public class Snake: GameObject //змейка, наследуется от GameObject
     {
-        public int DX = 0, DY = 0;
+        public int DX = 0, DY = 0; //координаты сообщающие о движении змейки
 
-        public Snake(Point first, ConsoleColor color, char c) : base(first, color, c)
+        public Snake(Point first, ConsoleColor color, char c) : base(first, color, c) //наследуемый конструктор
         {
 
         }
 
-        public Snake()
+        public Snake() //пустой конструктор для сериализации
         {
 
         }
 
-        public void Save()
+        public void Save() //метод для сериализации данных о змейке
         {
             StreamWriter sw = new StreamWriter(@"XML\snake.xml", false);
 
@@ -31,9 +31,9 @@ namespace Snake
             xs.Serialize(sw, this.body);
 
             sw.Close();
-        }
+        } 
 
-        public List<Point> Load()
+        public List<Point> Load() //метод для десериализации данных о змейке
         {
             FileStream fs = new FileStream(@"XML\snake.xml", FileMode.Open, FileAccess.Read);
 
@@ -44,9 +44,9 @@ namespace Snake
             fs.Close();
 
             return body;
-        }
+        } 
         
-        public void Move()
+        public void Move() //метод для движения змейки
         {           
             if(DX != 0 || DY != 0)
             {
@@ -89,16 +89,15 @@ namespace Snake
             
         }
 
-        void Check()
+        void Check() //метод проверки выхода за границы
         {
             if (body[0].X > Game.boardW - 1) body[0].X = 0;
             else if (body[0].X < 0) body[0].X = Game.boardW - 1;
             if (body[0].Y > Game.boardH - 3) body[0].Y = 0;
             else if (body[0].Y < 0) body[0].Y = Game.boardH - 3;
-
         }
 
-        public void Draw()
+        public void Draw() //ненаследуемый метод для рисования
         {
             int q = 0;
             for (int i = 0; i < body.Count; ++i){
@@ -110,7 +109,7 @@ namespace Snake
             }
         }
 
-        public void Stop()
+        public void Stop() //остановление змейки
         {
             DX = 0;
             DY = 0;

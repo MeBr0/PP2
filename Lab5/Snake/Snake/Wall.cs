@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public class Wall: GameObject
+    public class Wall: GameObject //cтенка, наследуется от GameObject
     {
-        public Wall(Point first, ConsoleColor color, char c) : base(first, color, c)
+        public Wall(Point first, ConsoleColor color, char c) : base(first, color, c) //наследуемый констуктор
         {
 
         }
 
-        public Wall()
-        {
+        public int count; //счет
 
-        }
-
-        public int count;
-
-        public void LoadLevel(GameLvl lvl)
+        public void LoadLevel(GameLvl lvl) //метод для загрузки стенок уровня
         {
             string path = "";
             count = 0;

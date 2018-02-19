@@ -11,7 +11,7 @@ namespace Snake
         public int X { get; set; }
         public int Y { get; set; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object obj) //перегрузка метода Equals для сравнения двух точек
         {
             Point b = obj as Point;
             if (this.X == b.X && this.Y == b.Y) return true;

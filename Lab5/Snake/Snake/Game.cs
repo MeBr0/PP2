@@ -7,32 +7,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Snake
+namespace Snake 
 {
-    public class Game
+    public class Game //класс отвечающий за игровую часть
     {
-        public static int boardW = 35;
-        public static int boardH = 35;
-        public int speed = 200;
-        public bool Alive;
+        public static int boardW = 35; //ширина консоли
+        public static int boardH = 35; //высота консоли
+        public int speed = 200;        //скорость игры
+        public bool Alive;             //булевое значение, жива ли змейка
         
-        public Snake snake;
-        public Food food;
-        public Wall wall;
+        public Snake snake; //змейка
+        public Food food;   //еда
+        public Wall wall;   //стенка
 
-        public GameLvl lvl;
+        public GameLvl lvl; //текущий уровень
 
-        public Game(GameLvl lvl)
+        public Game(GameLvl lvl) //конструктор
         {
             CreateNewLvl(lvl);
         }
 
-        public Game()
+        public Game() //пустой конструктор для сериализации
         {
 
         }
 
-        public void CreateNewLvl(GameLvl lvl)
+        public void CreateNewLvl(GameLvl lvl) //метод для создания нового уровня
         {
             Alive = true;
             if(lvl == GameLvl.first)
@@ -48,18 +48,17 @@ namespace Snake
                 wall.body.Clear();
             }
             
-
             wall.LoadLevel(lvl);
         }
 
-        public void Save()
+        public void Save() //метод для сериализации игры
         {
             snake.Save();
             food.Save();
             SaveLvl();
-        }
+        } 
 
-        public void Load()
+        public void Load() //метод для десериализации игры
         {
             snake.body = snake.Load();
             food.body = food.Load();
@@ -81,9 +80,9 @@ namespace Snake
                     lvl = GameLvl.fifth;
                     break;
             }
-        }
+        } 
 
-        string LoadLvl()
+        string LoadLvl() //метод для десериализации уровня
         {
             FileStream fs = new FileStream(@"XML\lvl.xml", FileMode.Open, FileAccess.Read);
 
@@ -94,14 +93,9 @@ namespace Snake
             fs.Close();
 
             return s;
-        }
+        }   
 
-        public void StopSnake()
-        {
-            snake.Stop();
-        }
-
-        void SaveLvl()
+        void SaveLvl() //метод для сериализации уровня
         {
             StreamWriter sw = new StreamWriter(@"XML\lvl.xml", false);
             XmlSerializer xs = new XmlSerializer(typeof(GameLvl));
@@ -109,16 +103,21 @@ namespace Snake
             xs.Serialize(sw, lvl);
 
             sw.Close();
-        }
+        }     
 
-        public void SnakeAction()
+        public void StopSnake() //метод для остановки змейки
+        {
+            snake.Stop();
+        } 
+
+        public void SnakeAction() //метод осуществлящий движение змеи, с последующими проверками
         {
             snake.Move();
             HeadCollision();
             CheckScore();
-        }
+        } 
 
-        public void Process(ConsoleKeyInfo btn)
+        public void Process(ConsoleKeyInfo btn) //основной процесс игры
         {
             if (Alive)
             {
@@ -156,14 +155,7 @@ namespace Snake
             }
         }
 
-        void ReScore()
-        {
-            Console.SetCursorPosition(9, Game.boardH - 2);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(wall.count);
-        }
-
-        public void Draw()
+        public void Draw() //метод для рисования игры
         {
             Console.Clear();
             CreateNewFood();
@@ -171,9 +163,16 @@ namespace Snake
             snake.Draw();
             wall.Draw();
             DrawStatus();
-        }
+        } 
 
-        void DrawStatus()
+        void ReScore() //метод для изменения счета
+        {
+            Console.SetCursorPosition(9, Game.boardH - 2);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(wall.count);
+        } 
+
+        void DrawStatus() //метод для рисования меню статуса
         {
             Console.SetCursorPosition(0, Game.boardH - 2);
             Console.ForegroundColor = ConsoleColor.Red;
@@ -191,12 +190,12 @@ namespace Snake
 
         }
 
-        void Over()
+        void Over() //метод для конца игры
         {
             Alive = false;
         }
 
-        void HeadCollision()
+        void HeadCollision() //метод для проверки столкновений головы
         {
             if (snake.body[0].Equals(food.body[0]))
             {
@@ -228,7 +227,7 @@ namespace Snake
             }
         }
 
-        void CheckScore()
+        void CheckScore() //метод для проверки счета
         {
             if(wall.count == 120)
             {
@@ -244,7 +243,7 @@ namespace Snake
             }
         } 
 
-        void CreateNewFood()
+        void CreateNewFood() //метод для создания новой еды
         {
             food.body.Clear();
             bool Re = true;
@@ -276,12 +275,5 @@ namespace Snake
             }
             food.body.Add(q);
         }   
-
-        public void SetUpWindow()
-        {
-            Console.SetWindowSize(Game.boardW, Game.boardH);
-            Console.SetBufferSize(Game.boardW, Game.boardH);
-            Console.CursorVisible = false;
-        }
     }
 }
