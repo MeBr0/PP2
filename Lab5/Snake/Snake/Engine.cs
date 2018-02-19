@@ -37,26 +37,6 @@ namespace Snake
 
         }
 
-        void SaveGame()
-        {
-            FileStream fs = new FileStream(@"XML\snake.xml", FileMode.OpenOrCreate, FileAccess.Write);
-            XmlSerializer xs = new XmlSerializer(typeof(Game));
-
-            xs.Serialize(fs, game);
-
-            fs.Close();
-        }
-
-        void LoadGame()
-        {
-            FileStream fs = new FileStream(@"XML\snake.xml", FileMode.OpenOrCreate, FileAccess.Write);
-            XmlSerializer xs = new XmlSerializer(typeof(Game));
-
-            xs.Serialize(fs, game);
-
-            fs.Close();
-        }
-
         public void Process(ConsoleKeyInfo btn)
         {
             if (mode == Mode.menu)
@@ -71,11 +51,18 @@ namespace Snake
                         switch (menu.ind)
                         {
                             case 0:
-                                mode = Mode.play;
                                 game.CreateNewLvl(lvl);
                                 game.Draw();
+                                mode = Mode.play;
                                 break;
                             case 1:
+                                game.CreateNewLvl(GameLvl.first);
+                                game.Load();
+                                lvl = game.lvl;
+                                game.Draw();
+                                game.StopSnake();
+                                game.Alive = true;
+                                mode = Mode.play;
                                 break;
                             case 2:
                                 break;
@@ -102,7 +89,7 @@ namespace Snake
                         game.Process(btn);
                         break;
                     case ConsoleKey.Tab:
-                        SaveGame();
+                        game.Save();
                         break;
                 }
             }

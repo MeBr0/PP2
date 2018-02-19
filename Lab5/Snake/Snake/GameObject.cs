@@ -8,7 +8,7 @@ namespace Snake
 {
     public abstract class GameObject
     {
-        public List<Point> body { get; }
+        public List<Point> body { get; set; }
         public char c { get; }
         public ConsoleColor color { get; }
 

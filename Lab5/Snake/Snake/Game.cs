@@ -20,7 +20,7 @@ namespace Snake
         public Food food;
         public Wall wall;
 
-        GameLvl lvl;
+        public GameLvl lvl;
 
         public Game(GameLvl lvl)
         {
@@ -50,6 +50,65 @@ namespace Snake
             
 
             wall.LoadLevel(lvl);
+        }
+
+        public void Save()
+        {
+            snake.Save();
+            food.Save();
+            SaveLvl();
+        }
+
+        public void Load()
+        {
+            snake.body = snake.Load();
+            food.body = food.Load();
+            switch (LoadLvl())
+            {
+                case "first":
+                    lvl = GameLvl.first;
+                    break;
+                case "second":
+                    lvl = GameLvl.second;
+                    break;
+                case "third":
+                    lvl = GameLvl.third;
+                    break;
+                case "fourth":
+                    lvl = GameLvl.fourth;
+                    break;
+                case "fifth":
+                    lvl = GameLvl.fifth;
+                    break;
+            }
+        }
+
+        string LoadLvl()
+        {
+            FileStream fs = new FileStream(@"XML\lvl.xml", FileMode.Open, FileAccess.Read);
+
+            XmlSerializer xs = new XmlSerializer(typeof(GameLvl));
+
+            string s = xs.Deserialize(fs) as string;
+
+            fs.Close();
+
+            return s;
+        }
+
+        public void StopSnake()
+        {
+            snake.Stop();
+        }
+
+        void SaveLvl()
+        {
+            StreamWriter sw = new StreamWriter(@"XML\lvl.xml", false);
+            XmlSerializer xs = new XmlSerializer(typeof(GameLvl));
+
+            xs.Serialize(sw, lvl);
+
+            sw.Close();
         }
 
         public void SnakeAction()
