@@ -15,6 +15,7 @@ namespace Snake
         public static int boardH = 35; //высота консоли
         public int speed = 200;        //скорость игры
         public bool Alive;             //булевое значение, жива ли змейка
+        public int count;
         
         public Snake snake; //змейка
         public Food food;   //еда
@@ -37,15 +38,17 @@ namespace Snake
             Alive = true;
             if(lvl == GameLvl.first)
             {
-                snake = new Snake(new Point { X = 17, Y = 17 }, ConsoleColor.Blue, 'o');
+                snake = new Snake(new Point { X = 17, Y = 16 }, ConsoleColor.Blue, 'o');
                 food = new Food(new Point { X = -1, Y = -1 }, ConsoleColor.Red, '@');
                 wall = new Wall(null, ConsoleColor.Gray, '#');
+                count = 0;
             }
             else
             {
                 snake.body.Clear();
-                snake.body.Add(new Point { X = 17, Y = 17 });
+                snake.body.Add(new Point { X = 17, Y = 16 });
                 wall.body.Clear();
+                count = 0;
             }
             
             wall.LoadLevel(lvl);
@@ -56,12 +59,14 @@ namespace Snake
             snake.Save();
             food.Save();
             SaveLvl();
+            SaveCount();
         } 
 
         public void Load() //метод для десериализации игры
         {
             snake.body = snake.Load();
             food.body = food.Load();
+            count = LoadCount();
             switch (LoadLvl())
             {
                 case "first":
@@ -81,6 +86,29 @@ namespace Snake
                     break;
             }
         } 
+
+        void SaveCount()
+        {
+            StreamWriter sw = new StreamWriter(@"XML\count.xml", false);
+            XmlSerializer xs = new XmlSerializer(typeof(int));
+
+            xs.Serialize(sw, count);
+
+            sw.Close();
+        }
+
+        int LoadCount()
+        {
+            FileStream fs = new FileStream(@"XML\count.xml", FileMode.Open, FileAccess.Read);
+
+            XmlSerializer xs = new XmlSerializer(typeof(int));
+
+            int s = (int)xs.Deserialize(fs);
+
+            fs.Close();
+
+            return s;
+        }
 
         string LoadLvl() //метод для десериализации уровня
         {
@@ -103,7 +131,30 @@ namespace Snake
             xs.Serialize(sw, lvl);
 
             sw.Close();
-        }     
+        }
+
+        public Game Load1()
+        {
+            FileStream fs = new FileStream(@"XML\game.xml", FileMode.Open, FileAccess.Read);
+
+            XmlSerializer xs = new XmlSerializer(typeof(Game));
+
+            Game s = xs.Deserialize(fs) as Game;
+
+            fs.Close();
+
+            return s;
+        }
+        
+        public void Save1()
+        {
+            StreamWriter sw = new StreamWriter(@"XML\game.xml", false);
+            XmlSerializer xs = new XmlSerializer(typeof(Game));
+
+            xs.Serialize(sw, this);
+
+            sw.Close();
+        }
 
         public void StopSnake() //метод для остановки змейки
         {
@@ -152,6 +203,8 @@ namespace Snake
                         }
                         break;
                 }
+
+                Draw();
             }
         }
 
@@ -169,7 +222,7 @@ namespace Snake
         {
             Console.SetCursorPosition(9, Game.boardH - 2);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(wall.count);
+            Console.Write(count);
         } 
 
         void DrawStatus() //метод для рисования меню статуса
@@ -178,7 +231,7 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("  Score: ");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(0);
+            Console.WriteLine(count);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("  Level ");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -200,7 +253,7 @@ namespace Snake
             if (snake.body[0].Equals(food.body[0]))
             {
                 snake.body.Add(new Point { X = food.body[0].X, Y = food.body[0].Y});
-                wall.count += 10;
+                count += 10;
                 ReScore();
                 CreateNewFood();
                 food.Draw();
@@ -229,15 +282,14 @@ namespace Snake
 
         void CheckScore() //метод для проверки счета
         {
-            if(wall.count == 120)
+            if(count == 120)
             {
                 if (lvl == GameLvl.first) lvl = GameLvl.second;
                 else if (lvl == GameLvl.second) lvl = GameLvl.third;
                 else if (lvl == GameLvl.third) lvl = GameLvl.fourth;
                 else if (lvl == GameLvl.fourth) lvl = GameLvl.fifth;
 
-                snake.DX = 0;
-                snake.DY = 0;
+                snake.Stop();
                 CreateNewLvl(lvl);
                 Draw();
             }

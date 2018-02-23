@@ -51,13 +51,13 @@ namespace Snake
                                 mode = Mode.play;
                                 break;
                             case 1:
-                                game.CreateNewLvl(GameLvl.first);
-                                game.Load();
+                                mode = Mode.play;
+                                game = game.Load1();
                                 lvl = game.lvl;
+                                game.CreateNewLvl(lvl);
+                                game = game.Load1();
                                 game.Draw();
                                 game.StopSnake();
-                                game.Alive = true;
-                                mode = Mode.play;
                                 break;
                             case 2:
                                 break;
@@ -84,7 +84,7 @@ namespace Snake
                         game.Process(btn);
                         break;
                     case ConsoleKey.Tab:
-                        game.Save();
+                        game.Save1();
                         break;
                 }
             }

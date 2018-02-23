@@ -14,12 +14,15 @@ namespace Snake
 
         }
 
-        public int count; //счет
+        public Wall()
+        {
+
+        }
+
 
         public void LoadLevel(GameLvl lvl) //метод для загрузки стенок уровня
         {
             string path = "";
-            count = 0;
 
             switch (lvl)
             {

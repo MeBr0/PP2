@@ -9,8 +9,8 @@ namespace Snake
     public abstract class GameObject //абстрактный класс содержащий основные элементы объектов
     {                                //abstract - не может быть создано экземпляров этого класса
         public List<Point> body { get; set; } //массив точек
-        public char c { get; }                //знак 
-        public ConsoleColor color { get; }    //цвет
+        public char c { get; set; }                //знак 
+        public ConsoleColor color { get; set; }    //цвет
 
         public GameObject(Point first, ConsoleColor color, char c) //базовый конструктор
         {
