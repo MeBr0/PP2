@@ -11,6 +11,9 @@ namespace Snake
 {
     class Engine
     {
+        public static int boardW = 35; //ширина консоли
+        public static int boardH = 35; //высота консоли
+
         GameLvl lvl;
         Mode mode;
         Menu menu;
@@ -32,61 +35,66 @@ namespace Snake
             menu.Draw();
         }
 
-        public void Process(ConsoleKeyInfo btn)
+        public void Process()
         {
-            if (mode == Mode.menu)
+            while (Switch)
             {
-                switch (btn.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                    case ConsoleKey.DownArrow:
-                        menu.Process(btn);
-                        break;
-                    case ConsoleKey.Enter:
-                        switch (menu.ind)
-                        {
-                            case 0:
-                                game.CreateNewLvl(lvl);
-                                game.Draw();
-                                mode = Mode.play;
-                                break;
-                            case 1:
-                                mode = Mode.play;
-                                game = game.Load1();
-                                lvl = game.lvl;
-                                game.CreateNewLvl(lvl);
-                                game = game.Load1();
-                                game.Draw();
-                                game.StopSnake();
-                                break;
-                            case 2:
-                                break;
-                            case 3:
-                                break;
-                            case 4:
-                                Switch = false;
-                                Console.SetCursorPosition(0, 0);
-                                Console.Clear();
-                                break;
+                ConsoleKeyInfo btn = Console.ReadKey();
 
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                switch (btn.Key)
+                if (mode == Mode.menu)
                 {
-                    case ConsoleKey.UpArrow:
-                    case ConsoleKey.DownArrow:
-                    case ConsoleKey.LeftArrow:
-                    case ConsoleKey.RightArrow:
-                        game.Process(btn);
-                        break;
-                    case ConsoleKey.Tab:
-                        game.Save1();
-                        break;
+                    switch (btn.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                        case ConsoleKey.DownArrow:
+                            menu.Process(btn);
+                            break;
+                        case ConsoleKey.Enter:
+                            switch (menu.ind)
+                            {
+                                case 0:
+                                    game.CreateNewLvl(lvl);
+                                    game.Draw();
+                                    mode = Mode.play;
+                                    break;
+                                case 1:
+                                    mode = Mode.play;
+                                    game = game.Load();
+                                    lvl = game.lvl;
+                                    game.CreateNewLvl(lvl);
+                                    game = game.Load();
+                                    game.Draw();
+                                    game.StopSnake();
+                                    break;
+                                case 2:
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    Switch = false;
+                                    Console.SetCursorPosition(0, 0);
+                                    Console.Clear();
+                                    break;
+                            }
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (btn.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                        case ConsoleKey.DownArrow:
+                        case ConsoleKey.LeftArrow:
+                        case ConsoleKey.RightArrow:
+                            game.Process(btn);
+                            break;
+                        case ConsoleKey.Tab:
+                            game.Save();
+                            break;
+                    }
+                }
+                Thread.Sleep(speed);
             }
         }
 
@@ -104,8 +112,13 @@ namespace Snake
         {
             ThreadStart ts = new ThreadStart(Action);
             Thread t = new Thread(ts);
+            ThreadStart t1 = new ThreadStart(Process);
+            Thread t2 = new Thread(t1);
+
             t.Start();
+            t2.Start();
         }
+
 
         void Action()
         {
@@ -126,8 +139,8 @@ namespace Snake
 
         public static void SetUpWindow()
         {
-            Console.SetWindowSize(Game.boardW, Game.boardH);
-            Console.SetBufferSize(Game.boardW, Game.boardH);
+            Console.SetWindowSize(Engine.boardW, Engine.boardH);
+            Console.SetBufferSize(Engine.boardW, Engine.boardH);
             Console.CursorVisible = false;
         }
     }

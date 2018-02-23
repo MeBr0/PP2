@@ -11,11 +11,10 @@ namespace Snake
 {
     public class Game //класс отвечающий за игровую часть
     {
-        public static int boardW = 35; //ширина консоли
-        public static int boardH = 35; //высота консоли
         public int speed = 200;        //скорость игры
         public bool Alive;             //булевое значение, жива ли змейка
-        public int count;
+        int coef = 10;
+        public int score;
         
         public Snake snake; //змейка
         public Food food;   //еда
@@ -41,99 +40,20 @@ namespace Snake
                 snake = new Snake(new Point { X = 17, Y = 16 }, ConsoleColor.Blue, 'o');
                 food = new Food(new Point { X = -1, Y = -1 }, ConsoleColor.Red, '@');
                 wall = new Wall(null, ConsoleColor.Gray, '#');
-                count = 0;
+                score = 0;
             }
             else
             {
+                score += (snake.body.Count - 1) * coef;
                 snake.body.Clear();
                 snake.body.Add(new Point { X = 17, Y = 16 });
                 wall.body.Clear();
-                count = 0;
             }
             
             wall.LoadLevel(lvl);
         }
 
-        public void Save() //метод для сериализации игры
-        {
-            snake.Save();
-            food.Save();
-            SaveLvl();
-            SaveCount();
-        } 
-
-        public void Load() //метод для десериализации игры
-        {
-            snake.body = snake.Load();
-            food.body = food.Load();
-            count = LoadCount();
-            switch (LoadLvl())
-            {
-                case "first":
-                    lvl = GameLvl.first;
-                    break;
-                case "second":
-                    lvl = GameLvl.second;
-                    break;
-                case "third":
-                    lvl = GameLvl.third;
-                    break;
-                case "fourth":
-                    lvl = GameLvl.fourth;
-                    break;
-                case "fifth":
-                    lvl = GameLvl.fifth;
-                    break;
-            }
-        } 
-
-        void SaveCount()
-        {
-            StreamWriter sw = new StreamWriter(@"XML\count.xml", false);
-            XmlSerializer xs = new XmlSerializer(typeof(int));
-
-            xs.Serialize(sw, count);
-
-            sw.Close();
-        }
-
-        int LoadCount()
-        {
-            FileStream fs = new FileStream(@"XML\count.xml", FileMode.Open, FileAccess.Read);
-
-            XmlSerializer xs = new XmlSerializer(typeof(int));
-
-            int s = (int)xs.Deserialize(fs);
-
-            fs.Close();
-
-            return s;
-        }
-
-        string LoadLvl() //метод для десериализации уровня
-        {
-            FileStream fs = new FileStream(@"XML\lvl.xml", FileMode.Open, FileAccess.Read);
-
-            XmlSerializer xs = new XmlSerializer(typeof(GameLvl));
-
-            string s = xs.Deserialize(fs) as string;
-
-            fs.Close();
-
-            return s;
-        }   
-
-        void SaveLvl() //метод для сериализации уровня
-        {
-            StreamWriter sw = new StreamWriter(@"XML\lvl.xml", false);
-            XmlSerializer xs = new XmlSerializer(typeof(GameLvl));
-
-            xs.Serialize(sw, lvl);
-
-            sw.Close();
-        }
-
-        public Game Load1()
+        public Game Load() // десериалзация игры
         {
             FileStream fs = new FileStream(@"XML\game.xml", FileMode.Open, FileAccess.Read);
 
@@ -146,7 +66,7 @@ namespace Snake
             return s;
         }
         
-        public void Save1()
+        public void Save() // сериализация игры
         {
             StreamWriter sw = new StreamWriter(@"XML\game.xml", false);
             XmlSerializer xs = new XmlSerializer(typeof(Game));
@@ -203,8 +123,6 @@ namespace Snake
                         }
                         break;
                 }
-
-                Draw();
             }
         }
 
@@ -220,32 +138,38 @@ namespace Snake
 
         void ReScore() //метод для изменения счета
         {
-            Console.SetCursorPosition(9, Game.boardH - 2);
+            Console.SetCursorPosition(9, Engine.boardH - 2);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(count);
+            Console.Write(score + (snake.body.Count - 1) * 10);
         } 
 
         void DrawStatus() //метод для рисования меню статуса
         {
-            Console.SetCursorPosition(0, Game.boardH - 2);
+            Console.SetCursorPosition(0, Engine.boardH - 2);
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("  Score: ");
+
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(count);
+            Console.WriteLine(score + (snake.body.Count - 1) * coef);
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("  Level ");
+
             Console.ForegroundColor = ConsoleColor.Green;
-            if (lvl == GameLvl.first) Console.Write("1");
-            else if (lvl == GameLvl.second) Console.Write("2");
-            else if (lvl == GameLvl.third) Console.Write("3");
-            else if (lvl == GameLvl.fourth) Console.Write("4");
-            else if (lvl == GameLvl.fifth) Console.Write("5");
+            Console.Write(Level(lvl));
 
         }
 
-        void Over() //метод для конца игры
+        static int Level(GameLvl lvl)
         {
-            Alive = false;
+            int a = 1;
+            if (lvl == GameLvl.first) a = 1;
+            else if (lvl == GameLvl.second) a = 2;
+            else if (lvl == GameLvl.third) a = 3;
+            else if (lvl == GameLvl.fourth) a = 4;
+            else if (lvl == GameLvl.fifth) a = 5;
+            return a;
         }
 
         void HeadCollision() //метод для проверки столкновений головы
@@ -253,7 +177,6 @@ namespace Snake
             if (snake.body[0].Equals(food.body[0]))
             {
                 snake.body.Add(new Point { X = food.body[0].X, Y = food.body[0].Y});
-                count += 10;
                 ReScore();
                 CreateNewFood();
                 food.Draw();
@@ -265,7 +188,7 @@ namespace Snake
                 {
                     if (p.Equals(snake.body[0]))
                     {
-                        Over();
+                        Alive = false;
                         break;
                     }
                 }
@@ -273,22 +196,26 @@ namespace Snake
                 {
                     if (p.Equals(snake.body[0]) && p != snake.body[0])
                     {
-                        Over();
+                        Alive = false;
                         break;
                     }
                 }
             }
         }
 
+        void ProceedLevel()
+        {
+            if (lvl == GameLvl.first) lvl = GameLvl.second;
+            else if (lvl == GameLvl.second) lvl = GameLvl.third;
+            else if (lvl == GameLvl.third) lvl = GameLvl.fourth;
+            else if (lvl == GameLvl.fourth) lvl = GameLvl.fifth;
+        }
+
         void CheckScore() //метод для проверки счета
         {
-            if(count == 120)
+            if( 12 == snake.body.Count - 1)
             {
-                if (lvl == GameLvl.first) lvl = GameLvl.second;
-                else if (lvl == GameLvl.second) lvl = GameLvl.third;
-                else if (lvl == GameLvl.third) lvl = GameLvl.fourth;
-                else if (lvl == GameLvl.fourth) lvl = GameLvl.fifth;
-
+                ProceedLevel();
                 snake.Stop();
                 CreateNewLvl(lvl);
                 Draw();
@@ -304,8 +231,8 @@ namespace Snake
             while (Re)
             {
                 Re = false;
-                int _x = new Random().Next(0, Game.boardW - 1);
-                int _y = new Random().Next(0, Game.boardH - 3);
+                int _x = new Random().Next(0, Engine.boardW - 1);
+                int _y = new Random().Next(0, Engine.boardH - 3);
                 q = new Point { X = _x, Y = _y };
 
                 for (int i = 0; i < wall.body.Count; ++i)

@@ -19,25 +19,5 @@ namespace Snake
         {
 
         }
-
-        public void Save() //метод для сериализации данных о еде
-        {
-            StreamWriter sw = new StreamWriter(@"XML\food.xml", false);
-            XmlSerializer xs = new XmlSerializer(typeof(List<Point>));
-            xs.Serialize(sw, this.body);
-
-            sw.Close();
-        } 
-
-        public List<Point> Load() //метод для десериализации данных о еде
-        {
-            FileStream fs = new FileStream(@"XML\food.xml", FileMode.Open, FileAccess.Read);
-            XmlSerializer xs = new XmlSerializer(typeof(List<Point>));
-            List<Point> body = xs.Deserialize(fs) as List<Point>;
-
-            fs.Close();
-
-            return body;
-        } 
     }
 }

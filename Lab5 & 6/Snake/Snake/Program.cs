@@ -29,11 +29,6 @@ namespace Snake
 
             Engine engine = new Engine();
             engine.StartProcess();
-            while (engine.Switch)
-            {
-                ConsoleKeyInfo btn = Console.ReadKey();
-                engine.Process(btn);
-            }
         }
     }
 }

@@ -22,30 +22,6 @@ namespace Snake
 
         }
 
-        public void Save() //метод для сериализации данных о змейке
-        {
-            StreamWriter sw = new StreamWriter(@"XML\snake.xml", false);
-
-            XmlSerializer xs = new XmlSerializer(typeof(List<Point>));
-
-            xs.Serialize(sw, this.body);
-
-            sw.Close();
-        } 
-
-        public List<Point> Load() //метод для десериализации данных о змейке
-        {
-            FileStream fs = new FileStream(@"XML\snake.xml", FileMode.Open, FileAccess.Read);
-
-            XmlSerializer xs = new XmlSerializer(typeof(List<Point>));
-
-            List<Point> body = xs.Deserialize(fs) as List<Point>;
-
-            fs.Close();
-
-            return body;
-        } 
-        
         public void Move() //метод для движения змейки
         {           
             if(DX != 0 || DY != 0)
@@ -91,10 +67,10 @@ namespace Snake
 
         void Check() //метод проверки выхода за границы
         {
-            if (body[0].X > Game.boardW - 1) body[0].X = 0;
-            else if (body[0].X < 0) body[0].X = Game.boardW - 1;
-            if (body[0].Y > Game.boardH - 3) body[0].Y = 0;
-            else if (body[0].Y < 0) body[0].Y = Game.boardH - 3;
+            if (body[0].X > Engine.boardW - 1) body[0].X = 0;
+            else if (body[0].X < 0) body[0].X = Engine.boardW - 1;
+            if (body[0].Y > Engine.boardH - 3) body[0].Y = 0;
+            else if (body[0].Y < 0) body[0].Y = Engine.boardH - 3;
         }
 
         public void Draw() //ненаследуемый метод для рисования
