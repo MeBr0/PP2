@@ -28,6 +28,7 @@ namespace Snake
             Engine.SetUpWindow();
 
             Engine engine = new Engine();
+
             engine.StartProcess();
         }
     }

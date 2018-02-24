@@ -32,7 +32,7 @@ namespace Snake
             menu.LoadRamp();
             game = new Game(lvl);
 
-            menu.Draw();
+            menu.DrawAll();
         }
 
         public void Process()
@@ -104,7 +104,7 @@ namespace Snake
             {
                 Console.Clear();
                 mode = Mode.menu;
-                menu.Draw();
+                menu.DrawAll();
             }
         }
 

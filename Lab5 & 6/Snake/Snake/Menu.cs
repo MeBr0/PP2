@@ -17,7 +17,7 @@ namespace Snake
 
         }
 
-        public void Draw()
+        public void DrawAll()
         {
             DrawRamp();
             DrawMenu();
@@ -80,9 +80,9 @@ namespace Snake
         void DrawRamp()
         {
             Console.ForegroundColor = color;
-            foreach (Point p in body)
+            for (int i = 0; i < body.Count; ++i)
             {
-                Console.SetCursorPosition(p.X, p.Y);
+                Console.SetCursorPosition(body[i].X, body[i].Y);
                 Console.Write(c);
             }
         }

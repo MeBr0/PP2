@@ -8,7 +8,7 @@ namespace Snake
 {
     public abstract class GameObject //абстрактный класс содержащий основные элементы объектов
     {                                //abstract - не может быть создано экземпляров этого класса
-        public List<Point> body { get; set; } //массив точек
+        public List<Point> body { get; set; }      //массив точек
         public char c { get; set; }                //знак 
         public ConsoleColor color { get; set; }    //цвет
 
@@ -28,9 +28,9 @@ namespace Snake
         public void Draw() //базовый метод для рисования
         {
             Console.ForegroundColor = color;
-            foreach(Point p in body)
+            for(int i = 0; i < body.Count; ++i)
             {
-                Console.SetCursorPosition(p.X, p.Y);
+                Console.SetCursorPosition(body[i].X, body[i].Y);
                 Console.Write(c);
             }
         }
