@@ -12,6 +12,8 @@ namespace Snake
     {
         public int DX = 0, DY = 0; //координаты сообщающие о движении змейки
 
+        public ConsoleColor colorh;
+
         public Snake(Point first, ConsoleColor color, char c) : base(first, color, c) //наследуемый конструктор
         {
 

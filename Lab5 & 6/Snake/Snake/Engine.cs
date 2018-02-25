@@ -9,13 +9,17 @@ using System.Xml.Serialization;
 
 namespace Snake
 {
+    enum Obj
+    {
+        snake,
+        wall,
+        food
+    }
+
     class Engine
     {
         public static int boardW = 35; //ширина консоли
         public static int boardH = 35; //высота консоли
-
-        string[] options = { "SNAKE", "WALL", "FOOD" };
-        string[] colors = { "RED", "YELLOW", "BLUE", "GREEN", "CYAN", "PINK", "MAGENTA", "GRAY" };
 
         Thread t;
         Thread t2;
@@ -23,11 +27,15 @@ namespace Snake
         GameLvl lvl;
         Mode mode;
         MenuMode menumode;
+        Obj obj;
+
         Menu menu;
         Game game;
-        public int speed = 200;
 
+        public int speed = 200;
         public bool Switch;
+
+        ConsoleColor color;
 
         public Engine()
         {
@@ -35,6 +43,7 @@ namespace Snake
             mode = Mode.menu;
             menumode = MenuMode.main;
             lvl = GameLvl.first;
+            obj = Obj.snake;
 
             menu = new Menu(null, ConsoleColor.Blue, '#');
             menu.LoadRamp();
@@ -67,10 +76,9 @@ namespace Snake
                                     OptionsAction();
                                     break;
                                 case MenuMode.colors:
-
+                                    ColorsAction();
                                     break;
                             }
-                            
                             break;
                     }
                 }
@@ -98,25 +106,23 @@ namespace Snake
             switch (menu.ind)
             {
                 case 0:
-                    game.CreateNewLvl(lvl);
-                    game.Draw();
                     mode = Mode.play;
+                    lvl = GameLvl.first;
+                    game.lvl = lvl;
+                    game.CreateNewLvl(game.lvl);
+                    game.CreateNewFood();
+                    game.Draw();
                     break;
                 case 1:
                     mode = Mode.play;
-                    game = game.Load();
-                    lvl = game.lvl;
-                    game.CreateNewLvl(lvl);
-                    game = game.Load();
+                    game = Game.Load();
+                    game.LoadColors();
                     game.Draw();
                     game.StopSnake();
                     break;
                 case 2:
-                    menumode = MenuMode.options;
-                    menu.main = options;
-                    menu.DX = 14;
-                    menu.DY = 16;
-                    menu.ind = 0;
+                    menu.ChangeOptions();
+                    menumode = menu.menumode;
                     menu.DrawAll();
                     break;
                 case 3:
@@ -133,30 +139,67 @@ namespace Snake
             switch (menu.ind)
             {
                 case 0:
-                    menumode = MenuMode.colors;
-                    menu.main = colors;
-                    menu.DX = 14;
-                    menu.DY = 13;
-                    menu.ind = 0;
-                    menu.DrawAll();
+                    menu.ChangeColors();
+                    menumode = menu.menumode;
+                    obj = Obj.snake;
                     break;
                 case 1:
-                    menumode = MenuMode.colors;
-                    menu.main = colors;
-                    menu.DX = 14;
-                    menu.DY = 13;
-                    menu.ind = 0;
-                    menu.DrawAll();
+                    menu.ChangeColors();
+                    menumode = menu.menumode;
+                    obj = Obj.wall;
                     break;
                 case 2:
-                    menumode = MenuMode.colors;
-                    menu.main = colors;
-                    menu.DX = 14;
-                    menu.DY = 13;
-                    menu.ind = 0;
-                    menu.DrawAll();
+                    menu.ChangeColors();
+                    menumode = menu.menumode;
+                    obj = Obj.food;
                     break;
             }
+        }
+
+        void ColorsAction()
+        {
+            switch (menu.ind)
+            {
+                case 0:
+                    color = ConsoleColor.Red;
+                    break;
+                case 1:
+                    color = ConsoleColor.Yellow;
+                    break;
+                case 2:
+                    color = ConsoleColor.Blue;
+                    break;
+                case 3:
+                    color = ConsoleColor.Green;
+                    break;
+                case 4:
+                    color = ConsoleColor.Cyan;
+                    break;
+                case 5:
+                    color = ConsoleColor.White;
+                    break;
+                case 6:
+                    color = ConsoleColor.Magenta;
+                    break;
+                case 7:
+                    color = ConsoleColor.Gray;
+                    break;
+            }
+            switch (obj)
+            {
+                case Obj.snake:
+                    game.ChangeSnake(color);
+                    break;
+                case Obj.wall:
+                    game.ChangeWall(color);
+                    break;
+                case Obj.food:
+                    game.ChangeFood(color);
+                    break;
+            }
+            menu.ChangeMenu();
+            menumode = menu.menumode;
+            menu.DrawAll();
         }
 
         void CheckAlive()

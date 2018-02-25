@@ -10,6 +10,8 @@ namespace Snake
     class Menu: GameObject
     {
         string[] menu = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };
+        string[] options = { "SNAKE", "WALL", "FOOD" };
+        string[] colors = { "RED", "YELLOW", "BLUE", "GREEN", "CYAN", "WHITE", "MAGENTA", "GRAY" };
 
         public string[] main;
         public int ind;
@@ -32,6 +34,34 @@ namespace Snake
             Console.Clear();
             DrawRamp();
             DrawMenu();
+        }
+
+        public void ChangeOptions()
+        {
+            menumode = MenuMode.options;
+            main = options;
+            DX = 14;
+            DY = 16;
+            ind = 0;
+        }
+
+        public void ChangeMenu()
+        {
+            menumode = MenuMode.main;
+            main = menu;
+            DX = 12;
+            DY = 15;
+            ind = 0;
+        }
+
+        public void ChangeColors()
+        {
+            menumode = MenuMode.colors;
+            main = colors;
+            DX = 14;
+            DY = 13;
+            ind = 0;
+            DrawAll();
         }
 
         public void Process(ConsoleKeyInfo btn)

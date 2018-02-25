@@ -20,6 +20,10 @@ namespace Snake
         public Food food;   //еда
         public Wall wall;   //стенка
 
+        ConsoleColor snakecolor = ConsoleColor.Blue;
+        ConsoleColor wallcolor = ConsoleColor.Gray; 
+        ConsoleColor foodcolor = ConsoleColor.Red;
+
         public GameLvl lvl; //текущий уровень
 
         public Game(GameLvl lvl) //конструктор
@@ -37,9 +41,9 @@ namespace Snake
             Alive = true;
             if(lvl == GameLvl.first)
             {
-                snake = new Snake(new Point { X = 17, Y = 16 }, ConsoleColor.Blue, 'o');
-                food = new Food(new Point { X = -1, Y = -1 }, ConsoleColor.Red, '@');
-                wall = new Wall(null, ConsoleColor.Gray, '#');
+                snake = new Snake(new Point { X = 17, Y = 16 }, snakecolor, 'o');
+                food = new Food(new Point { X = -1, Y = -1 }, foodcolor, '@');
+                wall = new Wall(null, wallcolor, '#');
                 score = 0;
             }
             else
@@ -53,7 +57,7 @@ namespace Snake
             wall.LoadLevel(lvl);
         }
 
-        public Game Load() // десериалзация игры
+        public static Game Load() // десериалзация игры
         {
             FileStream fs = new FileStream(@"XML\game.xml", FileMode.Open, FileAccess.Read);
 
@@ -129,12 +133,18 @@ namespace Snake
         public void Draw() //метод для рисования игры
         {
             Console.Clear();
-            CreateNewFood();
             food.Draw();
             snake.Draw();
             wall.Draw();
             DrawStatus();
-        } 
+        }
+
+        public void LoadColors()
+        {
+            snake.color = snakecolor;
+            wall.color = wallcolor;
+            food.color = foodcolor;
+        }
 
         void ReScore() //метод для изменения счета
         {
@@ -159,6 +169,21 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(Level(lvl));
 
+        }
+
+        public void ChangeSnake(ConsoleColor color)
+        {
+            snakecolor = color;
+        }
+
+        public void ChangeWall(ConsoleColor color)
+        {
+            wallcolor = color;
+        }
+
+        public void ChangeFood(ConsoleColor color)
+        {
+            foodcolor = color;
         }
 
         static int Level(GameLvl lvl)
@@ -222,7 +247,7 @@ namespace Snake
             }
         } 
 
-        void CreateNewFood() //метод для создания новой еды
+        public void CreateNewFood() //метод для создания новой еды
         {
             food.body.Clear();
             bool Re = true;
