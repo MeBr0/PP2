@@ -24,6 +24,10 @@ namespace Snake
         Thread t;
         Thread t2;
 
+        ConsoleColor snakecolor = ConsoleColor.Blue;
+        ConsoleColor wallcolor = ConsoleColor.Gray;
+        ConsoleColor foodcolor = ConsoleColor.Red;
+
         GameLvl lvl;
         Mode mode;
         MenuMode menumode;
@@ -110,13 +114,14 @@ namespace Snake
                     lvl = GameLvl.first;
                     game.lvl = lvl;
                     game.CreateNewLvl(game.lvl);
+                    game.LoadColors(snakecolor, wallcolor, foodcolor);
                     game.CreateNewFood();
                     game.Draw();
                     break;
                 case 1:
                     mode = Mode.play;
                     game = Game.Load();
-                    game.LoadColors();
+                    game.LoadColors(snakecolor, wallcolor, foodcolor);
                     game.Draw();
                     game.StopSnake();
                     break;
@@ -188,13 +193,13 @@ namespace Snake
             switch (obj)
             {
                 case Obj.snake:
-                    game.ChangeSnake(color);
+                    snakecolor = color;
                     break;
                 case Obj.wall:
-                    game.ChangeWall(color);
+                    wallcolor = color;
                     break;
                 case Obj.food:
-                    game.ChangeFood(color);
+                    foodcolor = color;
                     break;
             }
             menu.ChangeMenu();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Snake
 {
@@ -10,6 +11,7 @@ namespace Snake
     {                                //abstract - не может быть создано экземпляров этого класса
         public List<Point> body { get; set; }      //массив точек
         public char c { get; set; }                //знак 
+        //[XmlIgnore]
         public ConsoleColor color { get; set; }    //цвет
 
         public GameObject(Point first, ConsoleColor color, char c) //базовый конструктор

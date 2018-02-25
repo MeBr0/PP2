@@ -11,7 +11,6 @@ namespace Snake
 {
     public class Game //класс отвечающий за игровую часть
     {
-        public int speed = 200;        //скорость игры
         public bool Alive;             //булевое значение, жива ли змейка
         int coef = 10;
         public int score;
@@ -19,10 +18,6 @@ namespace Snake
         public Snake snake; //змейка
         public Food food;   //еда
         public Wall wall;   //стенка
-
-        ConsoleColor snakecolor = ConsoleColor.Blue;
-        ConsoleColor wallcolor = ConsoleColor.Gray; 
-        ConsoleColor foodcolor = ConsoleColor.Red;
 
         public GameLvl lvl; //текущий уровень
 
@@ -41,9 +36,9 @@ namespace Snake
             Alive = true;
             if(lvl == GameLvl.first)
             {
-                snake = new Snake(new Point { X = 17, Y = 16 }, snakecolor, 'o');
-                food = new Food(new Point { X = -1, Y = -1 }, foodcolor, '@');
-                wall = new Wall(null, wallcolor, '#');
+                snake = new Snake(new Point { X = 17, Y = 16 }, ConsoleColor.Black, 'o');
+                food = new Food(new Point { X = -1, Y = -1 }, ConsoleColor.Black, '@');
+                wall = new Wall(null, ConsoleColor.Black, '#');
                 score = 0;
             }
             else
@@ -139,11 +134,11 @@ namespace Snake
             DrawStatus();
         }
 
-        public void LoadColors()
+        public void LoadColors(ConsoleColor a, ConsoleColor b, ConsoleColor c)
         {
-            snake.color = snakecolor;
-            wall.color = wallcolor;
-            food.color = foodcolor;
+            snake.color = a;
+            wall.color = b;
+            food.color = c;
         }
 
         void ReScore() //метод для изменения счета
@@ -169,21 +164,6 @@ namespace Snake
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(Level(lvl));
 
-        }
-
-        public void ChangeSnake(ConsoleColor color)
-        {
-            snakecolor = color;
-        }
-
-        public void ChangeWall(ConsoleColor color)
-        {
-            wallcolor = color;
-        }
-
-        public void ChangeFood(ConsoleColor color)
-        {
-            foodcolor = color;
         }
 
         static int Level(GameLvl lvl)
