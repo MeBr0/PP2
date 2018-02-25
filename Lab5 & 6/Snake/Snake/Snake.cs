@@ -44,7 +44,7 @@ namespace Snake
 
 
                 Console.SetCursorPosition(body[0].X, body[0].Y);
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = colorh;
                 Console.WriteLine(c);
 
                 if (body.Count != 1)
@@ -80,7 +80,7 @@ namespace Snake
             int q = 0;
             for (int i = 0; i < body.Count; ++i){
                 Console.SetCursorPosition(body[i].X, body[i].Y);
-                if (q == 0) Console.ForegroundColor = ConsoleColor.Green;
+                if (q == 0) Console.ForegroundColor = colorh;
                 else Console.ForegroundColor = color;
                 Console.WriteLine(c);
                 q++;

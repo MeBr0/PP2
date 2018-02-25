@@ -12,6 +12,7 @@ namespace Snake
     enum Obj
     {
         snake,
+        head,
         wall,
         food
     }
@@ -25,6 +26,7 @@ namespace Snake
         Thread t2;
 
         ConsoleColor snakecolor = ConsoleColor.Blue;
+        ConsoleColor headcolor = ConsoleColor.Green;
         ConsoleColor wallcolor = ConsoleColor.Gray;
         ConsoleColor foodcolor = ConsoleColor.Red;
 
@@ -114,14 +116,14 @@ namespace Snake
                     lvl = GameLvl.first;
                     game.lvl = lvl;
                     game.CreateNewLvl(game.lvl);
-                    game.LoadColors(snakecolor, wallcolor, foodcolor);
+                    game.LoadColors(snakecolor, headcolor, wallcolor, foodcolor);
                     game.CreateNewFood();
                     game.Draw();
                     break;
                 case 1:
                     mode = Mode.play;
                     game = Game.Load();
-                    game.LoadColors(snakecolor, wallcolor, foodcolor);
+                    game.LoadColors(snakecolor, headcolor, wallcolor, foodcolor);
                     game.Draw();
                     game.StopSnake();
                     break;
@@ -151,9 +153,14 @@ namespace Snake
                 case 1:
                     menu.ChangeColors();
                     menumode = menu.menumode;
-                    obj = Obj.wall;
+                    obj = Obj.head;
                     break;
                 case 2:
+                    menu.ChangeColors();
+                    menumode = menu.menumode;
+                    obj = Obj.wall;
+                    break;
+                case 3:
                     menu.ChangeColors();
                     menumode = menu.menumode;
                     obj = Obj.food;
@@ -194,6 +201,9 @@ namespace Snake
             {
                 case Obj.snake:
                     snakecolor = color;
+                    break;
+                case Obj.head:
+                    headcolor = color;
                     break;
                 case Obj.wall:
                     wallcolor = color;

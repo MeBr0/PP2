@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
+using System.Xml.Serialization; 
 
 namespace Snake 
 {
@@ -134,11 +134,12 @@ namespace Snake
             DrawStatus();
         }
 
-        public void LoadColors(ConsoleColor a, ConsoleColor b, ConsoleColor c)
+        public void LoadColors(ConsoleColor a, ConsoleColor b, ConsoleColor c, ConsoleColor d)
         {
             snake.color = a;
-            wall.color = b;
-            food.color = c;
+            snake.colorh = b;
+            wall.color = c;
+            food.color = d;
         }
 
         void ReScore() //метод для изменения счета

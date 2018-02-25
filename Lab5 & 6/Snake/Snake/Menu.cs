@@ -10,7 +10,7 @@ namespace Snake
     class Menu: GameObject
     {
         string[] menu = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };
-        string[] options = { "SNAKE", "WALL", "FOOD" };
+        string[] options = { "SNAKE", "HEAD", "WALL", "FOOD" };
         string[] colors = { "RED", "YELLOW", "BLUE", "GREEN", "CYAN", "WHITE", "MAGENTA", "GRAY" };
 
         public string[] main;
