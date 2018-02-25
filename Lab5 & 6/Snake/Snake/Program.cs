@@ -21,6 +21,14 @@ namespace Snake
         play,
         menu
     }
+
+    public enum MenuMode
+    {
+        main,
+        options,
+        colors
+    }
+
     class Program
     {
         static void Main(string[] args)

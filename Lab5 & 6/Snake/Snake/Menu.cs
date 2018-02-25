@@ -9,16 +9,27 @@ namespace Snake
 {
     class Menu: GameObject
     {
-        public string[] List = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };
-        public int ind = 0;
+        string[] menu = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };
+
+        public string[] main;
+        public int ind;
+        public int DX;
+        public int DY;
+
+        public MenuMode menumode;
 
         public Menu(Point first, ConsoleColor color, char c) : base(first, color, c)
         {
-
+            menumode = MenuMode.main;
+            main = menu;
+            DX = 12;
+            DY = 15;
+            ind = 0;
         }
 
         public void DrawAll()
         {
+            Console.Clear();
             DrawRamp();
             DrawMenu();
         }
@@ -38,22 +49,22 @@ namespace Snake
 
         void Shift(int a)
         {
-            Console.SetCursorPosition(12, 15 + ind);
+            Console.SetCursorPosition(DX, DY + ind);
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("->" + List[ind]);
+            Console.Write("->" + main[ind]);
 
             Check(a);
 
-            Console.SetCursorPosition(12, 15 + ind);
+            Console.SetCursorPosition(DX, DY + ind);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("->" + List[ind]);
+            Console.Write("->" + main[ind]);
         }
 
         void Check(int a)
         {
             ind += a;
-            if (ind > List.Length - 1) ind = 0;
-            else if (ind < 0) ind = List.Length - 1;
+            if (ind > main.Length - 1) ind = 0;
+            else if (ind < 0) ind = main.Length - 1;
         }
 
         public void LoadRamp()
@@ -89,9 +100,9 @@ namespace Snake
 
         void DrawMenu()
         {
-            for(int i = 0; i < List.Length; ++i)
+            for(int i = 0; i < main.Length; ++i)
             {
-                Console.SetCursorPosition(12, 15 + i);
+                Console.SetCursorPosition(DX, DY + i);
                 if (i == ind)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -100,7 +111,7 @@ namespace Snake
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
-                Console.Write("->" + List[i]);
+                Console.Write("->" + main[i]);
             }
         }
 

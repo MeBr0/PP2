@@ -48,18 +48,31 @@ namespace Far_Manager
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Clear();
 
-            current.Rename();
+            int w = -1;
+
+            string s = current.Rename();
+            DirectoryInfo a = current.dirInfo;
+            FileSystemInfo[] b = a.GetFileSystemInfos();
+            for(int i = 0; i < b.Length; ++i)
+            {
+                if (b[i].Name == s)
+                {
+                    w = i;
+                }
+            }
             mode = FarMode.Explorer;
-            //Refresh();
+            Refresh(w);
             Draw();
         }
     
-        private void Refresh()
+        private void Refresh(int a)
         {
-            current = History.Pop();
-            History.Push(current);
-            current = new Layer(current.GetSelectedItemInfo(), 0);
-
+            if (a > 0)
+            {
+                current = History.Pop();
+                History.Push(current);
+                current = new Layer(current.GetSelectedItemInfo(), a);
+            }
         }
 
         private void ShiftCursor() //Shift cursor

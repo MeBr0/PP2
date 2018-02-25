@@ -14,8 +14,15 @@ namespace Snake
         public static int boardW = 35; //ширина консоли
         public static int boardH = 35; //высота консоли
 
+        string[] options = { "SNAKE", "WALL", "FOOD" };
+        string[] colors = { "RED", "YELLOW", "BLUE", "GREEN", "CYAN", "PINK", "MAGENTA", "GRAY" };
+
+        Thread t;
+        Thread t2;
+
         GameLvl lvl;
         Mode mode;
+        MenuMode menumode;
         Menu menu;
         Game game;
         public int speed = 200;
@@ -26,6 +33,7 @@ namespace Snake
         {
             Switch = true;
             mode = Mode.menu;
+            menumode = MenuMode.main;
             lvl = GameLvl.first;
 
             menu = new Menu(null, ConsoleColor.Blue, '#');
@@ -50,32 +58,19 @@ namespace Snake
                             menu.Process(btn);
                             break;
                         case ConsoleKey.Enter:
-                            switch (menu.ind)
+                            switch (menumode)
                             {
-                                case 0:
-                                    game.CreateNewLvl(lvl);
-                                    game.Draw();
-                                    mode = Mode.play;
+                                case MenuMode.main:
+                                    MenuAction();
                                     break;
-                                case 1:
-                                    mode = Mode.play;
-                                    game = game.Load();
-                                    lvl = game.lvl;
-                                    game.CreateNewLvl(lvl);
-                                    game = game.Load();
-                                    game.Draw();
-                                    game.StopSnake();
+                                case MenuMode.options:
+                                    OptionsAction();
                                     break;
-                                case 2:
-                                    break;
-                                case 3:
-                                    break;
-                                case 4:
-                                    Switch = false;
-                                    Console.SetCursorPosition(0, 0);
-                                    Console.Clear();
+                                case MenuMode.colors:
+
                                     break;
                             }
+                            
                             break;
                     }
                 }
@@ -98,6 +93,72 @@ namespace Snake
             }
         }
 
+        void MenuAction()
+        {
+            switch (menu.ind)
+            {
+                case 0:
+                    game.CreateNewLvl(lvl);
+                    game.Draw();
+                    mode = Mode.play;
+                    break;
+                case 1:
+                    mode = Mode.play;
+                    game = game.Load();
+                    lvl = game.lvl;
+                    game.CreateNewLvl(lvl);
+                    game = game.Load();
+                    game.Draw();
+                    game.StopSnake();
+                    break;
+                case 2:
+                    menumode = MenuMode.options;
+                    menu.main = options;
+                    menu.DX = 14;
+                    menu.DY = 16;
+                    menu.ind = 0;
+                    menu.DrawAll();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    Switch = false;
+                    EndProcess();
+                    break;
+            }
+        }
+
+        void OptionsAction()
+        {
+            switch (menu.ind)
+            {
+                case 0:
+                    menumode = MenuMode.colors;
+                    menu.main = colors;
+                    menu.DX = 14;
+                    menu.DY = 13;
+                    menu.ind = 0;
+                    menu.DrawAll();
+                    break;
+                case 1:
+                    menumode = MenuMode.colors;
+                    menu.main = colors;
+                    menu.DX = 14;
+                    menu.DY = 13;
+                    menu.ind = 0;
+                    menu.DrawAll();
+                    break;
+                case 2:
+                    menumode = MenuMode.colors;
+                    menu.main = colors;
+                    menu.DX = 14;
+                    menu.DY = 13;
+                    menu.ind = 0;
+                    menu.DrawAll();
+                    break;
+            }
+        }
+
         void CheckAlive()
         {
             if (!game.Alive)
@@ -111,14 +172,19 @@ namespace Snake
         public void StartProcess()
         {
             ThreadStart ts = new ThreadStart(Action);
-            Thread t = new Thread(ts);
+            t = new Thread(ts);
             ThreadStart t1 = new ThreadStart(Process);
-            Thread t2 = new Thread(t1);
+            t2 = new Thread(t1);
 
             t.Start();
             t2.Start();
         }
 
+        void EndProcess()
+        {
+            t.Abort();
+            t2.Abort();
+        }
 
         void Action()
         {

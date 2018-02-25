@@ -37,7 +37,7 @@ namespace Far_Manager
                 File.Move(items[ind].FullName, r);
             }
             else
-            {
+            { 
                 string r = Path.Combine(w, newFileName);
                 Directory.Move(items[ind].FullName, r);
             }
