@@ -9,6 +9,12 @@ using System.Xml.Serialization;
 
 namespace Snake
 {
+    public enum Mode
+    {
+        play,
+        menu
+    }
+
     enum Obj
     {
         snake,
@@ -263,8 +269,9 @@ namespace Snake
 
         public static void SetUpWindow()
         {
-            Console.SetWindowSize(Engine.boardW, Engine.boardH);
-            Console.SetBufferSize(Engine.boardW, Engine.boardH);
+            Console.SetWindowSize(boardW, boardH);
+            Console.SetBufferSize(boardW, boardH);
+            Console.Title = "SNAKE(custom)";
             Console.CursorVisible = false;
         }
     }

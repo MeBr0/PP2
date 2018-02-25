@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
+    public enum MenuMode
+    {
+        main,
+        options,
+        colors
+    }
+
     class Menu: GameObject
     {
         string[] menu = { "NEW GAME", "LOAD GAME", "OPTIONS", "HIGHSCORES", "EXIT" };

@@ -7,28 +7,6 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public enum GameLvl
-    {
-        first,
-        second,
-        third,
-        fourth,
-        fifth
-    }
-
-    public enum Mode
-    {
-        play,
-        menu
-    }
-
-    public enum MenuMode
-    {
-        main,
-        options,
-        colors
-    }
-
     class Program
     {
         static void Main(string[] args)

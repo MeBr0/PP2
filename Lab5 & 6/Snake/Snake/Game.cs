@@ -9,6 +9,15 @@ using System.Xml.Serialization;
 
 namespace Snake 
 {
+    public enum GameLvl
+    {
+        first,
+        second,
+        third,
+        fourth,
+        fifth
+    }
+
     public class Game //класс отвечающий за игровую часть
     {
         public bool Alive;             //булевое значение, жива ли змейка
