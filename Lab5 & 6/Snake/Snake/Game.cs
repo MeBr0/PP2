@@ -61,6 +61,20 @@ namespace Snake
             wall.LoadLevel(lvl);
         }
 
+        public string WriteName()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(10, 15);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Enter your name!");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(14, 16);
+            string s = Console.ReadLine();
+
+
+            return s;
+        }
+
         public static Game Load() // десериалзация игры
         {
             FileStream fs = new FileStream(@"XML\game.xml", FileMode.Open, FileAccess.Read);
@@ -176,7 +190,7 @@ namespace Snake
 
         }
 
-        static int Level(GameLvl lvl)
+        static int Level(GameLvl lvl) //возвращает номер уровня
         {
             int a = 1;
             if (lvl == GameLvl.first) a = 1;
@@ -204,6 +218,7 @@ namespace Snake
                     if (p.Equals(snake.body[0]))
                     {
                         Alive = false;
+                        WriteName();
                         break;
                     }
                 }
@@ -212,6 +227,7 @@ namespace Snake
                     if (p.Equals(snake.body[0]) && p != snake.body[0])
                     {
                         Alive = false;
+                        WriteName();
                         break;
                     }
                 }

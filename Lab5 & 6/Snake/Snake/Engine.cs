@@ -28,6 +28,9 @@ namespace Snake
         public static int boardW = 35; //ширина консоли
         public static int boardH = 35; //высота консоли
 
+        public string name;
+
+
         Thread t;
         Thread t2;
 
@@ -68,7 +71,7 @@ namespace Snake
         {
             while (Switch)
             {
-                ConsoleKeyInfo btn = Console.ReadKey();
+                ConsoleKeyInfo btn = Console.ReadKey(true);
 
                 if (mode == Mode.menu)
                 {
