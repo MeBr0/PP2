@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.zero = new System.Windows.Forms.Button();
             this.equal = new System.Windows.Forms.Button();
             this.point = new System.Windows.Forms.Button();
@@ -365,7 +366,7 @@
             this.backspace.Name = "backspace";
             this.backspace.Size = new System.Drawing.Size(82, 54);
             this.backspace.TabIndex = 18;
-            this.backspace.Text = " ⌫";
+            this.backspace.Text = "⌫";
             this.backspace.UseVisualStyleBackColor = false;
             this.backspace.Click += new System.EventHandler(this.BtnClick);
             // 
@@ -412,7 +413,7 @@
             this.prcnt.FlatAppearance.BorderSize = 0;
             this.prcnt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcnt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.prcnt.ForeColor = System.Drawing.Color.DimGray;
+            this.prcnt.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.prcnt.Location = new System.Drawing.Point(0, 220);
             this.prcnt.Name = "prcnt";
             this.prcnt.Size = new System.Drawing.Size(82, 40);
@@ -429,7 +430,7 @@
             this.sqr.FlatAppearance.BorderSize = 0;
             this.sqr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sqr.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.sqr.ForeColor = System.Drawing.Color.DimGray;
+            this.sqr.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.sqr.Location = new System.Drawing.Point(164, 220);
             this.sqr.Name = "sqr";
             this.sqr.Size = new System.Drawing.Size(82, 40);
@@ -446,7 +447,7 @@
             this.inverse.FlatAppearance.BorderSize = 0;
             this.inverse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.inverse.ForeColor = System.Drawing.Color.DimGray;
+            this.inverse.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.inverse.Location = new System.Drawing.Point(246, 220);
             this.inverse.Name = "inverse";
             this.inverse.Size = new System.Drawing.Size(82, 40);
@@ -463,7 +464,7 @@
             this.sqrt.FlatAppearance.BorderSize = 0;
             this.sqrt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sqrt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.sqrt.ForeColor = System.Drawing.Color.DimGray;
+            this.sqrt.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.sqrt.Location = new System.Drawing.Point(82, 220);
             this.sqrt.Name = "sqrt";
             this.sqrt.Size = new System.Drawing.Size(82, 40);
@@ -480,7 +481,7 @@
             this.mread.FlatAppearance.BorderSize = 0;
             this.mread.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mread.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.mread.ForeColor = System.Drawing.Color.Gray;
+            this.mread.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.mread.Location = new System.Drawing.Point(66, 194);
             this.mread.Name = "mread";
             this.mread.Size = new System.Drawing.Size(66, 25);
@@ -497,7 +498,7 @@
             this.mclear.FlatAppearance.BorderSize = 0;
             this.mclear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mclear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.mclear.ForeColor = System.Drawing.Color.Gray;
+            this.mclear.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.mclear.Location = new System.Drawing.Point(0, 194);
             this.mclear.Name = "mclear";
             this.mclear.Size = new System.Drawing.Size(66, 25);
@@ -514,7 +515,7 @@
             this.button27.FlatAppearance.BorderSize = 0;
             this.button27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button27.ForeColor = System.Drawing.Color.Gray;
+            this.button27.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button27.Location = new System.Drawing.Point(132, 194);
             this.button27.Name = "button27";
             this.button27.Size = new System.Drawing.Size(66, 25);
@@ -531,7 +532,7 @@
             this.button29.FlatAppearance.BorderSize = 0;
             this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button29.ForeColor = System.Drawing.Color.Gray;
+            this.button29.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button29.Location = new System.Drawing.Point(198, 194);
             this.button29.Name = "button29";
             this.button29.Size = new System.Drawing.Size(66, 25);
@@ -548,7 +549,7 @@
             this.button30.FlatAppearance.BorderSize = 0;
             this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button30.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button30.ForeColor = System.Drawing.Color.Gray;
+            this.button30.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button30.Location = new System.Drawing.Point(264, 194);
             this.button30.Name = "button30";
             this.button30.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -640,6 +641,7 @@
             this.Controls.Add(this.zero);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Calculator";

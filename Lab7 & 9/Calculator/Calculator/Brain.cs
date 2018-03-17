@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,11 +124,32 @@ namespace Calculator
                     result = "0";
                     op = "+";
                 }
+                else if (cleare.Contains(msg))
+                {
+                    if (first != "0")
+                    {
+                        second = "0";
+                    }
+                    else
+                    {
+                        first = "0";
+                    }
+                    current = "0";
+                }
+                else if (backspace.Contains(msg))
+                {
+                    current = current.Remove(current.Length - 1);
+                }
+                else if (reverse.Contains(msg))
+                {
+                    current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
+                }
                 else
                 {
                     if (current == "0") current = msg;
                     else current = current + msg;
                 }
+                if (current == "" || current == "-") current = "0";
                 invoker.Invoke(current);
                 state = State.AccumulateDigits;
             }
@@ -140,6 +162,10 @@ namespace Calculator
                 else if (separator.Contains(msg))
                 {
                     AccumulateDigitsWithDecimal(true, msg);
+                }
+                else if (reverse.Contains(msg))
+                {
+                    AccumulateDigits(true, msg);
                 }
                 else if (operations.Contains(msg))
                 {
@@ -159,7 +185,11 @@ namespace Calculator
                 }
                 else if (cleare.Contains(msg))
                 {
-
+                    AccumulateDigits(true, msg);
+                }
+                else if (backspace.Contains(msg))
+                {
+                    AccumulateDigits(true, msg);
                 }
                 else if (equal.Contains(msg))
                 {
@@ -182,7 +212,16 @@ namespace Calculator
                 if (memory.Contains(msg)) Memory(msg);
                 else if (all.Contains(msg))
                 {
+                    isDecimal = true;
                     current = current + msg;
+                }
+                else if (backspace.Contains(msg))
+                {
+                    current = current.Remove(current.Length - 1);
+                }
+                else if (reverse.Contains(msg))
+                {
+                    current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
                 }
                 else
                 {
@@ -208,6 +247,25 @@ namespace Calculator
                 else if (clear.Contains(msg))
                 {
                     Zero(true, msg);
+                }
+                else if (cleare.Contains(msg))
+                {
+                    AccumulateDigits(true, msg);
+                }
+                else if (reverse.Contains(msg))
+                {
+                    AccumulateDigitsWithDecimal(true, msg);
+                }
+                else if (backspace.Contains(msg))
+                {
+                    if (isDecimal)
+                    {
+                        AccumulateDigitsWithDecimal(true, msg);
+                    }
+                    else
+                    {
+                        AccumulateDigits(true, msg);
+                    }
                 }
                 else if (equal.Contains(msg))
                 {
@@ -281,6 +339,10 @@ namespace Calculator
                     Op();
                     current = result;
                 }
+                else if (reverse.Contains(msg))
+                {
+                    current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
+                }
                 isResult = true;
                 invoker.Invoke(current);
                 state = State.ComputeNoPending;
@@ -303,11 +365,14 @@ namespace Calculator
                 {
                     ComputeNoPending(true, msg);
                 }
-                else if (clear.Contains(msg))
+                else if (reverse.Contains(msg))
+                {
+                    ComputeNoPending(true, msg);
+                }
+                else if (clear.Contains(msg) || cleare.Contains(msg))
                 {
                     Zero(true, msg);
                 }
-
             }
         }
 
@@ -315,7 +380,6 @@ namespace Calculator
         {
             if (isInput)
             {
-
                 state = State.ShowError;
             }
             else
@@ -329,10 +393,10 @@ namespace Calculator
             switch (msg)
             {
                 case "M+":
-                    save = (double.Parse(save) + double.Parse(current)).ToString();
+                    save = (double.Parse(save, NumberStyles.Number) + double.Parse(current, NumberStyles.Number)).ToString();
                     break;
                 case "M-":
-                    save = (double.Parse(save) - double.Parse(current)).ToString();
+                    save = (double.Parse(save, NumberStyles.Number) - double.Parse(current, NumberStyles.Number)).ToString();
                     break;
                 case "MS":
                     save = current;
@@ -351,16 +415,16 @@ namespace Calculator
             switch (op)
             {
                 case "+":
-                    result = (double.Parse(first) + double.Parse(second)).ToString();
+                    result = (double.Parse(first, NumberStyles.Number) + double.Parse(second, NumberStyles.Number)).ToString();
                     break;
                 case "—":
-                    result = (double.Parse(first) - double.Parse(second)).ToString();
+                    result = (double.Parse(first, NumberStyles.Number) - double.Parse(second, NumberStyles.Number)).ToString();
                     break;
                 case "×":
-                    result = (double.Parse(first) * double.Parse(second)).ToString();
+                    result = (double.Parse(first, NumberStyles.Number) * double.Parse(second, NumberStyles.Number)).ToString();
                     break;
                 case "/":
-                    result = (double.Parse(first) / double.Parse(second)).ToString();
+                    result = (double.Parse(first, NumberStyles.Number) / double.Parse(second, NumberStyles.Number)).ToString();
                     break;
             }
         }
@@ -370,13 +434,13 @@ namespace Calculator
             switch (msg)
             {
                 case "√":
-                    result = Math.Sqrt(double.Parse(current)).ToString();
+                    result = Math.Sqrt(double.Parse(current, NumberStyles.Number)).ToString();
                     break;
                 case "x²":
-                    result = Math.Pow(double.Parse(current), 2).ToString();
+                    result = Math.Pow(double.Parse(current, NumberStyles.Number), 2).ToString();
                     break;
                 case "1/x":
-                    result = (1 / double.Parse(current)).ToString();
+                    result = (1 / double.Parse(current, NumberStyles.Number)).ToString();
                     break;
             }
         }

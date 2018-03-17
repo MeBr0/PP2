@@ -30,7 +30,5 @@ namespace Calculator
         {
             Display.Text = msg;
         }
-
-
     }
 }
