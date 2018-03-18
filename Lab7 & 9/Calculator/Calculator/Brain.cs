@@ -32,6 +32,9 @@ namespace Calculator
 
         bool isResult;
         bool isDecimal;
+        bool isFirst;
+        bool isPercent;
+        bool isSecond;
 
         State state;
 
@@ -55,10 +58,13 @@ namespace Calculator
             second = "0";
             current = "0";
             result = "0";
-            op = "+";
+            op = ";";
             save = "0";
             isResult = false;
             isDecimal = false;
+            isFirst = true;
+            isPercent = false;
+            isSecond = false;
         }
 
         public void Process(string msg)
@@ -94,7 +100,7 @@ namespace Calculator
                 second = "0";
                 current = "0";
                 result = "0";
-                op = "+";
+                op = ";";
                 invoker.Invoke(current);
                 state = State.Zero;
             }
@@ -110,6 +116,8 @@ namespace Calculator
         {
             if (isInput)
             {
+                CheckPercent();
+
                 if (memory.Contains(msg)) Memory(msg);
 
                 else if (isResult)
@@ -119,7 +127,7 @@ namespace Calculator
                     second = "0";
                     current = msg;
                     result = "0";
-                    op = "+";
+                    op = ";";
                 }
 
                 else if (cleare.Contains(msg))
@@ -145,6 +153,18 @@ namespace Calculator
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
                 }
 
+                else if (percent.Contains(msg))
+                {
+                    if (isSecond)
+                    {
+                        current = (double.Parse(first) * double.Parse(current) / 100).ToString();
+                    }
+                    else
+                    {
+                        current = (double.Parse(first) * double.Parse(first) / 100).ToString();
+                    }
+                }
+
                 else
                 {
                     if (current == "0") current = msg;
@@ -152,6 +172,7 @@ namespace Calculator
                 }
 
                 if (current == "" || current == "-") current = "0";
+
                 invoker.Invoke(current);
                 state = State.AccumulateDigits;
             }
@@ -176,6 +197,17 @@ namespace Calculator
                 else if (backspace.Contains(msg)) AccumulateDigits(true, msg);
 
                 else if (equal.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (percent.Contains(msg))
+                {
+                    if (op == ";") Zero(true, msg);
+                    
+                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+
+                    else AccumulateDigits(true, msg);
+
+                    isSecond = true;
+                }
             }
         }
 
@@ -185,7 +217,21 @@ namespace Calculator
             {
                 if (current.Last() == ',') isDecimal = false;
 
+                CheckPercent();
+
                 if (memory.Contains(msg)) Memory(msg);
+
+                else if (percent.Contains(msg))
+                {
+                    if (isSecond)
+                    {
+                        current = (double.Parse(first) * double.Parse(current) / 100).ToString();
+                    }
+                    else
+                    {
+                        current = (double.Parse(first) * double.Parse(first) / 100).ToString();
+                    }
+                }
 
                 else if (isResult)
                 {
@@ -194,7 +240,7 @@ namespace Calculator
                     second = "0";
                     current = "0,";
                     result = "0";
-                    op = "+";
+                    op = ";";
                 }
 
                 else if (all.Contains(msg))
@@ -243,6 +289,17 @@ namespace Calculator
                 }
 
                 else if (equal.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (percent.Contains(msg))
+                {
+                    if (op == ";") Zero(true, msg);
+
+                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+
+                    else AccumulateDigits(true, msg);
+
+                    isSecond = true;
+                }
             }
         }
 
@@ -254,7 +311,9 @@ namespace Calculator
 
                 else if (operations.Contains(msg))
                 {
-                    if(second != "0")
+                    op = msg;
+                    
+                    if (result != "0")
                     {
                         first = result;
                     }
@@ -262,7 +321,6 @@ namespace Calculator
                     {
                         first = current;
                     }
-                    op = msg;
                     isResult = false;
                     current = "0";
                 }
@@ -279,6 +337,17 @@ namespace Calculator
                 else if (memory.Contains(msg)) ComputeNoPending(true, msg);
 
                 else if (clear.Contains(msg)) Zero(true, msg);
+
+                else if (percent.Contains(msg))
+                {
+                    if (op == ";") Zero(true, msg);
+
+                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+
+                    else AccumulateDigits(true, msg);
+
+                    isSecond = false;
+                }
             }
         }
 
@@ -393,6 +462,26 @@ namespace Calculator
                 case "1/x":
                     result = (1 / double.Parse(current, NumberStyles.Number)).ToString();
                     break;
+            }
+        }
+
+        private void CheckPercent()
+        {
+            if (second != "0")
+            {
+                if ((double.Parse(first) * double.Parse(second)).ToString().Contains(','))
+                {
+                    isPercent = true;
+                }
+                else isPercent = false;
+            }
+            else
+            {
+                if ((double.Parse(first) * double.Parse(first)).ToString().Contains(','))
+                {
+                    isPercent = true;
+                }
+                else isPercent = false;
             }
         }
     }
