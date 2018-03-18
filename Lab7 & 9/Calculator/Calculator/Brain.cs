@@ -101,14 +101,22 @@ namespace Calculator
                 current = "0";
                 result = "0";
                 op = ";";
+                save = "0";
+                isResult = false;
+                isDecimal = false;
+                isFirst = true;
+                isPercent = false;
+                isSecond = false;
                 invoker.Invoke(current);
                 state = State.Zero;
             }
             else
             {
-                if (nonzero.Contains(msg)) AccumulateDigits(true, msg);
+                if (nonzero.Contains(msg))
+                    AccumulateDigits(true, msg);
 
-                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                else if (separator.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
             }
         }
 
@@ -118,93 +126,93 @@ namespace Calculator
             {
                 CheckPercent();
 
-                if (memory.Contains(msg)) Memory(msg);
+                if (memory.Contains(msg))
+                    Memory(msg);
 
                 else if (isResult)
                 {
-                    isResult = false;
                     first = "0";
                     second = "0";
                     current = msg;
                     result = "0";
                     op = ";";
+                    isResult = false;
+                    isDecimal = false;
+                    isFirst = true;
+                    isPercent = false;
+                    isSecond = false;
                 }
 
                 else if (cleare.Contains(msg))
                 {
                     if (first != "0")
-                    {
                         second = "0";
-                    }
+
                     else
-                    {
                         first = "0";
-                    }
+
                     current = "0";
                 }
 
                 else if (backspace.Contains(msg))
-                {
                     current = current.Remove(current.Length - 1);
-                }
 
                 else if (reverse.Contains(msg))
-                {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
-                }
 
                 else if (percent.Contains(msg))
                 {
                     if (isSecond)
-                    {
                         current = (double.Parse(first) * double.Parse(current) / 100).ToString();
-                    }
+
                     else
-                    {
                         current = (double.Parse(first) * double.Parse(first) / 100).ToString();
-                    }
                 }
 
                 else
                 {
-                    if (current == "0") current = msg;
-                    else current = current + msg;
+                    if (current == "0")
+                        current = msg;
+
+                    else
+                        current = current + msg;
                 }
 
-                if (current == "" || current == "-") current = "0";
+                if (current == "" || current == "-")
+                    current = "0";
 
                 invoker.Invoke(current);
                 state = State.AccumulateDigits;
             }
             else
             {
-                if (all.Contains(msg)) AccumulateDigits(true, msg);
+                if (clear.Contains(msg))
+                    Zero(true, msg);
 
-                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                else if (all.Contains(msg) || cleare.Contains(msg) || backspace.Contains(msg) || reverse.Contains(msg))
+                    AccumulateDigits(true, msg);
 
-                else if (reverse.Contains(msg)) AccumulateDigits(true, msg);
+                else if (separator.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
 
-                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+                else if (operations.Contains(msg))
+                    ComputeWithPending(true, msg);
 
-                else if (functions.Contains(msg)) ComputeNoPending(true, msg);
+                else if (functions.Contains(msg) || memory.Contains(msg) || equal.Contains(msg))
+                    ComputeNoPending(true, msg);
 
-                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
-
-                else if (clear.Contains(msg)) Zero(true, msg);
-
-                else if (cleare.Contains(msg))AccumulateDigits(true, msg);
-
-                else if (backspace.Contains(msg)) AccumulateDigits(true, msg);
-
-                else if (equal.Contains(msg)) ComputeNoPending(true, msg);
+               
 
                 else if (percent.Contains(msg))
                 {
-                    if (op == ";") Zero(true, msg);
+                    if (op == ";")
+                        Zero(true, msg);
                     
-                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+                    else if (isPercent)
+                        AccumulateDigitsWithDecimal(true, msg);
 
-                    else AccumulateDigits(true, msg);
+                    else
+                        AccumulateDigits(true, msg);
 
                     isSecond = true;
                 }
@@ -215,32 +223,36 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (current.Last() == ',') isDecimal = false;
+                if (current.Last() == ',')
+                    isDecimal = false;
 
                 CheckPercent();
 
-                if (memory.Contains(msg)) Memory(msg);
+                if (memory.Contains(msg))
+                    Memory(msg);
 
                 else if (percent.Contains(msg))
                 {
                     if (isSecond)
-                    {
                         current = (double.Parse(first) * double.Parse(current) / 100).ToString();
-                    }
+
                     else
-                    {
                         current = (double.Parse(first) * double.Parse(first) / 100).ToString();
-                    }
                 }
 
                 else if (isResult)
                 {
-                    isResult = false;
                     first = "0";
                     second = "0";
                     current = "0,";
                     result = "0";
                     op = ";";
+                    save = "0";
+                    isResult = false;
+                    isDecimal = false;
+                    isFirst = true;
+                    isPercent = false;
+                    isSecond = false;
                 }
 
                 else if (all.Contains(msg))
@@ -250,53 +262,53 @@ namespace Calculator
                 }
 
                 else if (backspace.Contains(msg))
-                {
                     current = current.Remove(current.Length - 1);
-                }
 
                 else if (reverse.Contains(msg))
-                {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
-                }
 
                 else
-                {
                     current = current + ",";
-                }
 
                 invoker.Invoke(current);
                 state = State.AccumulateDigitsWithDecimal;
             }
             else
             {
-                if (all.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                if (clear.Contains(msg))
+                    Zero(true, msg);
 
-                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+                else if (cleare.Contains(msg))
+                    AccumulateDigits(true, msg);
 
-                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
-                
-                else if (clear.Contains(msg)) Zero(true, msg);
-                
-                else if (cleare.Contains(msg)) AccumulateDigits(true, msg);
-                
-                else if (reverse.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
-                
+                else if (all.Contains(msg) || reverse.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
+
+                else if (operations.Contains(msg))
+                    ComputeWithPending(true, msg);
+
+                else if (memory.Contains(msg) || equal.Contains(msg))
+                    ComputeNoPending(true, msg);
+
                 else if (backspace.Contains(msg))
                 {
-                    if (isDecimal) AccumulateDigitsWithDecimal(true, msg);
+                    if (!isDecimal)
+                        AccumulateDigits(true, msg);
 
-                    else AccumulateDigits(true, msg);
+                    else
+                        AccumulateDigitsWithDecimal(true, msg);
                 }
-
-                else if (equal.Contains(msg)) ComputeNoPending(true, msg);
 
                 else if (percent.Contains(msg))
                 {
-                    if (op == ";") Zero(true, msg);
+                    if (op == ";")
+                        Zero(true, msg);
 
-                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+                    else if (!isPercent)
+                        AccumulateDigits(true, msg);
 
-                    else AccumulateDigits(true, msg);
+                    else
+                        AccumulateDigitsWithDecimal(true, msg);
 
                     isSecond = true;
                 }
@@ -307,20 +319,19 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (memory.Contains(msg)) Memory(msg);
+                if (memory.Contains(msg))
+                    Memory(msg);
 
                 else if (operations.Contains(msg))
                 {
                     op = msg;
                     
                     if (result != "0")
-                    {
                         first = result;
-                    }
+
                     else
-                    {
                         first = current;
-                    }
+
                     isResult = false;
                     current = "0";
                 }
@@ -330,21 +341,28 @@ namespace Calculator
             }
             else
             {
-                if (all.Contains(msg)) AccumulateDigits(true, msg);
+                if (clear.Contains(msg))
+                    Zero(true, msg);
 
-                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                else if (all.Contains(msg))
+                    AccumulateDigits(true, msg);
 
-                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
+                else if (separator.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
 
-                else if (clear.Contains(msg)) Zero(true, msg);
+                else if (memory.Contains(msg))
+                    ComputeNoPending(true, msg);
 
                 else if (percent.Contains(msg))
                 {
-                    if (op == ";") Zero(true, msg);
+                    if (op == ";")
+                        Zero(true, msg);
 
-                    else if (isPercent) AccumulateDigitsWithDecimal(true, msg);
+                    else if (isPercent)
+                        AccumulateDigitsWithDecimal(true, msg);
 
-                    else AccumulateDigits(true, msg);
+                    else
+                        AccumulateDigits(true, msg);
 
                     isSecond = false;
                 }
@@ -355,7 +373,8 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (memory.Contains(msg)) Memory(msg);
+                if (memory.Contains(msg))
+                    Memory(msg);
 
                 else if (functions.Contains(msg))
                 {
@@ -382,26 +401,27 @@ namespace Calculator
             }
             else
             {
-                if (zero.Contains(msg)) Zero(true, msg);
+                if (zero.Contains(msg) || clear.Contains(msg) || cleare.Contains(msg))
+                    Zero(true, msg);
 
-                else if (nonzero.Contains(msg)) AccumulateDigits(true, msg);
+                else if (nonzero.Contains(msg))
+                    AccumulateDigits(true, msg);
 
-                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                else if (separator.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
 
-                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+                else if (operations.Contains(msg))
+                    ComputeWithPending(true, msg);
 
-                else if (functions.Contains(msg) || memory.Contains(msg) || reverse.Contains(msg)) ComputeNoPending(true, msg);
-
-                else if (clear.Contains(msg) || cleare.Contains(msg)) Zero(true, msg);
+                else if (functions.Contains(msg) || memory.Contains(msg) || reverse.Contains(msg))
+                    ComputeNoPending(true, msg);
             }
         }
 
         private void ShowError(bool isInput, string msg)
         {
             if (isInput)
-            {
                 state = State.ShowError;
-            }
             else
             {
 
@@ -470,18 +490,18 @@ namespace Calculator
             if (second != "0")
             {
                 if ((double.Parse(first) * double.Parse(second)).ToString().Contains(','))
-                {
                     isPercent = true;
-                }
-                else isPercent = false;
+
+                else
+                    isPercent = false;
             }
             else
             {
                 if ((double.Parse(first) * double.Parse(first)).ToString().Contains(','))
-                {
                     isPercent = true;
-                }
-                else isPercent = false;
+
+                else
+                    isPercent = false;
             }
         }
     }
