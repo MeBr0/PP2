@@ -30,6 +30,7 @@ namespace Calculator
 
         bool isResult;
         bool isDecimal;
+        bool a;
 
         public invoker invoker;
         public State state;
@@ -113,7 +114,10 @@ namespace Calculator
         {
             if (isInput)
             {
-                isDecimal = false;
+                switch (a)
+                {
+
+                }
                 if (memory.Contains(msg)) Memory(msg);
                 else if (isResult)
                 {
@@ -209,6 +213,7 @@ namespace Calculator
         {
             if (isInput)
             {
+                if (current.Last() == ',') isDecimal = false;
                 if (memory.Contains(msg)) Memory(msg);
                 else if (all.Contains(msg))
                 {
@@ -342,6 +347,7 @@ namespace Calculator
                 else if (reverse.Contains(msg))
                 {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
+                    result = current;
                 }
                 isResult = true;
                 invoker.Invoke(current);
