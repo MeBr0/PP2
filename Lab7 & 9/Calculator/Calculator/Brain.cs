@@ -21,6 +21,8 @@ namespace Calculator
 
     class Brain
     {
+        public invoker invoker;
+
         string first;
         string second;
         string current;
@@ -30,17 +32,16 @@ namespace Calculator
 
         bool isResult;
         bool isDecimal;
-        bool a;
 
-        public invoker invoker;
-        public State state;
+        State state;
 
         string[] all = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
         string[] nonzero = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
         string[] zero = { "0" };
         string[] equal = { "=" };
         string[] operations = { "+", "—", "×", "/" };
-        string[] functions = { "%", "√", "x²", "1/x" };
+        string[] functions = { "√", "x²", "1/x" };
+        string[] percent = { "%" };
         string[] reverse = { "±" };
         string[] clear = { "С" };
         string[] cleare = { "CE" };
@@ -99,14 +100,9 @@ namespace Calculator
             }
             else
             {
-                if (nonzero.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (separator.Contains(msg))
-                {
-                    AccumulateDigitsWithDecimal(true, msg);
-                }
+                if (nonzero.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
             }
         }
 
@@ -114,11 +110,8 @@ namespace Calculator
         {
             if (isInput)
             {
-                switch (a)
-                {
-
-                }
                 if (memory.Contains(msg)) Memory(msg);
+
                 else if (isResult)
                 {
                     isResult = false;
@@ -128,6 +121,7 @@ namespace Calculator
                     result = "0";
                     op = "+";
                 }
+
                 else if (cleare.Contains(msg))
                 {
                     if (first != "0")
@@ -140,72 +134,48 @@ namespace Calculator
                     }
                     current = "0";
                 }
+
                 else if (backspace.Contains(msg))
                 {
                     current = current.Remove(current.Length - 1);
                 }
+
                 else if (reverse.Contains(msg))
                 {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
                 }
+
                 else
                 {
                     if (current == "0") current = msg;
                     else current = current + msg;
                 }
+
                 if (current == "" || current == "-") current = "0";
                 invoker.Invoke(current);
                 state = State.AccumulateDigits;
             }
             else
             {
-                if (all.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (separator.Contains(msg))
-                {
-                    AccumulateDigitsWithDecimal(true, msg);
-                }
-                else if (reverse.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (operations.Contains(msg))
-                {
-                    ComputeWithPending(true, msg);
-                }
-                else if (functions.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (memory.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (clear.Contains(msg))
-                {
-                    Zero(true, msg);
-                }
-                else if (cleare.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (backspace.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (equal.Contains(msg))
-                {
-                    try
-                    {
-                        ComputeNoPending(true, msg);
-                    }
-                    catch
-                    {
-                        ShowError(true, msg);
-                    }
-                }
+                if (all.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+
+                else if (reverse.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+
+                else if (functions.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (clear.Contains(msg)) Zero(true, msg);
+
+                else if (cleare.Contains(msg))AccumulateDigits(true, msg);
+
+                else if (backspace.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (equal.Contains(msg)) ComputeNoPending(true, msg);
             }
         }
 
@@ -214,75 +184,65 @@ namespace Calculator
             if (isInput)
             {
                 if (current.Last() == ',') isDecimal = false;
+
                 if (memory.Contains(msg)) Memory(msg);
+
+                else if (isResult)
+                {
+                    isResult = false;
+                    first = "0";
+                    second = "0";
+                    current = "0,";
+                    result = "0";
+                    op = "+";
+                }
+
                 else if (all.Contains(msg))
                 {
                     isDecimal = true;
                     current = current + msg;
                 }
+
                 else if (backspace.Contains(msg))
                 {
                     current = current.Remove(current.Length - 1);
                 }
+
                 else if (reverse.Contains(msg))
                 {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
                 }
+
                 else
                 {
                     current = current + ",";
                 }
+
                 invoker.Invoke(current);
                 state = State.AccumulateDigitsWithDecimal;
             }
             else
             {
-                if (all.Contains(msg))
-                {
-                    AccumulateDigitsWithDecimal(true, msg);
-                }
-                else if (operations.Contains(msg))
-                {
-                    ComputeWithPending(true, msg);
-                }
-                else if (memory.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (clear.Contains(msg))
-                {
-                    Zero(true, msg);
-                }
-                else if (cleare.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (reverse.Contains(msg))
-                {
-                    AccumulateDigitsWithDecimal(true, msg);
-                }
+                if (all.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+
+                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+
+                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
+                
+                else if (clear.Contains(msg)) Zero(true, msg);
+                
+                else if (cleare.Contains(msg)) AccumulateDigits(true, msg);
+                
+                else if (reverse.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+                
                 else if (backspace.Contains(msg))
                 {
-                    if (isDecimal)
-                    {
-                        AccumulateDigitsWithDecimal(true, msg);
-                    }
-                    else
-                    {
-                        AccumulateDigits(true, msg);
-                    }
+                    if (isDecimal) AccumulateDigitsWithDecimal(true, msg);
+
+                    else AccumulateDigits(true, msg);
                 }
-                else if (equal.Contains(msg))
-                {
-                    try
-                    {
-                        ComputeNoPending(true, msg);
-                    }
-                    catch
-                    {
-                        ShowError(true, msg);
-                    }
-                }
+
+                else if (equal.Contains(msg)) ComputeNoPending(true, msg);
             }
         }
 
@@ -291,40 +251,34 @@ namespace Calculator
             if (isInput)
             {
                 if (memory.Contains(msg)) Memory(msg);
-                else
+
+                else if (operations.Contains(msg))
                 {
-                    if (operations.Contains(msg))
+                    if(second != "0")
                     {
-                        if(second != "0")
-                        {
-                            first = result;
-                        }
-                        else
-                        {
-                            first = current;
-                        }
-                        op = msg;
-                        isResult = false;
+                        first = result;
                     }
+                    else
+                    {
+                        first = current;
+                    }
+                    op = msg;
+                    isResult = false;
                     current = "0";
                 }
+
                 invoker.Invoke(current);
                 state = State.ComputeWithPending;
             }
             else
             {
-                if (all.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (memory.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (clear.Contains(msg))
-                {
-                    Zero(true, msg);
-                }
+                if (all.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+
+                else if (memory.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (clear.Contains(msg)) Zero(true, msg);
             }
         }
 
@@ -333,52 +287,43 @@ namespace Calculator
             if (isInput)
             {
                 if (memory.Contains(msg)) Memory(msg);
+
                 else if (functions.Contains(msg))
                 {
                     Function(msg);
                     current = result;
                 }
+
                 else if (equal.Contains(msg))
                 {
                     second = current;
                     Op();
                     current = result;
                 }
+
                 else if (reverse.Contains(msg))
                 {
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
                     result = current;
                 }
+
                 isResult = true;
                 invoker.Invoke(current);
                 state = State.ComputeNoPending;
             }
             else
             {
-                if (zero.Contains(msg))
-                {
-                    Zero(true, msg);
-                }
-                else if (nonzero.Contains(msg))
-                {
-                    AccumulateDigits(true, msg);
-                }
-                else if (operations.Contains(msg))
-                {
-                    ComputeWithPending(true, msg);
-                }
-                else if (functions.Contains(msg) || memory.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (reverse.Contains(msg))
-                {
-                    ComputeNoPending(true, msg);
-                }
-                else if (clear.Contains(msg) || cleare.Contains(msg))
-                {
-                    Zero(true, msg);
-                }
+                if (zero.Contains(msg)) Zero(true, msg);
+
+                else if (nonzero.Contains(msg)) AccumulateDigits(true, msg);
+
+                else if (separator.Contains(msg)) AccumulateDigitsWithDecimal(true, msg);
+
+                else if (operations.Contains(msg)) ComputeWithPending(true, msg);
+
+                else if (functions.Contains(msg) || memory.Contains(msg) || reverse.Contains(msg)) ComputeNoPending(true, msg);
+
+                else if (clear.Contains(msg) || cleare.Contains(msg)) Zero(true, msg);
             }
         }
 
