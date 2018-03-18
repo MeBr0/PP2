@@ -52,20 +52,7 @@ namespace Calculator
         string[] separator = { "·" };
         string[] memory = { "MC", "MR", "M+", "M-", "MS" };
 
-        public Brain()
-        {
-            first = "0";
-            second = "0";
-            current = "0";
-            result = "0";
-            op = ";";
-            save = "0";
-            isResult = false;
-            isDecimal = false;
-            isFirst = true;
-            isPercent = false;
-            isSecond = false;
-        }
+        public Brain() => SetStart();
 
         public void Process(string msg)
         {
@@ -74,18 +61,23 @@ namespace Calculator
                 case State.Zero:
                     Zero(false, msg);
                     break;
+
                 case State.AccumulateDigits:
                     AccumulateDigits(false, msg);
                     break;
+
                 case State.AccumulateDigitsWithDecimal:
                     AccumulateDigitsWithDecimal(false, msg);
                     break;
+
                 case State.ComputeNoPending:
                     ComputeNoPending(false, msg);
                     break;
+
                 case State.ComputeWithPending:
                     ComputeWithPending(false, msg);
                     break;
+
                 case State.ShowError:
                     ShowError(false, msg);
                     break;
@@ -96,20 +88,12 @@ namespace Calculator
         {
             if (isInput)
             {
-                first = "0";
-                second = "0";
-                current = "0";
-                result = "0";
-                op = ";";
-                save = "0";
-                isResult = false;
-                isDecimal = false;
-                isFirst = true;
-                isPercent = false;
-                isSecond = false;
+                SetStart();
+
                 invoker.Invoke(current);
                 state = State.Zero;
             }
+
             else
             {
                 if (nonzero.Contains(msg))
@@ -124,34 +108,28 @@ namespace Calculator
         {
             if (isInput)
             {
+                CheckMemory(msg);
+
                 CheckPercent();
 
-                if (memory.Contains(msg))
-                    Memory(msg);
-
-                else if (isResult)
+                if (isResult)
                 {
                     first = "0";
                     second = "0";
                     current = msg;
                     result = "0";
                     op = ";";
-                    isResult = false;
-                    isDecimal = false;
-                    isFirst = true;
-                    isPercent = false;
-                    isSecond = false;
                 }
 
                 else if (cleare.Contains(msg))
                 {
+                    current = "0";
+
                     if (first != "0")
                         second = "0";
 
                     else
                         first = "0";
-
-                    current = "0";
                 }
 
                 else if (backspace.Contains(msg))
@@ -184,6 +162,7 @@ namespace Calculator
                 invoker.Invoke(current);
                 state = State.AccumulateDigits;
             }
+
             else
             {
                 if (clear.Contains(msg))
@@ -201,20 +180,21 @@ namespace Calculator
                 else if (functions.Contains(msg) || memory.Contains(msg) || equal.Contains(msg))
                     ComputeNoPending(true, msg);
 
-               
-
                 else if (percent.Contains(msg))
                 {
                     if (op == ";")
                         Zero(true, msg);
-                    
-                    else if (isPercent)
-                        AccumulateDigitsWithDecimal(true, msg);
 
                     else
-                        AccumulateDigits(true, msg);
+                    {
+                        isSecond = true;
 
-                    isSecond = true;
+                        if (isPercent)
+                            AccumulateDigitsWithDecimal(true, msg);
+
+                        else
+                            AccumulateDigits(true, msg);
+                    }
                 }
             }
         }
@@ -223,15 +203,13 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (current.Last() == ',')
-                    isDecimal = false;
+                CheckMemory(msg);
+
+                CheckDecimal();
 
                 CheckPercent();
 
-                if (memory.Contains(msg))
-                    Memory(msg);
-
-                else if (percent.Contains(msg))
+                if (percent.Contains(msg))
                 {
                     if (isSecond)
                         current = (double.Parse(first) * double.Parse(current) / 100).ToString();
@@ -247,12 +225,6 @@ namespace Calculator
                     current = "0,";
                     result = "0";
                     op = ";";
-                    save = "0";
-                    isResult = false;
-                    isDecimal = false;
-                    isFirst = true;
-                    isPercent = false;
-                    isSecond = false;
                 }
 
                 else if (all.Contains(msg))
@@ -273,6 +245,7 @@ namespace Calculator
                 invoker.Invoke(current);
                 state = State.AccumulateDigitsWithDecimal;
             }
+
             else
             {
                 if (clear.Contains(msg))
@@ -304,13 +277,16 @@ namespace Calculator
                     if (op == ";")
                         Zero(true, msg);
 
-                    else if (!isPercent)
-                        AccumulateDigits(true, msg);
-
                     else
-                        AccumulateDigitsWithDecimal(true, msg);
+                    {
+                        isSecond = true;
 
-                    isSecond = true;
+                        if (isPercent)
+                            AccumulateDigitsWithDecimal(true, msg);
+
+                        else
+                            AccumulateDigits(true, msg);
+                    }
                 }
             }
         }
@@ -319,10 +295,9 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (memory.Contains(msg))
-                    Memory(msg);
+                CheckMemory(msg);
 
-                else if (operations.Contains(msg))
+                if (operations.Contains(msg))
                 {
                     op = msg;
                     
@@ -339,6 +314,7 @@ namespace Calculator
                 invoker.Invoke(current);
                 state = State.ComputeWithPending;
             }
+
             else
             {
                 if (clear.Contains(msg))
@@ -358,13 +334,16 @@ namespace Calculator
                     if (op == ";")
                         Zero(true, msg);
 
-                    else if (isPercent)
-                        AccumulateDigitsWithDecimal(true, msg);
-
                     else
-                        AccumulateDigits(true, msg);
+                    {
+                        if (isPercent)
+                            AccumulateDigitsWithDecimal(true, msg);
 
-                    isSecond = false;
+                        else
+                            AccumulateDigits(true, msg);
+
+                        isSecond = false;
+                    }
                 }
             }
         }
@@ -373,10 +352,9 @@ namespace Calculator
         {
             if (isInput)
             {
-                if (memory.Contains(msg))
-                    Memory(msg);
+                CheckMemory(msg);
 
-                else if (functions.Contains(msg))
+                if (functions.Contains(msg))
                 {
                     Function(msg);
                     current = result;
@@ -399,6 +377,7 @@ namespace Calculator
                 invoker.Invoke(current);
                 state = State.ComputeNoPending;
             }
+
             else
             {
                 if (zero.Contains(msg) || clear.Contains(msg) || cleare.Contains(msg))
@@ -422,31 +401,45 @@ namespace Calculator
         {
             if (isInput)
                 state = State.ShowError;
+
             else
             {
 
             }
         }
 
-        private void Memory(string msg)
+        private void CheckDecimal()
         {
-            switch (msg)
+            if (current.Last() == ',')
+                isDecimal = false;
+        }
+
+        private void CheckMemory(string msg)
+        {
+            if (memory.Contains(msg))
             {
-                case "M+":
-                    save = (double.Parse(save, NumberStyles.Number) + double.Parse(current, NumberStyles.Number)).ToString();
-                    break;
-                case "M-":
-                    save = (double.Parse(save, NumberStyles.Number) - double.Parse(current, NumberStyles.Number)).ToString();
-                    break;
-                case "MS":
-                    save = current;
-                    break;
-                case "MC":
-                    save = "0";
-                    break;
-                case "MR":
-                    current = save;
-                    break;
+                switch (msg)
+                {
+                    case "M+":
+                        save = (double.Parse(save, NumberStyles.Number) + double.Parse(current, NumberStyles.Number)).ToString();
+                        break;
+
+                    case "M-":
+                        save = (double.Parse(save, NumberStyles.Number) - double.Parse(current, NumberStyles.Number)).ToString();
+                        break;
+
+                    case "MS":
+                        save = current;
+                        break;
+
+                    case "MC":
+                        save = "0";
+                        break;
+
+                    case "MR":
+                        current = save;
+                        break;
+                }
             }
         }
 
@@ -457,12 +450,15 @@ namespace Calculator
                 case "+":
                     result = (double.Parse(first, NumberStyles.Number) + double.Parse(second, NumberStyles.Number)).ToString();
                     break;
+
                 case "—":
                     result = (double.Parse(first, NumberStyles.Number) - double.Parse(second, NumberStyles.Number)).ToString();
                     break;
+
                 case "×":
                     result = (double.Parse(first, NumberStyles.Number) * double.Parse(second, NumberStyles.Number)).ToString();
                     break;
+
                 case "/":
                     result = (double.Parse(first, NumberStyles.Number) / double.Parse(second, NumberStyles.Number)).ToString();
                     break;
@@ -476,9 +472,11 @@ namespace Calculator
                 case "√":
                     result = Math.Sqrt(double.Parse(current, NumberStyles.Number)).ToString();
                     break;
+
                 case "x²":
                     result = Math.Pow(double.Parse(current, NumberStyles.Number), 2).ToString();
                     break;
+
                 case "1/x":
                     result = (1 / double.Parse(current, NumberStyles.Number)).ToString();
                     break;
@@ -503,6 +501,21 @@ namespace Calculator
                 else
                     isPercent = false;
             }
+        }
+
+        private void SetStart()
+        {
+            first = "0";
+            second = "0";
+            current = "0";
+            result = "0";
+            op = ";";
+            save = "0";
+            isResult = false;
+            isDecimal = false;
+            isFirst = true;
+            isPercent = false;
+            isSecond = false;
         }
     }
 }
