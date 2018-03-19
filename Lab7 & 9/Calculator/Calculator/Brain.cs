@@ -119,6 +119,7 @@ namespace Calculator
                     current = msg;
                     result = "0";
                     op = ";";
+                    isFirst = true;
                 }
 
                 else if (cleare.Contains(msg))
@@ -225,6 +226,7 @@ namespace Calculator
                     current = "0,";
                     result = "0";
                     op = ";";
+                    isFirst = true;
                 }
 
                 else if (all.Contains(msg))
@@ -299,13 +301,27 @@ namespace Calculator
 
                 if (operations.Contains(msg))
                 {
-                    op = msg;
-                    
-                    if (result != "0")
-                        first = result;
+                    if (isFirst)
+                    {
+                        isFirst = false;
+
+                        if (result != "0")
+                            first = result;
+
+                        else
+                            first = current;
+                    }
 
                     else
-                        first = current;
+                    {
+                        second = current;
+
+                        Op();
+
+                        first = result;
+                    }
+
+                    op = msg;
 
                     isResult = false;
                     current = "0";
