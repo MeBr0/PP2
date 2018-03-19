@@ -590,15 +590,17 @@
             // 
             // Display
             // 
+            this.Display.AcceptsReturn = true;
             this.Display.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.Display.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Display.Enabled = false;
+            this.Display.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Display.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.Display.ForeColor = System.Drawing.SystemColors.InactiveBorder;
             this.Display.HideSelection = false;
             this.Display.Location = new System.Drawing.Point(0, 39);
             this.Display.Multiline = true;
             this.Display.Name = "Display";
+            this.Display.ReadOnly = true;
             this.Display.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Display.Size = new System.Drawing.Size(326, 155);
             this.Display.TabIndex = 32;
@@ -636,6 +638,7 @@
             // 
             // Main
             // 
+            this.AllowDrop = true;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(326, 528);

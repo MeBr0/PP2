@@ -123,6 +123,7 @@ namespace Calculator
                     result = "0";
                     op = ";";
                     isFirst = true;
+                    isSecond = false;
                 }
 
                 else if (cleare.Contains(msg))
@@ -179,7 +180,13 @@ namespace Calculator
                     AccumulateDigitsWithDecimal(true, msg);
 
                 else if (operations.Contains(msg))
-                    ComputeWithPending(true, msg);
+                {
+                    if (current == "0" && op == "/")
+                        ShowError(true, msg);
+
+                    else
+                        ComputeWithPending(true, msg);
+                }
 
                 else if (functions.Contains(msg) || memory.Contains(msg))
                     ComputeNoPending(true, msg);
@@ -190,7 +197,10 @@ namespace Calculator
                         ShowError(true, msg);
 
                     else
+                    {
+                        isSecond = true;
                         ComputeNoPending(true, msg);
+                    }
                 }
 
                 else if (percent.Contains(msg))
@@ -239,6 +249,7 @@ namespace Calculator
                     result = "0";
                     op = ";";
                     isFirst = true;
+                    isSecond = false;
                 }
 
                 else if (all.Contains(msg))
@@ -274,8 +285,17 @@ namespace Calculator
                 else if (operations.Contains(msg))
                     ComputeWithPending(true, msg);
 
-                else if (memory.Contains(msg) || equal.Contains(msg) || functions.Contains(msg))
+                else if (memory.Contains(msg) || functions.Contains(msg))
                     ComputeNoPending(true, msg);
+
+                else if (equal.Contains(msg))
+                {
+                    if (op != ";")
+                    {
+                        isSecond = true;
+                        ComputeNoPending(true, msg);
+                    }
+                }
 
                 else if (backspace.Contains(msg))
                 {
@@ -364,7 +384,7 @@ namespace Calculator
 
                     else
                     {
-                        isSecond = false;
+                        isSecond = true;
 
                         if (isPercent)
                             AccumulateDigitsWithDecimal(true, msg);
@@ -408,6 +428,7 @@ namespace Calculator
                 }
 
                 isResult = true;
+
                 invoker.Invoke(current);
                 state = State.ComputeNoPending;
             }
