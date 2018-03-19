@@ -69,6 +69,7 @@
             this.zero.BackColor = System.Drawing.SystemColors.ControlText;
             this.zero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.zero.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.zero.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.zero.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.zero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.zero.ForeColor = System.Drawing.Color.AliceBlue;
@@ -83,9 +84,10 @@
             // equal
             // 
             this.equal.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.equal.BackColor = System.Drawing.SystemColors.ControlText;
+            this.equal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.equal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.equal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.equal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.equal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.equal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.equal.ForeColor = System.Drawing.Color.AliceBlue;
@@ -101,9 +103,10 @@
             // point
             // 
             this.point.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.point.BackColor = System.Drawing.SystemColors.ControlText;
+            this.point.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.point.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.point.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.point.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.point.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.point.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
             this.point.ForeColor = System.Drawing.Color.AliceBlue;
@@ -118,9 +121,10 @@
             // pm
             // 
             this.pm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pm.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.pm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.pm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.pm.ForeColor = System.Drawing.Color.AliceBlue;
@@ -138,6 +142,7 @@
             this.one.BackColor = System.Drawing.SystemColors.ControlText;
             this.one.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.one.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.one.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.one.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.one.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.one.ForeColor = System.Drawing.Color.AliceBlue;
@@ -155,6 +160,7 @@
             this.three.BackColor = System.Drawing.SystemColors.ControlText;
             this.three.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.three.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.three.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.three.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.three.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.three.ForeColor = System.Drawing.Color.AliceBlue;
@@ -169,9 +175,10 @@
             // plus
             // 
             this.plus.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.plus.BackColor = System.Drawing.SystemColors.ControlText;
+            this.plus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.plus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.plus.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.plus.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.plus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.plus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.plus.ForeColor = System.Drawing.Color.AliceBlue;
@@ -189,6 +196,7 @@
             this.two.BackColor = System.Drawing.SystemColors.ControlText;
             this.two.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.two.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.two.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.two.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.two.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.two.ForeColor = System.Drawing.Color.AliceBlue;
@@ -206,6 +214,7 @@
             this.four.BackColor = System.Drawing.SystemColors.ControlText;
             this.four.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.four.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.four.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.four.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.four.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.four.ForeColor = System.Drawing.Color.AliceBlue;
@@ -223,6 +232,7 @@
             this.six.BackColor = System.Drawing.SystemColors.ControlText;
             this.six.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.six.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.six.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.six.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.six.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.six.ForeColor = System.Drawing.Color.AliceBlue;
@@ -237,9 +247,10 @@
             // minus
             // 
             this.minus.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.minus.BackColor = System.Drawing.SystemColors.ControlText;
+            this.minus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.minus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.minus.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.minus.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.minus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.minus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.minus.ForeColor = System.Drawing.Color.AliceBlue;
@@ -257,6 +268,7 @@
             this.five.BackColor = System.Drawing.SystemColors.ControlText;
             this.five.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.five.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.five.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.five.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.five.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.five.ForeColor = System.Drawing.Color.AliceBlue;
@@ -274,6 +286,7 @@
             this.seven.BackColor = System.Drawing.SystemColors.ControlText;
             this.seven.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.seven.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.seven.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.seven.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.seven.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.seven.ForeColor = System.Drawing.Color.AliceBlue;
@@ -291,6 +304,7 @@
             this.nine.BackColor = System.Drawing.SystemColors.ControlText;
             this.nine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.nine.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.nine.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.nine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.nine.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nine.ForeColor = System.Drawing.Color.AliceBlue;
@@ -305,9 +319,10 @@
             // multiple
             // 
             this.multiple.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.multiple.BackColor = System.Drawing.SystemColors.ControlText;
+            this.multiple.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.multiple.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.multiple.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.multiple.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.multiple.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.multiple.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.multiple.ForeColor = System.Drawing.Color.AliceBlue;
@@ -325,6 +340,7 @@
             this.eight.BackColor = System.Drawing.SystemColors.ControlText;
             this.eight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.eight.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.eight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.eight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.eight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.eight.ForeColor = System.Drawing.Color.AliceBlue;
@@ -339,9 +355,10 @@
             // cleare
             // 
             this.cleare.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cleare.BackColor = System.Drawing.SystemColors.ControlText;
+            this.cleare.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.cleare.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.cleare.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cleare.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.cleare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cleare.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cleare.ForeColor = System.Drawing.Color.AliceBlue;
@@ -356,9 +373,10 @@
             // backspace
             // 
             this.backspace.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.backspace.BackColor = System.Drawing.SystemColors.ControlText;
+            this.backspace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.backspace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.backspace.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.backspace.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.backspace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.backspace.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.backspace.ForeColor = System.Drawing.Color.AliceBlue;
@@ -373,9 +391,10 @@
             // divide
             // 
             this.divide.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.divide.BackColor = System.Drawing.SystemColors.ControlText;
+            this.divide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.divide.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.divide.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.divide.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.divide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.divide.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.divide.ForeColor = System.Drawing.Color.AliceBlue;
@@ -390,9 +409,10 @@
             // clear
             // 
             this.clear.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.clear.BackColor = System.Drawing.SystemColors.ControlText;
+            this.clear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.clear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.clear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.clear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.clear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.clear.ForeColor = System.Drawing.Color.AliceBlue;
@@ -407,10 +427,11 @@
             // 
             // prcnt
             // 
-            this.prcnt.BackColor = System.Drawing.SystemColors.MenuText;
+            this.prcnt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.prcnt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcnt.Cursor = System.Windows.Forms.Cursors.Hand;
             this.prcnt.FlatAppearance.BorderSize = 0;
+            this.prcnt.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.prcnt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcnt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.prcnt.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -424,10 +445,11 @@
             // 
             // sqr
             // 
-            this.sqr.BackColor = System.Drawing.SystemColors.MenuText;
+            this.sqr.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.sqr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.sqr.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sqr.FlatAppearance.BorderSize = 0;
+            this.sqr.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.sqr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sqr.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.sqr.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -441,10 +463,11 @@
             // 
             // inverse
             // 
-            this.inverse.BackColor = System.Drawing.SystemColors.MenuText;
+            this.inverse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.inverse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.inverse.Cursor = System.Windows.Forms.Cursors.Hand;
             this.inverse.FlatAppearance.BorderSize = 0;
+            this.inverse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.inverse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.inverse.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -458,10 +481,11 @@
             // 
             // sqrt
             // 
-            this.sqrt.BackColor = System.Drawing.SystemColors.MenuText;
+            this.sqrt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.sqrt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.sqrt.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sqrt.FlatAppearance.BorderSize = 0;
+            this.sqrt.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.sqrt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sqrt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.sqrt.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -475,10 +499,11 @@
             // 
             // mread
             // 
-            this.mread.BackColor = System.Drawing.SystemColors.MenuText;
+            this.mread.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.mread.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.mread.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mread.FlatAppearance.BorderSize = 0;
+            this.mread.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.mread.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mread.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.mread.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -492,10 +517,11 @@
             // 
             // mclear
             // 
-            this.mclear.BackColor = System.Drawing.SystemColors.MenuText;
+            this.mclear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.mclear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.mclear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mclear.FlatAppearance.BorderSize = 0;
+            this.mclear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.mclear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mclear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.mclear.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -509,10 +535,11 @@
             // 
             // button27
             // 
-            this.button27.BackColor = System.Drawing.SystemColors.MenuText;
+            this.button27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.button27.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button27.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button27.FlatAppearance.BorderSize = 0;
+            this.button27.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.button27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button27.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -526,10 +553,11 @@
             // 
             // button29
             // 
-            this.button29.BackColor = System.Drawing.SystemColors.MenuText;
+            this.button29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.button29.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button29.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button29.FlatAppearance.BorderSize = 0;
+            this.button29.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button29.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -543,10 +571,11 @@
             // 
             // button30
             // 
-            this.button30.BackColor = System.Drawing.SystemColors.MenuText;
+            this.button30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.button30.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button30.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button30.FlatAppearance.BorderSize = 0;
+            this.button30.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button30.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button30.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -561,10 +590,12 @@
             // 
             // Display
             // 
-            this.Display.BackColor = System.Drawing.SystemColors.MenuText;
+            this.Display.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.Display.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Display.Enabled = false;
             this.Display.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.Display.ForeColor = System.Drawing.SystemColors.InactiveBorder;
+            this.Display.HideSelection = false;
             this.Display.Location = new System.Drawing.Point(0, 39);
             this.Display.Multiline = true;
             this.Display.Name = "Display";
@@ -576,7 +607,7 @@
             // 
             // btn
             // 
-            this.btn.BackColor = System.Drawing.SystemColors.ControlText;
+            this.btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.btn.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
@@ -591,13 +622,14 @@
             // 
             // Mode
             // 
-            this.Mode.BackColor = System.Drawing.SystemColors.ControlText;
+            this.Mode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.Mode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Mode.Font = new System.Drawing.Font("Maiandra GD", 16F, System.Drawing.FontStyle.Italic);
             this.Mode.ForeColor = System.Drawing.Color.Red;
             this.Mode.Location = new System.Drawing.Point(55, 0);
+            this.Mode.Margin = new System.Windows.Forms.Padding(3, 0, 5, 0);
             this.Mode.Name = "Mode";
-            this.Mode.Padding = new System.Windows.Forms.Padding(6, 2, 0, 0);
+            this.Mode.Padding = new System.Windows.Forms.Padding(8, 5, 0, 0);
             this.Mode.Size = new System.Drawing.Size(272, 40);
             this.Mode.TabIndex = 34;
             this.Mode.Text = "Standart";

@@ -23,38 +23,38 @@ namespace Calculator
     {
         public invoker invoker;
 
-        string first;
-        string second;
-        string current;
-        string result;
-        string op;
-        string save;
+        string first;   //first number
+        string second;  //second number
+        string current; //current number
+        string result;  //result number
+        string op;      //last operation
+        string save;    //saved number
 
-        bool isResult;
-        bool isDecimal;
-        bool isFirst;
-        bool isPercent;
-        bool isSecond;
+        bool isResult;  //is result computed or not
+        bool isDecimal; //is current end to ',' or not
+        bool isFirst;   //is first operation or not
+        bool isPercent; //is multiplication of numbers decimal or not
+        bool isSecond;  //is second number equal to some nonzero or not
 
-        State state;
+        State state;    //current state
 
-        string[] all = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-        string[] nonzero = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-        string[] zero = { "0" };
-        string[] equal = { "=" };
-        string[] operations = { "+", "—", "×", "/" };
-        string[] functions = { "√", "x²", "1/x" };
-        string[] percent = { "%" };
-        string[] reverse = { "±" };
-        string[] clear = { "С" };
-        string[] cleare = { "CE" };
-        string[] backspace = { "⌫" };
-        string[] separator = { "·" };
-        string[] memory = { "MC", "MR", "M+", "M-", "MS" };
+        string[] all = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }; //all numbers
+        string[] nonzero = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };  //all nonzero numbers
+        string[] zero = { "0" };                                             //single zero
+        string[] equal = { "=" };                                            //equal
+        string[] operations = { "+", "—", "×", "/" };                        //standart operations
+        string[] functions = { "√", "x²", "1/x" };                           //current number fucntions
+        string[] percent = { "%" };                                          //percent
+        string[] reverse = { "±" };                                          //plus-minus
+        string[] clear = { "С" };                                            //clear all
+        string[] cleare = { "CE" };                                          //clear current
+        string[] backspace = { "⌫" };                                       //clear last digit
+        string[] separator = { "·" };                                        //decimal separator
+        string[] memory = { "MC", "MR", "M+", "M-", "MS" };                  //memory options
 
-        public Brain() => SetStart();
+        public Brain() => SetStart(); //constructor
 
-        public void Process(string msg)
+        public void Process(string msg) //main function for porocessing
         {
             switch (state)
             {
@@ -101,6 +101,9 @@ namespace Calculator
 
                 else if (separator.Contains(msg))
                     AccumulateDigitsWithDecimal(true, msg);
+
+                else if (msg == "1/x")
+                    ShowError(true, msg);
             }
         }
 
@@ -178,8 +181,17 @@ namespace Calculator
                 else if (operations.Contains(msg))
                     ComputeWithPending(true, msg);
 
-                else if (functions.Contains(msg) || memory.Contains(msg) || equal.Contains(msg))
+                else if (functions.Contains(msg) || memory.Contains(msg))
                     ComputeNoPending(true, msg);
+
+                else if (equal.Contains(msg))
+                {
+                    if (op == "/" && current == "0")
+                        ShowError(true, msg);
+
+                    else
+                        ComputeNoPending(true, msg);
+                }
 
                 else if (percent.Contains(msg))
                 {
@@ -262,7 +274,7 @@ namespace Calculator
                 else if (operations.Contains(msg))
                     ComputeWithPending(true, msg);
 
-                else if (memory.Contains(msg) || equal.Contains(msg))
+                else if (memory.Contains(msg) || equal.Contains(msg) || functions.Contains(msg))
                     ComputeNoPending(true, msg);
 
                 else if (backspace.Contains(msg))
@@ -342,7 +354,7 @@ namespace Calculator
                 else if (separator.Contains(msg))
                     AccumulateDigitsWithDecimal(true, msg);
 
-                else if (memory.Contains(msg))
+                else if (memory.Contains(msg) || equal.Contains(msg))
                     ComputeNoPending(true, msg);
 
                 else if (percent.Contains(msg))
@@ -352,13 +364,13 @@ namespace Calculator
 
                     else
                     {
+                        isSecond = false;
+
                         if (isPercent)
                             AccumulateDigitsWithDecimal(true, msg);
 
                         else
                             AccumulateDigits(true, msg);
-
-                        isSecond = false;
                     }
                 }
             }
@@ -378,8 +390,14 @@ namespace Calculator
 
                 else if (equal.Contains(msg))
                 {
-                    second = current;
+                    if (isSecond)
+                        second = current;
+
+                    else
+                        second = first;
+
                     Op();
+
                     current = result;
                 }
 
@@ -416,11 +434,22 @@ namespace Calculator
         private void ShowError(bool isInput, string msg)
         {
             if (isInput)
+            {
+                current = "0";
+                invoker.Invoke("ERROR");
                 state = State.ShowError;
+            }
 
             else
             {
+                if (zero.Contains(msg))
+                    Zero(true, msg);
 
+                else if (nonzero.Contains(msg))
+                    AccumulateDigits(true, msg);
+
+                else if (separator.Contains(msg))
+                    AccumulateDigitsWithDecimal(true, msg);
             }
         }
 
