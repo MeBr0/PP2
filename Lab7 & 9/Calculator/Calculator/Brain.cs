@@ -250,6 +250,7 @@ namespace Calculator
                     op = ";";
                     isFirst = true;
                     isSecond = false;
+                    isResult = false;
                 }
 
                 else if (all.Contains(msg))
@@ -428,6 +429,7 @@ namespace Calculator
                 }
 
                 isResult = true;
+                isFirst = true;
 
                 invoker.Invoke(current);
                 state = State.ComputeNoPending;
@@ -463,7 +465,7 @@ namespace Calculator
 
             else
             {
-                if (zero.Contains(msg))
+                if (zero.Contains(msg) || clear.Contains(msg) || cleare.Contains(msg))
                     Zero(true, msg);
 
                 else if (nonzero.Contains(msg))
