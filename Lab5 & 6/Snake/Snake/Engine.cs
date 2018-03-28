@@ -15,6 +15,7 @@ namespace Snake
         menu
     }
 
+
     enum Obj
     {
         snake,
@@ -78,7 +79,7 @@ namespace Snake
                     switch (btn.Key)
                     {
                         case ConsoleKey.UpArrow:
-                        case ConsoleKey.DownArrow:
+                            case ConsoleKey.DownArrow:
                             menu.Process(btn);
                             break;
                         case ConsoleKey.Enter:

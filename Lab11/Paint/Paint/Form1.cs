@@ -74,7 +74,8 @@ namespace Paint
                 }
                 else if(current == global::Paint.Tools.Brush)
                 {
-                    g.DrawLine(pen, first, second);
+                    PointF[] X = { first, second };
+                    g.FillClosedCurve(pen.Brush, points: X);
                     first = second;
                 }
 
@@ -173,7 +174,6 @@ namespace Paint
                     break;
                 case global::Paint.Tools.Line:
                     e.Graphics.DrawLine(pen, first, second);
-
                     break;
             }
         }
@@ -227,16 +227,12 @@ namespace Paint
             {
                 case "Pencil":
                     current = global::Paint.Tools.Pen;
-                    pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-                    pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                     break;
                 case "Eraser":
                     current = global::Paint.Tools.Eraser;
                     break;
                 case "Brush":
                     current = global::Paint.Tools.Brush;
-                    pen.StartCap = System.Drawing.Drawing2D.LineCap.Triangle;
-                    pen.EndCap = System.Drawing.Drawing2D.LineCap.Triangle;
                     break;
                 case "Fill":
                     current = global::Paint.Tools.Fill;

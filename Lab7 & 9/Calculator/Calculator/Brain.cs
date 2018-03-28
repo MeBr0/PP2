@@ -124,6 +124,7 @@ namespace Calculator
                     op = ";";
                     isFirst = true;
                     isSecond = false;
+                    isResult = false;
                 }
 
                 else if (cleare.Contains(msg))
@@ -152,7 +153,7 @@ namespace Calculator
                         current = (double.Parse(first) * double.Parse(first) / 100).ToString();
                 }
 
-                else
+                else if (nonzero.Contains(msg))
                 {
                     if (current == "0")
                         current = msg;
@@ -265,7 +266,7 @@ namespace Calculator
                 else if (reverse.Contains(msg))
                     current = (double.Parse(current, NumberStyles.Number) * (-1)).ToString();
 
-                else
+                else if(separator.Contains(msg))
                     current = current + ",";
 
                 invoker.Invoke(current);
@@ -437,7 +438,7 @@ namespace Calculator
 
             else
             {
-                if (zero.Contains(msg) || clear.Contains(msg) || cleare.Contains(msg))
+                if (zero.Contains(msg) || clear.Contains(msg) || cleare.Contains(msg) || percent.Contains(msg))
                     Zero(true, msg);
 
                 else if (nonzero.Contains(msg))
