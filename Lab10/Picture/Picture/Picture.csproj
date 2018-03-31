@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2DE31D73-BC7A-4B4F-9129-55F34B841319}</ProjectGuid>
+    <ProjectGuid>{C0733349-E952-455C-A0CC-EA08D998A5F0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Graphics</RootNamespace>
-    <AssemblyName>Graphics</AssemblyName>
+    <RootNamespace>Picture</RootNamespace>
+    <AssemblyName>Picture</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
