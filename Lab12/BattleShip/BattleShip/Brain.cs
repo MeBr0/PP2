@@ -1,379 +1,226 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BattleShip
 {
-    enum GameState
-    {
-        ship4,
-        ship3_1,
-        ship3_2,
-        ship2_1,
-        ship2_2,
-        ship2_3,
-        ship1_1,
-        ship1_2,
-        ship1_3,
-        ship1_4,
-        game
-    }
-
-    public enum CellState
+    enum CellState
     {
         empty,
         busy,
         adjacent,
         striked,
-        missed,
-        masked
+        destroyed,
+        missed
     }
 
-    public delegate void Invoker(CellState[,] map);
+    delegate void DrawCells(CellState[,] map);
 
     class Brain
     {
         CellState[,] map = new CellState[10, 10];
-        GameState current;
-        Invoker invoker;
+        public List<int> notShooted = new List<int>();
 
-        int x;
-        int y;
+       
 
-        public Brain(Invoker invoker)
+        public ShipType[] st = { ShipType.d4,
+                                 ShipType.d3, ShipType.d3,
+                                 ShipType.d2, ShipType.d2, ShipType.d2,
+                                 ShipType.d1, ShipType.d1, ShipType.d1, ShipType.d1 };
+
+        List<Ship> ships;
+        DrawCells draw;
+        Point direction;
+
+        public int index = -1;
+
+        public Brain(DrawCells draw)
         {
-            this.invoker = invoker;
-            current = GameState.ship4;
-
-            x = 0;
-            y = 1;
+            this.draw = draw;
+            ships = new List<Ship>();
+            direction = new Point(1, 0);
 
             for(int i = 0; i < 10; ++i)
             {
                 for(int j = 0; j < 10; ++j)
                 {
                     map[i, j] = CellState.empty;
+                    notShooted.Add(10 * i + j);
                 }
             }
 
-            invoker.Invoke(map);
+            draw.Invoke(map);
         }
 
-        public void Switch()
+        public void Switch(string msg)
         {
-            if (y == 1)
-            {
-                x = 1;
-                y = 0;
-            }
+            if (direction.X == 1)
+                direction = new Point(0, 1);
+
             else
+                direction = new Point(1, 0);
+        }
+
+        public bool Play(string msg)
+        {
+            string[] values = msg.Split('_');
+
+            int i = int.Parse(values[0]);
+            int j = int.Parse(values[1]);
+
+            Point p = new Point(i, j);
+
+            bool isShooted = false;
+            bool isAlreadyShooted = false;
+
+            switch (map[p.X, p.Y])
             {
-                x = 0;
-                y = 1;
+                case CellState.empty:
+                case CellState.adjacent:
+                    MarkCell(p, CellState.missed);
+                    break;
+                case CellState.busy:
+                    MarkCell(p, CellState.striked);
+                    isShooted = true;
+                    CheckDestroyedShip(p);
+                    break;
+                case CellState.destroyed:
+                case CellState.missed:
+                case CellState.striked:
+                    isAlreadyShooted = true;
+                    break;
             }
+
+            draw.Invoke(map);
+            return isShooted || isAlreadyShooted;
         }
 
         public void Process(string msg)
         {
-            switch (current)
+            string[] values = msg.Split('_');
+
+            int i = int.Parse(values[0]);
+            int j = int.Parse(values[1]);
+
+            Point p = new Point(i, j);
+
+            PlaceShip(p);
+        }
+
+        private void CheckDestroyedShip(Point p)
+        {
+            int ind = -1;
+
+            for (int i = 0; i < ships.Count; ++i)
             {
-                case GameState.ship4:
-                    Ship4(false, msg);
+                if (ships[i].body.Contains(p))
+                {
+                    ind = i;
                     break;
-                case GameState.ship3_1:
-                    Ship3_1(false, msg);
-                    break;
-                case GameState.ship3_2:
-                    Ship3_2(false, msg);
-                    break;
-                case GameState.ship2_1:
-                    Ship2_1(false, msg);
-                    break;
-                case GameState.ship2_2:
-                    Ship2_2(false, msg);
-                    break;
-                case GameState.ship2_3:
-                    Ship2_3(false, msg);
-                    break;
-                case GameState.ship1_1:
-                    Ship1_1(false, msg);
-                    break;
-                case GameState.ship1_2:
-                    Ship1_2(false, msg);
-                    break;
-                case GameState.ship1_3:
-                    Ship1_3(false, msg);
-                    break;
-                case GameState.ship1_4:
-                    Ship1_4(false, msg);
-                    break;
-                case GameState.game:
-                    Game(false, msg);
-                    break;
+                }
+            }
+
+            if (ind != -1)
+            {
+                bool isKilled = true;
+
+                foreach (Point f in ships[ind].body)
+                {
+                    if (map[f.X, f.Y] != CellState.striked)
+                    {
+                        isKilled = false;
+                        break;
+                    }
+                }
+
+                if (isKilled)
+                {
+                    foreach (Point f in ships[ind].body)
+                    {
+                        MarkCell(f, CellState.destroyed);
+                    }
+                }
             }
         }
 
-        private void CheckCell(int i, int j)
+        private void PlaceShip(Point p)
+        {
+            if (index + 1 < st.Length)
+            {
+                index++;
+
+                Ship ship = new Ship(st[index], p , direction);
+
+                if (IsValidLocation(ship))
+                {
+                    ships.Add(ship);
+                    MarkLocation(ship, CellState.busy);
+                    draw.Invoke(map);
+                }
+                else
+                {
+                    index--;
+                }
+            }
+        }
+
+        private void CheckAdjCell(int i ,int j)
         {
             if (i < 0 || i > 9) return;
             if (j < 0 || j > 9) return;
             if (map[i, j] == CellState.busy) return;
 
-            map[i, j] = CellState.adjacent;
+            MarkCell(new Point(i, j), CellState.adjacent);
         }
 
-        private void CheckAdjCells(int i, int j)
+        private void CheckAdjLocation(Point p)
         {
-            CheckCell(i - 1, j - 1);
-            CheckCell(i - 1, j);
-            CheckCell(i - 1, j + 1);
-            CheckCell(i , j + 1);
-            CheckCell(i + 1, j + 1);
-            CheckCell(i + 1, j);
-            CheckCell(i + 1, j - 1);
-            CheckCell(i, j - 1);
+            CheckAdjCell(p.X - 1, p.Y - 1);
+            CheckAdjCell(p.X - 1, p.Y);
+            CheckAdjCell(p.X - 1, p.Y + 1);
+            CheckAdjCell(p.X, p.Y + 1);
+            CheckAdjCell(p.X + 1, p.Y + 1);
+            CheckAdjCell(p.X + 1, p.Y);
+            CheckAdjCell(p.X + 1, p.Y - 1);
+            CheckAdjCell(p.X, p.Y - 1);
         }
 
-        private void MarkCell(int i, int j, CellState state) => map[i, j] = state;
+        private void MarkCell(Point p, CellState state) => map[p.X, p.Y] = state;
 
 
-        private void MarkLocation(string msg, CellState state)
+        private void MarkLocation(Ship ship, CellState state)
         {
-            string[] coor = msg.Split('_');
-
-            int i = int.Parse(coor[0]);
-            int j = int.Parse(coor[1]);
-
-            switch (current)
+            for(int i = 0; i < ship.body.Count; ++i)
             {
-                case GameState.ship4:
-                    MarkCell(i, j, state);
-                    MarkCell(i + x, j + y, state);
-                    MarkCell(i + 2 * x, j + 2 * y, state);
-                    MarkCell(i + 3 * x, j + 3 * y, state);
-                    CheckAdjCells(i, j);
-                    CheckAdjCells(i + x, j + y);
-                    CheckAdjCells(i + 2 * x, j + 2 * y);
-                    CheckAdjCells(i + 3 * x, j + 3 * y);
-                    break;
-                case GameState.ship3_1:
-                case GameState.ship3_2:
-                    MarkCell(i, j, state);
-                    MarkCell(i + x, j + y, state);
-                    MarkCell(i + 2 * x, j + 2 * y, state);
-                    CheckAdjCells(i, j);
-                    CheckAdjCells(i + x, j + y);
-                    CheckAdjCells(i + 2 * x, j + 2 * y);
-                    break;
-                case GameState.ship2_1:
-                case GameState.ship2_2:
-                case GameState.ship2_3:
-                    MarkCell(i, j, state);
-                    MarkCell(i + x, j + y, state);
-                    CheckAdjCells(i, j);
-                    CheckAdjCells(i + x, j + y);
-                    break;
-                case GameState.ship1_1:
-                case GameState.ship1_2:
-                case GameState.ship1_3:
-                case GameState.ship1_4:
-                    MarkCell(i, j, state);
-                    CheckAdjCells(i, j);
-                    break;
-                case GameState.game:
-                    break;
+                MarkCell(ship.body[i], state);
+            }
+            for (int i = 0; i < ship.body.Count; ++i)
+            {
+                CheckAdjLocation(ship.body[i]);
             }
         }
 
-        private bool IsValidCell(int i, int j)
+        private bool IsValidCell(Point p)
         {
-            if (i < 0 || i > 9) return false;
-            if (j < 0 || j > 9) return false;
+            if (p.X < 0 || p.X > 9) return false;
+            if (p.Y < 0 || p.Y > 9) return false;
 
-            return map[i, j] == CellState.empty;
+            return map[p.X, p.Y] == CellState.empty;
         }
 
-        private bool IsValidLocation(string msg)
+        private bool IsValidLocation(Ship ship)
         {
-            string[] coor = msg.Split('_');
-
-            int i = int.Parse(coor[0]);
-            int j = int.Parse(coor[1]);
-
-            bool res = false;
-
-            switch (current)
+            for(int i = 0; i < ship.body.Count; ++i)
             {
-                case GameState.ship4:
-                    res = IsValidCell(i, j) && IsValidCell(i + x, j + y) && IsValidCell(i + 2 * x, j + 2 * y) && IsValidCell(i + 3 * x, j + 3 * y);
-                    break;
-                case GameState.ship3_1:
-                case GameState.ship3_2:
-                    res = IsValidCell(i, j) && IsValidCell(i + x, j + y) && IsValidCell(i + 2 * x, j + 2 * y);
-                    break;
-                case GameState.ship2_1:
-                case GameState.ship2_2:
-                case GameState.ship2_3:
-                    res = IsValidCell(i, j) && IsValidCell(i + x, j + y);
-                    break;
-                case GameState.ship1_1:
-                case GameState.ship1_2:
-                case GameState.ship1_3:
-                case GameState.ship1_4:
-                    res = IsValidCell(i, j);
-                    break;
-                case GameState.game:
-                    break;
+                if (!IsValidCell(ship.body[i]))
+                    return false;
             }
 
-            return res;
+            return true;
         }
 
-        private void Ship4(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                invoker.Invoke(map);
-                current = GameState.ship4;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship3_1(true, msg);
-        }
-
-        private void Ship3_1(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship3_1;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship3_2(true, msg);
-        }
-
-        private void Ship3_2(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship3_2;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship2_1(true, msg);
-        }
-
-        private void Ship2_1(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship2_1;
-            }
-
-
-            else if (IsValidLocation(msg))
-                Ship2_2(true, msg);
-        }
-
-        private void Ship2_2(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship2_2;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship2_3(true, msg);
-        }
-
-        private void Ship2_3(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship2_3;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship1_1(true, msg);
-        }
-
-        private void Ship1_1(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship1_1;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship1_2(true, msg);
-        }
-
-        private void Ship1_2(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship1_2;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship1_3(true, msg);
-        }
-
-        private void Ship1_3(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship1_3;
-            }
-
-            else if (IsValidLocation(msg))
-                Ship1_4(true, msg);
-        }
-
-        private void Ship1_4(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.ship1_4;
-            }
-
-            else if (IsValidLocation(msg))
-                Game(true, msg);
-        }
-
-        private void Game(bool isInput, string msg)
-        {
-            if (isInput)
-            {
-                MarkLocation(msg, CellState.busy);
-                invoker.Invoke(map);
-                current = GameState.game;
-            }
-
-            else
-            {
-
-            }
-        }
     }
 }
