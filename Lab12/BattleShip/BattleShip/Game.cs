@@ -33,7 +33,7 @@ namespace BattleShip
 
             while (player1.brain.Play(string.Format("{0}_{1}", i, j)))
             {
-                //Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 player2.brain.notShooted.Remove(player2.brain.notShooted[a]);
 

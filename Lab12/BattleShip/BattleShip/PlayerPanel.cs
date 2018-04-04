@@ -37,7 +37,7 @@ namespace BattleShip
 
             CreateBtns();
 
-            brain = new Brain(DrawBtns);
+            brain = new Brain(DrawBtns, playerType);
 
             if (playerType == PlayerType.human)
                 CreateSwitchBtn();
@@ -130,6 +130,13 @@ namespace BattleShip
             }
         }
 
+        private void Btn_Hover(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            //brain.Check(btn.Name);
+        }
+
         private void Btn_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -137,13 +144,12 @@ namespace BattleShip
             if (btn.Name == "switcher")
                 brain.Switch(btn.Name);
                 
-            else if (brain.index < brain.st.Length - 1)
+            else if (brain.index < brain.st.Length)
                 brain.Process(btn.Name);
-
 
             else if (!brain.Play(btn.Name))
             {
-                Thread.Sleep(300);
+                Thread.Sleep(500);
                 turn.Invoke();
             }
         }

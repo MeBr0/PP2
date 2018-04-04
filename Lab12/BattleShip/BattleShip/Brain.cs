@@ -22,9 +22,9 @@ namespace BattleShip
     class Brain
     {
         CellState[,] map = new CellState[10, 10];
-        public List<int> notShooted = new List<int>();
+        PlayerType playerType;
 
-       
+        public List<int> notShooted = new List<int>();
 
         public ShipType[] st = { ShipType.d4,
                                  ShipType.d3, ShipType.d3,
@@ -37,9 +37,10 @@ namespace BattleShip
 
         public int index = -1;
 
-        public Brain(DrawCells draw)
+        public Brain(DrawCells draw, PlayerType playerType)
         {
             this.draw = draw;
+            this.playerType = playerType;
             ships = new List<Ship>();
             direction = new Point(1, 0);
 
@@ -74,9 +75,19 @@ namespace BattleShip
             Point p = new Point(i, j);
 
             bool isShooted = false;
-            bool isAlreadyShooted = false;
 
-            switch (map[p.X, p.Y])
+            if (isStriked(p))
+            {
+                MarkCell(p, CellState.striked);
+                isShooted = true;
+                CheckDestroyedShip(p);
+            }
+            else
+            {
+                MarkCell(p, CellState.missed);
+            }
+
+            /*switch (map[p.X, p.Y])
             {
                 case CellState.empty:
                 case CellState.adjacent:
@@ -87,15 +98,10 @@ namespace BattleShip
                     isShooted = true;
                     CheckDestroyedShip(p);
                     break;
-                case CellState.destroyed:
-                case CellState.missed:
-                case CellState.striked:
-                    isAlreadyShooted = true;
-                    break;
-            }
+            }*/
 
             draw.Invoke(map);
-            return isShooted || isAlreadyShooted;
+            return isShooted;
         }
 
         public void Process(string msg)
@@ -108,6 +114,22 @@ namespace BattleShip
             Point p = new Point(i, j);
 
             PlaceShip(p);
+        }
+
+        private bool isStriked(Point p)
+        {
+            bool isStriked = false;
+
+            for (int i = 0; i < ships.Count; ++i)
+            {
+                if(ships[i].body.Contains(p))
+                {
+                    isStriked = true;
+                    break;
+                }
+            }
+
+            return isStriked;
         }
 
         private void CheckDestroyedShip(Point p)
@@ -163,6 +185,22 @@ namespace BattleShip
                 else
                 {
                     index--;
+                }
+
+                if (index + 1 == st.Length)
+                {
+                    if (playerType == PlayerType.bot)
+                    {
+                        for (int i = 0; i < 10; ++i)
+                        {
+                            for (int j = 0; j < 10; ++j)
+                            {
+                                MarkCell(new Point(i, j), CellState.empty);
+                                draw.Invoke(map);
+                                index++;
+                            }
+                        }
+                    }
                 }
             }
         }
