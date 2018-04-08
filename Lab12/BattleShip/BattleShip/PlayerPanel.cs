@@ -15,19 +15,19 @@ namespace BattleShip
         right
     }
 
-    delegate void TurnDelegate();
+    delegate void GameDelegate();
 
     class PlayerPanel : Panel
     {
         int cellSize;
 
         public Brain brain;
-        TurnDelegate turn;
+        GameDelegate turn;
 
         PlayerType playerType;
         PanelPos panelPos;
 
-        public PlayerPanel(PlayerType playerType, PanelPos panelPos, TurnDelegate turn)
+        public PlayerPanel(PlayerType playerType, PanelPos panelPos, GameDelegate turn, GameDelegate over)
         {
             this.playerType = playerType;
             this.panelPos = panelPos;
@@ -37,18 +37,25 @@ namespace BattleShip
 
             CreateBtns();
 
-            brain = new Brain(DrawBtns, playerType);
+            brain = new Brain(DrawBtns, over, playerType);
 
             if (playerType == PlayerType.human)
                 CreateSwitchBtn();
 
             if (playerType == PlayerType.bot)
             {
+                string switcher = "switcher";
+
                 while (brain.index < brain.st.Length - 1)
                 {
                     int row = new Random().Next(0, 10);
                     int column = new Random().Next(0, 10);
                     string msg = string.Format("{0}_{1}", row, column);
+
+                    int random = new Random().Next(0, 2);
+
+                    if (random == 0)
+                        brain.Switch(switcher);
 
                     brain.Process(msg);
                 }
@@ -134,7 +141,7 @@ namespace BattleShip
         {
             Button btn = sender as Button;
 
-            //brain.Check(btn.Name);
+            brain.Check(btn.Name);
         }
 
         private void Btn_Click(object sender, EventArgs e)
@@ -149,7 +156,7 @@ namespace BattleShip
 
             else if (!brain.Play(btn.Name))
             {
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
                 turn.Invoke();
             }
         }

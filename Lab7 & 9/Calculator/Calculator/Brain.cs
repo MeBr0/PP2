@@ -189,8 +189,17 @@ namespace Calculator
                         ComputeWithPending(true, msg);
                 }
 
-                else if (functions.Contains(msg) || memory.Contains(msg))
+                else if (memory.Contains(msg))
                     ComputeNoPending(true, msg);
+
+                else if (functions.Contains(msg))
+                {
+                    if (msg == "√" && double.Parse(current) / Math.Abs(double.Parse(current)) == -1)
+                        ShowError(true, msg);
+
+                    else
+                        ComputeNoPending(true, msg);
+                }
 
                 else if (equal.Contains(msg))
                 {
@@ -287,8 +296,17 @@ namespace Calculator
                 else if (operations.Contains(msg))
                     ComputeWithPending(true, msg);
 
-                else if (memory.Contains(msg) || functions.Contains(msg))
+                else if (memory.Contains(msg))
                     ComputeNoPending(true, msg);
+
+                else if (functions.Contains(msg))
+                {
+                    if (msg == "√" && double.Parse(current) / Math.Abs(double.Parse(current)) == -1)
+                        ShowError(true, msg);
+
+                    else
+                        ComputeNoPending(true, msg);
+                }
 
                 else if (equal.Contains(msg))
                 {

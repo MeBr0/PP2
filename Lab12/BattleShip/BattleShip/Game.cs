@@ -20,8 +20,8 @@ namespace BattleShip
 
         public Game(PlayerType pl1, PlayerType pl2)
         {
-            player1 = new PlayerPanel(pl1, PanelPos.left, BotTurn);
-            player2 = new PlayerPanel(pl2, PanelPos.right, BotTurn);
+            player1 = new PlayerPanel(pl1, PanelPos.left, BotTurn, GameOver);
+            player2 = new PlayerPanel(pl2, PanelPos.right, BotTurn, GameOver);
         }
 
         private void BotTurn()
@@ -41,6 +41,12 @@ namespace BattleShip
                 i = player2.brain.notShooted[a] / 10;
                 j = player2.brain.notShooted[a] % 10;
             }
+        }
+
+        private void GameOver()
+        {
+            player1.Enabled = false;
+            player2.Enabled = false;
         }
     }
 }

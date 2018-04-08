@@ -17,7 +17,10 @@ namespace BattleShip
         public main()
         {
             InitializeComponent();
+        }
 
+        private void StartGame(object sender, EventArgs e)
+        {
             game = new Game(PlayerType.human, PlayerType.bot);
 
             Controls.Add(game.player1);

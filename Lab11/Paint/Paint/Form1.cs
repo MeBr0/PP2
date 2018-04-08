@@ -24,12 +24,13 @@ namespace Paint
 
     public partial class Paint : Form
     {
-        PointF first = default(PointF);
-        PointF second = default(PointF);
+        Point first = default(Point);
+        Point second = default(Point);
         Bitmap bm = default(Bitmap);
         Graphics g = default(Graphics);
         Pen pen = new Pen(Color.Black, 1);
         Pen white = new Pen(Color.White, 1);
+        Queue<Point> fill;
 
         Tools current = global::Paint.Tools.Pen;
 
@@ -47,11 +48,6 @@ namespace Paint
         private void Mouse_Down(object sender, MouseEventArgs e)
         {
             first = e.Location;
-
-            if(current == global::Paint.Tools.Fill)
-            {
-
-            }
         }
 
         private void Mouse_Move(object sender, MouseEventArgs e)
@@ -102,9 +98,10 @@ namespace Paint
             }
 
             Picture.Image = bm;
+
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-
+            fill = new Queue<Point>();
         }
 
         private void ColorClick(object sender, EventArgs e)
@@ -216,6 +213,9 @@ namespace Paint
                 case global::Paint.Tools.Line:
                     g.DrawLine(pen, first, second);
                     break;
+                case global::Paint.Tools.Fill:
+                    FloodFill(first);
+                    break;
             }
         }
 
@@ -257,6 +257,36 @@ namespace Paint
                     }
                     break;
             }
+        }
+
+        private void FloodFill(Point p)
+        {
+            fill.Enqueue(p);
+            Color color = bm.GetPixel(p.X, p.Y);
+
+            while (fill.Count != 0)
+            {
+                Point current = fill.Dequeue();
+                bm.SetPixel(current.X, current.Y, pen.Color);
+
+                Refresh();
+
+                Step(current.X - 1, current.Y, color);
+                Step(current.X, current.Y - 1, color);
+                Step(current.X, current.Y + 1, color);
+                Step(current.X + 1, current.Y, color);
+
+            }
+
+            //Refresh();
+        }
+
+        private void Step(int i, int j, Color color)
+        {
+            if (i < 0 || i > bm.Width || j < 0 || j > bm.Height) return;
+            if (bm.GetPixel(i, j) != color) return;
+
+            fill.Enqueue(new Point(i, j));
         }
 
         private void MenuClick(object sender, EventArgs e)

@@ -32,16 +32,21 @@ namespace BattleShip
                                  ShipType.d1, ShipType.d1, ShipType.d1, ShipType.d1 };
 
         List<Ship> ships;
+        int alives;
         DrawCells draw;
+        GameDelegate over;
         Point direction;
 
         public int index = -1;
 
-        public Brain(DrawCells draw, PlayerType playerType)
+        public Brain(DrawCells draw, GameDelegate over, PlayerType playerType)
         {
             this.draw = draw;
             this.playerType = playerType;
+            this.over = over;
+
             ships = new List<Ship>();
+            alives = 10;
             direction = new Point(1, 0);
 
             for(int i = 0; i < 10; ++i)
@@ -54,6 +59,16 @@ namespace BattleShip
             }
 
             draw.Invoke(map);
+        }
+
+        public void Check(string msg)
+        {
+            string[] values = msg.Split('_');
+
+            int i = int.Parse(values[0]);
+            int j = int.Parse(values[1]);
+
+            Point p = new Point(i, j);
         }
 
         public void Switch(string msg)
@@ -87,21 +102,16 @@ namespace BattleShip
                 MarkCell(p, CellState.missed);
             }
 
-            /*switch (map[p.X, p.Y])
-            {
-                case CellState.empty:
-                case CellState.adjacent:
-                    MarkCell(p, CellState.missed);
-                    break;
-                case CellState.busy:
-                    MarkCell(p, CellState.striked);
-                    isShooted = true;
-                    CheckDestroyedShip(p);
-                    break;
-            }*/
-
             draw.Invoke(map);
+
+            if (alives == 0)
+            {
+                over.Invoke();
+            }
+
             return isShooted;
+
+
         }
 
         public void Process(string msg)
@@ -114,7 +124,7 @@ namespace BattleShip
             Point p = new Point(i, j);
 
             PlaceShip(p);
-        }
+        }   
 
         private bool isStriked(Point p)
         {
@@ -160,10 +170,29 @@ namespace BattleShip
 
                 if (isKilled)
                 {
+                    alives--;
+
                     foreach (Point f in ships[ind].body)
                     {
                         MarkCell(f, CellState.destroyed);
                     }
+                    foreach (Point f in ships[ind].body)
+                    {
+                        CheckAdjLocation(f, CellState.destroyed, CellState.missed);
+                    }
+                }
+            }
+        }
+
+        private void CheckShipLocation(Point p)
+        {
+            if (index + 1 < st.Length)
+            {
+                Ship ship = new Ship(st[index], p, direction);
+
+                if (IsValidLocation(ship))
+                {
+                    
                 }
             }
         }
@@ -205,29 +234,31 @@ namespace BattleShip
             }
         }
 
-        private void CheckAdjCell(int i ,int j)
+        private void CheckAdjCell(int i ,int j, CellState exception, CellState cellState)
         {
             if (i < 0 || i > 9) return;
             if (j < 0 || j > 9) return;
-            if (map[i, j] == CellState.busy) return;
+            if (map[i, j] == exception) return;
 
-            MarkCell(new Point(i, j), CellState.adjacent);
+            MarkCell(new Point(i, j), cellState);
+
+            if (cellState == CellState.missed)
+                notShooted.Remove(10 * i + j);
         }
 
-        private void CheckAdjLocation(Point p)
+        private void CheckAdjLocation(Point p, CellState exception, CellState cellState)
         {
-            CheckAdjCell(p.X - 1, p.Y - 1);
-            CheckAdjCell(p.X - 1, p.Y);
-            CheckAdjCell(p.X - 1, p.Y + 1);
-            CheckAdjCell(p.X, p.Y + 1);
-            CheckAdjCell(p.X + 1, p.Y + 1);
-            CheckAdjCell(p.X + 1, p.Y);
-            CheckAdjCell(p.X + 1, p.Y - 1);
-            CheckAdjCell(p.X, p.Y - 1);
+            CheckAdjCell(p.X - 1, p.Y - 1, exception, cellState);
+            CheckAdjCell(p.X - 1, p.Y, exception, cellState);
+            CheckAdjCell(p.X - 1, p.Y + 1, exception, cellState);
+            CheckAdjCell(p.X, p.Y + 1, exception, cellState);
+            CheckAdjCell(p.X + 1, p.Y + 1, exception, cellState);
+            CheckAdjCell(p.X + 1, p.Y, exception, cellState);
+            CheckAdjCell(p.X + 1, p.Y - 1, exception, cellState);
+            CheckAdjCell(p.X, p.Y - 1, exception, cellState);
         }
 
         private void MarkCell(Point p, CellState state) => map[p.X, p.Y] = state;
-
 
         private void MarkLocation(Ship ship, CellState state)
         {
@@ -237,7 +268,7 @@ namespace BattleShip
             }
             for (int i = 0; i < ship.body.Count; ++i)
             {
-                CheckAdjLocation(ship.body[i]);
+                CheckAdjLocation(ship.body[i], CellState.busy, CellState.adjacent);
             }
         }
 
