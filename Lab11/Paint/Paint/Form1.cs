@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaintApp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +23,19 @@ namespace Paint
         Brush
     }
 
+    enum BmpCreationMode
+    {
+        Fill,
+        File,
+        Init
+    }
+
+    enum FillMode
+    {
+        edge,
+        fill
+    }
+
     public partial class Paint : Form
     {
         Point first = default(Point);
@@ -30,15 +44,15 @@ namespace Paint
         Graphics g = default(Graphics);
         Pen pen = new Pen(Color.Black, 1);
         Pen white = new Pen(Color.White, 1);
-        Queue<Point> fill;
 
-        Tools current = global::Paint.Tools.Pen;
+        Tools current = Tools.Pen;
+        FillMode fillMode = FillMode.edge;
 
         public Paint()
         {
             InitializeComponent();
 
-            SetupPictureBox(true, "");
+            SetupPictureBox(BmpCreationMode.Init, "");
 
             pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
@@ -48,6 +62,51 @@ namespace Paint
         private void Mouse_Down(object sender, MouseEventArgs e)
         {
             first = e.Location;
+
+            if (current == Tools.Fill)
+            {
+                MapFill mf = new MapFill();
+                mf.Fill(g, first, pen.Color, ref bm);
+                SetupPictureBox(BmpCreationMode.Fill, "");
+            }
+        }
+
+        private void Switcher(object sender, EventArgs e)
+        {
+            if (fillMode == FillMode.edge)
+            {
+                fillMode = FillMode.fill;
+                switcher.Text = "Fill";
+            }
+
+            else
+            {
+                fillMode = FillMode.edge;
+                switcher.Text = "Edge";
+            }
+        }
+
+        private void SetupPictureBox(BmpCreationMode mode, string fileName)
+        {
+
+            if (mode == BmpCreationMode.Init)
+            {
+                bm = new Bitmap(Picture.Width, Picture.Height);
+            }
+            else if (mode == BmpCreationMode.File)
+            {
+                bm = new Bitmap(Bitmap.FromFile(fileName));
+            }
+
+            g = Graphics.FromImage(bm);
+
+            if (mode == BmpCreationMode.Init)
+            {
+                g.Clear(Color.White);
+            }
+
+            Picture.Image = bm;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
         }
 
         private void Mouse_Move(object sender, MouseEventArgs e)
@@ -58,50 +117,24 @@ namespace Paint
             {
                 second = e.Location;
 
-                if(current == global::Paint.Tools.Pen)
+                if(current == Tools.Pen)
                 {
                     g.DrawLine(pen, first, second);
                     first = second;
                 }
-                else if(current == global::Paint.Tools.Eraser)
+                else if(current == Tools.Eraser)
                 {
                     g.DrawLine(white, first, second);
                     first = second;
                 }
-                else if(current == global::Paint.Tools.Brush)
+                else if(current == Tools.Brush)
                 {
-                    PointF[] X = { first, second };
-                    g.FillClosedCurve(pen.Brush, points: X);
+                    g.DrawLine(pen, first, second);
                     first = second;
                 }
 
                 Picture.Refresh();
             }
-        }
-
-        private void SetupPictureBox(bool isFirst, string fileName)
-        {
-            if (isFirst)
-            {
-                bm = new Bitmap(Picture.Width, Picture.Height);
-            }
-            else
-            {
-                bm = new Bitmap(Bitmap.FromFile(OpenFile.FileName));
-            }
-
-            g = Graphics.FromImage(bm);
-
-            if (isFirst)
-            {
-                g.Clear(Color.White);
-            }
-
-            Picture.Image = bm;
-
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-            fill = new Queue<Point>();
         }
 
         private void ColorClick(object sender, EventArgs e)
@@ -110,45 +143,45 @@ namespace Paint
 
             switch (b.Name)
             {
-                case "Black":
+                case "black":
                     pen.Color = Color.Black;
-                    CurrentColor.BackColor = Color.Black;
+                    currentColor.BackColor = Color.Black;
                     break;
-                case "Grey":
+                case "grey":
                     pen.Color = Color.Gray;
-                    CurrentColor.BackColor = Color.Gray;
+                    currentColor.BackColor = Color.Gray;
                     break;
-                case "Brown":
+                case "brown":
                     pen.Color = Color.Brown;
-                    CurrentColor.BackColor = Color.Brown;
+                    currentColor.BackColor = Color.Brown;
                     break;
-                case "Red":
+                case "red":
                     pen.Color = Color.Red;
-                    CurrentColor.BackColor = Color.Red;
+                    currentColor.BackColor = Color.Red;
                     break;
-                case "Orange":
+                case "orange":
                     pen.Color = Color.Orange;
-                    CurrentColor.BackColor = Color.Orange;
+                    currentColor.BackColor = Color.Orange;
                     break;
-                case "Yellow":
+                case "yellow":
                     pen.Color = Color.Yellow;
-                    CurrentColor.BackColor = Color.Yellow;
+                    currentColor.BackColor = Color.Yellow;
                     break;
-                case "Green":
+                case "green":
                     pen.Color = Color.Green;
-                    CurrentColor.BackColor = Color.Green;
+                    currentColor.BackColor = Color.Green;
                     break;
-                case "Cyan":
+                case "cyan":
                     pen.Color = Color.LightBlue;
-                    CurrentColor.BackColor = Color.LightBlue;
+                    currentColor.BackColor = Color.LightBlue;
                     break;
-                case "Blue":
+                case "blue":
                     pen.Color = Color.Blue;
-                    CurrentColor.BackColor = Color.Blue;
+                    currentColor.BackColor = Color.Blue;
                     break;
-                case "Magenta":
+                case "magenta":
                     pen.Color = Color.Magenta;
-                    CurrentColor.BackColor = Color.Magenta;
+                    currentColor.BackColor = Color.Magenta;
                     break;
             }
  
@@ -160,16 +193,28 @@ namespace Paint
 
             switch (current)
             {
-                case global::Paint.Tools.Rectangle:
-                    e.Graphics.DrawRectangle(pen, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
+                case Tools.Rectangle:
+                    if (fillMode == FillMode.edge)
+                        e.Graphics.DrawRectangle(pen, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
+
+                    else
+                        e.Graphics.FillRectangle(pen.Brush, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
                     break;
-                case global::Paint.Tools.Ellipse:
-                    e.Graphics.DrawEllipse(pen, GetRectangle(first, second));
+                case Tools.Ellipse:
+                    if (fillMode == FillMode.edge)
+                        e.Graphics.DrawEllipse(pen, GetRectangle(first, second));
+
+                    else
+                        e.Graphics.FillEllipse(pen.Brush, GetRectangle(first, second));
                     break;
-                case global::Paint.Tools.Triangle:
-                    e.Graphics.DrawPolygon(pen, GetPointsTriangle(first, second));
+                case Tools.Triangle:
+                    if (fillMode == FillMode.edge)
+                        e.Graphics.DrawPolygon(pen, GetPointsTriangle(first, second));
+
+                    else
+                        e.Graphics.FillPolygon(pen.Brush, GetPointsTriangle(first, second));
                     break;
-                case global::Paint.Tools.Line:
+                case Tools.Line:
                     e.Graphics.DrawLine(pen, first, second);
                     break;
             }
@@ -201,20 +246,29 @@ namespace Paint
         {
             switch (current)
             {
-                case global::Paint.Tools.Rectangle:
-                    g.DrawRectangle(pen, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
+                case Tools.Rectangle:
+                    if (fillMode == FillMode.edge)
+                        g.DrawRectangle(pen, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
+
+                    else
+                        g.FillRectangle(pen.Brush, Math.Min(first.X, second.X), Math.Min(first.Y, second.Y), Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
                     break;
-                case global::Paint.Tools.Ellipse:
-                    g.DrawEllipse(pen, GetRectangle(first, second));
+                case Tools.Ellipse:
+                    if (fillMode == FillMode.edge)
+                        g.DrawEllipse(pen, GetRectangle(first, second));
+
+                    else
+                        g.FillEllipse(pen.Brush, GetRectangle(first, second));
                     break;
-                case global::Paint.Tools.Triangle:
-                    g.DrawPolygon(pen, GetPointsTriangle(first, second));
+                case Tools.Triangle:
+                    if (fillMode == FillMode.edge)
+                        g.DrawPolygon(pen, GetPointsTriangle(first, second));
+
+                    else
+                        g.FillPolygon(pen.Brush, GetPointsTriangle(first, second));
                     break;
-                case global::Paint.Tools.Line:
+                case Tools.Line:
                     g.DrawLine(pen, first, second);
-                    break;
-                case global::Paint.Tools.Fill:
-                    FloodFill(first);
                     break;
             }
         }
@@ -225,68 +279,38 @@ namespace Paint
 
             switch (b.Name)
             {
-                case "Pencil":
-                    current = global::Paint.Tools.Pen;
+                case "pencil":
+                    current = Tools.Pen;
                     break;
-                case "Eraser":
-                    current = global::Paint.Tools.Eraser;
+                case "eraser":
+                    current = Tools.Eraser;
                     break;
-                case "Brush":
-                    current = global::Paint.Tools.Brush;
+                case "brush":
+                    current = Tools.Brush;
                     break;
-                case "Fill":
-                    current = global::Paint.Tools.Fill;
+                case "fill":
+                    current = Tools.Fill;
                     break;
-                case "Rectangle":
-                    current = global::Paint.Tools.Rectangle;
+                case "rectangle":
+                    current = Tools.Rectangle;
                     break;
-                case "Ellipse":
-                    current = global::Paint.Tools.Ellipse;
+                case "ellipse":
+                    current = Tools.Ellipse;
                     break;
-                case "Triangle":
-                    current = global::Paint.Tools.Triangle;
+                case "triangle":
+                    current = Tools.Triangle;
                     break;
-                case "Line":
-                    current = global::Paint.Tools.Line;
+                case "line":
+                    current = Tools.Line;
                     break;
-                case "Color_Dialog":
-                    if (ColorDialog.ShowDialog() == DialogResult.OK)
+                case "color_Dialog":
+                    if (colorDialog.ShowDialog() == DialogResult.OK)
                     {
-                        pen.Color = ColorDialog.Color;
-                        CurrentColor.BackColor = ColorDialog.Color;
+                        pen.Color = colorDialog.Color;
+                        currentColor.BackColor = colorDialog.Color;
                     }
                     break;
             }
-        }
-
-        private void FloodFill(Point p)
-        {
-            fill.Enqueue(p);
-            Color color = bm.GetPixel(p.X, p.Y);
-
-            while (fill.Count != 0)
-            {
-                Point current = fill.Dequeue();
-                bm.SetPixel(current.X, current.Y, pen.Color);
-
-                Refresh();
-
-                Step(current.X - 1, current.Y, color);
-                Step(current.X, current.Y - 1, color);
-                Step(current.X, current.Y + 1, color);
-                Step(current.X + 1, current.Y, color);
-
-            }
-
-            //Refresh();
-        }
-
-        private void Step(int i, int j, Color color)
-        {
-            if (i < 0 || i > bm.Width || j < 0 || j > bm.Height) return;
-            if (bm.GetPixel(i, j) != color) return;
-
-            fill.Enqueue(new Point(i, j));
         }
 
         private void MenuClick(object sender, EventArgs e)
@@ -295,16 +319,19 @@ namespace Paint
 
             switch (b.Name)
             {
-                case "SaveFileTool":
-                    if (SaveFile.ShowDialog() == DialogResult.OK)
+                case "newFileTool":
+
+                    break;
+                case "saveFileTool":
+                    if (saveFile.ShowDialog() == DialogResult.OK)
                     {
-                        Picture.Image.Save(SaveFile.FileName);
+                        Picture.Image.Save(saveFile.FileName);
                     }
                     break;
-                case "OpenFileTool":
-                    if (OpenFile.ShowDialog() == DialogResult.OK)
+                case "openFileTool":
+                    if (openFile.ShowDialog() == DialogResult.OK)
                     {
-                        SetupPictureBox(false, OpenFile.FileName);
+                        SetupPictureBox(BmpCreationMode.File, openFile.FileName);
                     }
                     break;
             }

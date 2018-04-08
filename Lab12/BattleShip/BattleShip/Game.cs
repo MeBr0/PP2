@@ -18,10 +18,14 @@ namespace BattleShip
         public PlayerPanel player1;
         public PlayerPanel player2;
 
+        public bool isEnded;
+
         public Game(PlayerType pl1, PlayerType pl2)
         {
             player1 = new PlayerPanel(pl1, PanelPos.left, BotTurn, GameOver);
             player2 = new PlayerPanel(pl2, PanelPos.right, BotTurn, GameOver);
+
+            isEnded = false;
         }
 
         private void BotTurn()
@@ -47,6 +51,14 @@ namespace BattleShip
         {
             player1.Enabled = false;
             player2.Enabled = false;
+
+            isEnded = true;
+
+            if (player1.brain.isWinner)
+                player1.Victory("player1");
+
+            else
+                player2.Victory("player2");
         }
     }
 }

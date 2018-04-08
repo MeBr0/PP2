@@ -43,23 +43,7 @@ namespace BattleShip
                 CreateSwitchBtn();
 
             if (playerType == PlayerType.bot)
-            {
-                string switcher = "switcher";
-
-                while (brain.index < brain.st.Length - 1)
-                {
-                    int row = new Random().Next(0, 10);
-                    int column = new Random().Next(0, 10);
-                    string msg = string.Format("{0}_{1}", row, column);
-
-                    int random = new Random().Next(0, 2);
-
-                    if (random == 0)
-                        brain.Switch(switcher);
-
-                    brain.Process(msg);
-                }
-            }
+                BotPlacement();
         }
 
         private void CreateSwitchBtn()
@@ -73,6 +57,25 @@ namespace BattleShip
             btn.BackColor = Color.Coral;
 
             Controls.Add(btn);
+        }
+
+        private void BotPlacement()
+        {
+            string switcher = "switcher";
+
+            while (brain.index < brain.st.Length - 1)
+            {
+                int row = new Random().Next(0, 10);
+                int column = new Random().Next(0, 10);
+                string msg = string.Format("{0}_{1}", row, column);
+
+                int random = new Random().Next(0, 2);
+
+                if (random == 0)
+                    brain.Switch(switcher);
+
+                brain.Process(msg);
+            }
         }
 
         private void CreateBtns()
@@ -129,6 +132,9 @@ namespace BattleShip
                             isEnabled = false;
                             color = Color.DarkRed;
                             break;
+                        case CellState.hologram:
+
+                            break;
                     }
 
                     Controls[10 * i + j].BackColor = color;
@@ -151,12 +157,18 @@ namespace BattleShip
             if (btn.Name == "switcher")
                 brain.Switch(btn.Name);
                 
-            else if (brain.index < brain.st.Length)
+            else if (brain.state == State.construction)
+            {
                 brain.Process(btn.Name);
+                
+                /*if (brain.alives == 10 && playerType == PlayerType.human)
+                    Controls[100].Visible = false;
+                  */  
+            }
 
             else if (!brain.Play(btn.Name))
             {
-                //Thread.Sleep(500);
+                Thread.Sleep(500);
                 turn.Invoke();
             }
         }
@@ -167,5 +179,9 @@ namespace BattleShip
             brain.Switch(btn.Name);
         }
 
+        public void Victory(string msg)
+        {
+            MessageBox.Show( msg + " win!");
+        }
     }
 }

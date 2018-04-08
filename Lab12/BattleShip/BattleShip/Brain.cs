@@ -14,7 +14,14 @@ namespace BattleShip
         adjacent,
         striked,
         destroyed,
-        missed
+        missed,
+        hologram
+    }
+
+    enum State
+    {
+        construction,
+        game
     }
 
     delegate void DrawCells(CellState[,] map);
@@ -23,6 +30,7 @@ namespace BattleShip
     {
         CellState[,] map = new CellState[10, 10];
         PlayerType playerType;
+        public State state;
 
         public List<int> notShooted = new List<int>();
 
@@ -32,10 +40,12 @@ namespace BattleShip
                                  ShipType.d1, ShipType.d1, ShipType.d1, ShipType.d1 };
 
         List<Ship> ships;
-        int alives;
+        public int alives;
         DrawCells draw;
         GameDelegate over;
         Point direction;
+
+        public bool isWinner;
 
         public int index = -1;
 
@@ -45,9 +55,12 @@ namespace BattleShip
             this.playerType = playerType;
             this.over = over;
 
+            state = State.construction;
+
             ships = new List<Ship>();
-            alives = 10;
+            alives = 0;
             direction = new Point(1, 0);
+            isWinner = false;
 
             for(int i = 0; i < 10; ++i)
             {
@@ -107,11 +120,10 @@ namespace BattleShip
             if (alives == 0)
             {
                 over.Invoke();
+                isWinner = true;
             }
 
             return isShooted;
-
-
         }
 
         public void Process(string msg)
@@ -202,6 +214,7 @@ namespace BattleShip
             if (index + 1 < st.Length)
             {
                 index++;
+                alives++;
 
                 Ship ship = new Ship(st[index], p , direction);
 
@@ -211,25 +224,19 @@ namespace BattleShip
                     MarkLocation(ship, CellState.busy);
                     draw.Invoke(map);
                 }
+
                 else
                 {
                     index--;
+                    alives--;
                 }
 
                 if (index + 1 == st.Length)
                 {
+                    state = State.game;
+
                     if (playerType == PlayerType.bot)
-                    {
-                        for (int i = 0; i < 10; ++i)
-                        {
-                            for (int j = 0; j < 10; ++j)
-                            {
-                                MarkCell(new Point(i, j), CellState.empty);
-                                draw.Invoke(map);
-                                index++;
-                            }
-                        }
-                    }
+                        MaskCells();
                 }
             }
         }
@@ -291,5 +298,17 @@ namespace BattleShip
             return true;
         }
 
+        private void MaskCells()
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                for (int j = 0; j < 10; ++j)
+                {
+                    MarkCell(new Point(i, j), CellState.empty);
+                }
+            }
+
+            draw.Invoke(map);
+        }
     }
 }
