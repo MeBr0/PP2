@@ -14,8 +14,7 @@ namespace BattleShip
         adjacent,
         striked,
         destroyed,
-        missed,
-        hologram
+        missed
     }
 
     enum State

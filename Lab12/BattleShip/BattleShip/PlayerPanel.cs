@@ -132,9 +132,6 @@ namespace BattleShip
                             isEnabled = false;
                             color = Color.DarkRed;
                             break;
-                        case CellState.hologram:
-
-                            break;
                     }
 
                     Controls[10 * i + j].BackColor = color;

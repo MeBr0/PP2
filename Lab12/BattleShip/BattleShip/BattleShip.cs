@@ -23,6 +23,10 @@ namespace BattleShip
         {
             game = new Game(PlayerType.human, PlayerType.bot);
 
+            Controls.Clear();
+
+            InitializeComponent();
+
             Controls.Add(game.player1);
             Controls.Add(game.player2);
         }
