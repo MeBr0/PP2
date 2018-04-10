@@ -33,6 +33,16 @@ namespace BattleShip
             this.panelPos = panelPos;
             this.turn = turn;
 
+            switch (panelPos)
+            {
+                case PanelPos.left:
+                    Name = "player1";
+                    break;
+                case PanelPos.right:
+                    Name = "player2";
+                    break;
+            }
+
             cellSize = 25;
 
             CreateBtns();

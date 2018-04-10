@@ -26,7 +26,13 @@ namespace BattleShip
             Controls.Clear();
 
             InitializeComponent();
+            /*
+            if (Controls.Find("player1", false)[0] != null)
+                Controls.Remove(Controls.Find("player1", false)[0]);
 
+            if (Controls.Find("player2", false)[0] != null)
+                Controls.Remove(Controls.Find("player2", false)[0]);
+            */
             Controls.Add(game.player1);
             Controls.Add(game.player2);
         }
