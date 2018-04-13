@@ -26,15 +26,6 @@ namespace BattleShip
             Controls.RemoveByKey(game.player1.Name);
             Controls.RemoveByKey(game.player2.Name);
 
-
-            //InitializeComponent();
-            /*
-            if (Controls.Find("player1", false)[0] != null)
-                Controls.Remove(Controls.Find("player1", false)[0]);
-
-            if (Controls.Find("player2", false)[0] != null)
-                Controls.Remove(Controls.Find("player2", false)[0]);
-            */
             Controls.Add(game.player1);
             Controls.Add(game.player2);
         }

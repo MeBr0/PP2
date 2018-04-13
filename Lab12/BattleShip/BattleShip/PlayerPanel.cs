@@ -24,10 +24,10 @@ namespace BattleShip
         public Brain brain;
         GameDelegate turn;
 
-        PlayerType playerType;
+        public PlayerType playerType;
         PanelPos panelPos;
 
-        public PlayerPanel(PlayerType playerType, PanelPos panelPos, GameDelegate turn, GameDelegate over)
+        public PlayerPanel(PlayerType playerType, PanelPos panelPos, GameDelegate turn, GameDelegate over, GameDelegate check)
         {
             this.playerType = playerType;
             this.panelPos = panelPos;
@@ -47,7 +47,7 @@ namespace BattleShip
 
             CreateBtns();
 
-            brain = new Brain(DrawBtns, over, playerType);
+            brain = new Brain(DrawBtns, over, check, playerType);
 
             if (playerType == PlayerType.human)
                 CreateSwitchBtn();
@@ -65,7 +65,6 @@ namespace BattleShip
             btn.Size = new Size(cellSize, cellSize);
             btn.Location = new Point(0, 10 * cellSize + cellSize);
             btn.BackColor = Color.Coral;
-            btn.MouseHover += Btn_Hover;
 
             Controls.Add(btn);
         }
@@ -107,6 +106,8 @@ namespace BattleShip
                     btn.Click += Btn_Click;
                     btn.Size = new Size(cellSize, cellSize);
                     btn.Location = new Point(i * cellSize, j * cellSize);
+                    //btn.MouseEnter += Btn_Enter;
+                    //btn.MouseLeave += Btn_Leave;
 
                     Controls.Add(btn);
                 }
@@ -143,6 +144,9 @@ namespace BattleShip
                             isEnabled = false;
                             color = Color.DarkRed;
                             break;
+                        case CellState.highlight:
+                            color = Color.Green;
+                            break;
                     }
 
                     Controls[10 * i + j].BackColor = color;
@@ -151,11 +155,18 @@ namespace BattleShip
             }
         }
 
-        private void Btn_Hover(object sender, EventArgs e)
+        private void Btn_Enter(object sender, EventArgs e)
         {
             Button btn = sender as Button;
 
-            brain.Check(btn.Name);
+            brain.Enter(btn.Name);
+        }
+
+        private void Btn_Leave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            brain.Leave(btn.Name);
         }
 
         private void Btn_Click(object sender, EventArgs e)
@@ -164,25 +175,29 @@ namespace BattleShip
 
             if (btn.Name == "switcher")
                 brain.Switch(btn.Name);
-                
+
             else if (brain.state == State.construction)
             {
                 brain.Process(btn.Name);
-                
+
                 if (brain.alives == 10 && playerType == PlayerType.human)
                     Controls[100].Visible = false;
             }
 
-            else if (!brain.Play(btn.Name))
+            else if (brain.state == State.game)
             {
-                Thread.Sleep(500);
-                turn.Invoke();
+                if (!brain.Play(btn.Name))
+                {
+                    Thread.Sleep(500);
+                    turn.Invoke();
+                }
             }
         }
 
         private void Switch_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
+
             brain.Switch(btn.Name);
         }
 

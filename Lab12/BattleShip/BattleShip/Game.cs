@@ -22,8 +22,8 @@ namespace BattleShip
 
         public Game(PlayerType pl1, PlayerType pl2)
         {
-            player1 = new PlayerPanel(pl1, PanelPos.left, BotTurn, GameOver);
-            player2 = new PlayerPanel(pl2, PanelPos.right, BotTurn, GameOver);
+            player1 = new PlayerPanel(pl1, PanelPos.left, BotTurn, GameOver, CheckReady);
+            player2 = new PlayerPanel(pl2, PanelPos.right, BotTurn, GameOver, CheckReady);
 
             isEnded = false;
         }
@@ -40,10 +40,24 @@ namespace BattleShip
                 Thread.Sleep(500);
 
                 player2.brain.notShooted.Remove(player2.brain.notShooted[a]);
-
                 a = rnd.Next(0, player2.brain.notShooted.Count);
                 i = player2.brain.notShooted[a] / 10;
                 j = player2.brain.notShooted[a] % 10;
+            }
+        }
+
+        private void CheckReady()
+        {
+            if (player1.brain.state == State.ready && player2.brain.state == State.ready)
+            {
+                player1.brain.state = State.game;
+                player2.brain.state = State.game;
+
+                if (player1.playerType == PlayerType.bot)
+                    player2.Enabled = false;
+
+                else if (player2.playerType == PlayerType.bot)
+                    player1.Enabled = false;
             }
         }
 

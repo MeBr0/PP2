@@ -20,6 +20,7 @@ namespace BattleShip
     enum State
     {
         construction,
+        ready,
         game
     }
 
@@ -27,7 +28,7 @@ namespace BattleShip
 
     class Brain
     {
-        CellState[,] map = new CellState[10, 10];
+        public CellState[,] map = new CellState[10, 10];
         PlayerType playerType;
         public State state;
 
@@ -42,17 +43,19 @@ namespace BattleShip
         public int alives;
         DrawCells draw;
         GameDelegate over;
+        GameDelegate check;
         Point direction;
 
         public bool isWinner;
 
         public int index = -1;
 
-        public Brain(DrawCells draw, GameDelegate over, PlayerType playerType)
+        public Brain(DrawCells draw, GameDelegate over, GameDelegate check, PlayerType playerType)
         {
             this.draw = draw;
             this.playerType = playerType;
             this.over = over;
+            this.check = check;
 
             state = State.construction;
 
@@ -73,7 +76,7 @@ namespace BattleShip
             draw.Invoke(map);
         }
 
-        public void Check(string msg)
+        public void Enter(string msg)
         {
             string[] values = msg.Split('_');
 
@@ -82,7 +85,17 @@ namespace BattleShip
 
             Point p = new Point(i, j);
 
-            if ()
+            CheckShipLocation(p);
+        }
+
+        public void Leave(string msg)
+        {
+            string[] values = msg.Split('_');
+
+            int i = int.Parse(values[0]);
+            int j = int.Parse(values[1]);
+
+            Point p = new Point(i, j);
         }
 
         public void Switch(string msg)
@@ -199,13 +212,14 @@ namespace BattleShip
 
         private void CheckShipLocation(Point p)
         {
-            if (index + 1 < st.Length)
+            if (index + 1 <= st.Length)
             {
                 Ship ship = new Ship(st[index], p, direction);
 
                 if (IsValidLocation(ship))
                 {
                     
+                    draw.Invoke(map);
                 }
             }
         }
@@ -234,7 +248,8 @@ namespace BattleShip
 
                 if (index + 1 == st.Length)
                 {
-                    state = State.game;
+                    state = State.ready;
+                    check.Invoke();
 
                     if (playerType == PlayerType.bot)
                         MaskCells();
@@ -274,9 +289,13 @@ namespace BattleShip
             {
                 MarkCell(ship.body[i], state);
             }
-            for (int i = 0; i < ship.body.Count; ++i)
+
+            if (state == CellState.busy)
             {
-                CheckAdjLocation(ship.body[i], CellState.busy, CellState.adjacent);
+                for (int i = 0; i < ship.body.Count; ++i)
+                {
+                    CheckAdjLocation(ship.body[i], CellState.busy, CellState.adjacent);
+                }
             }
         }
 
