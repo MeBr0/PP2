@@ -65,6 +65,7 @@ namespace BattleShip
             btn.Size = new Size(cellSize, cellSize);
             btn.Location = new Point(0, 10 * cellSize + cellSize);
             btn.BackColor = Color.Coral;
+            btn.MouseHover += Btn_Hover;
 
             Controls.Add(btn);
         }
@@ -168,9 +169,8 @@ namespace BattleShip
             {
                 brain.Process(btn.Name);
                 
-                /*if (brain.alives == 10 && playerType == PlayerType.human)
+                if (brain.alives == 10 && playerType == PlayerType.human)
                     Controls[100].Visible = false;
-                  */  
             }
 
             else if (!brain.Play(btn.Name))

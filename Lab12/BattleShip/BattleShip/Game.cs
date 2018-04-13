@@ -55,10 +55,10 @@ namespace BattleShip
             isEnded = true;
 
             if (player1.brain.isWinner)
-                player1.Victory("player1");
+                player1.Victory("player2");
 
             else
-                player2.Victory("player2");
+                player2.Victory("player1");
         }
     }
 }

@@ -81,6 +81,8 @@ namespace BattleShip
             int j = int.Parse(values[1]);
 
             Point p = new Point(i, j);
+
+            if ()
         }
 
         public void Switch(string msg)
@@ -103,7 +105,7 @@ namespace BattleShip
 
             bool isShooted = false;
 
-            if (isStriked(p))
+            if (IsStriked(p))
             {
                 MarkCell(p, CellState.striked);
                 isShooted = true;
@@ -137,7 +139,7 @@ namespace BattleShip
             PlaceShip(p);
         }   
 
-        private bool isStriked(Point p)
+        private bool IsStriked(Point p)
         {
             bool isStriked = false;
 

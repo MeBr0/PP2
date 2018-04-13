@@ -23,9 +23,11 @@ namespace BattleShip
         {
             game = new Game(PlayerType.human, PlayerType.bot);
 
-            Controls.Clear();
+            Controls.RemoveByKey(game.player1.Name);
+            Controls.RemoveByKey(game.player2.Name);
 
-            InitializeComponent();
+
+            //InitializeComponent();
             /*
             if (Controls.Find("player1", false)[0] != null)
                 Controls.Remove(Controls.Find("player1", false)[0]);
