@@ -53,11 +53,12 @@ namespace BattleShip
 
         public int index = -1;
 
-        public Brain(DrawCells draw, GameDelegate over, Btns Redraw, PlayerType playerType)
+        public Brain(DrawCells draw, GameDelegate over, GameDelegate check, Btns Redraw, PlayerType playerType)
         {
             this.draw = draw;
             this.playerType = playerType;
             this.over = over;
+            this.check = check;
             this.ReDraw = Redraw;
 
             state = State.construction;
@@ -67,9 +68,9 @@ namespace BattleShip
             direction = new Point(1, 0);
             isWinner = false;
 
-            for(int i = 0; i < 10; ++i)
+            for (int i = 0; i < 10; ++i)
             {
-                for(int j = 0; j < 10; ++j)
+                for (int j = 0; j < 10; ++j)
                 {
                     map[i, j] = CellState.empty;
                     notShooted.Add(10 * i + j);
@@ -113,7 +114,7 @@ namespace BattleShip
 
                 foreach (Point point in ship.body)
                 {
-                    if (point.X > -1  && point.X < 10 && point.Y > -1 && point.Y < 10)
+                    if (point.X > -1 && point.X < 10 && point.Y > -1 && point.Y < 10)
                     {
                         newbody.Add(point);
                     }
@@ -195,7 +196,7 @@ namespace BattleShip
             Point p = new Point(i, j);
 
             PlaceShip(p);
-        }   
+        }
 
         private bool IsStriked(Point p)
         {
@@ -203,7 +204,7 @@ namespace BattleShip
 
             for (int i = 0; i < ships.Count; ++i)
             {
-                if(ships[i].body.Contains(p))
+                if (ships[i].body.Contains(p))
                 {
                     isStriked = true;
                     break;
@@ -262,7 +263,7 @@ namespace BattleShip
                 index++;
                 alives++;
 
-                Ship ship = new Ship(st[index], p , direction);
+                Ship ship = new Ship(st[index], p, direction);
 
                 if (IsValidLocation(ship))
                 {
@@ -288,7 +289,7 @@ namespace BattleShip
             }
         }
 
-        private void CheckAdjCell(int i ,int j, CellState exception, CellState cellState)
+        private void CheckAdjCell(int i, int j, CellState exception, CellState cellState)
         {
             if (i < 0 || i > 9) return;
             if (j < 0 || j > 9) return;
@@ -316,7 +317,7 @@ namespace BattleShip
 
         private void MarkLocation(Ship ship, CellState state)
         {
-            for(int i = 0; i < ship.body.Count; ++i)
+            for (int i = 0; i < ship.body.Count; ++i)
             {
                 MarkCell(ship.body[i], state);
             }
@@ -340,7 +341,7 @@ namespace BattleShip
 
         private bool IsValidLocation(Ship ship)
         {
-            for(int i = 0; i < ship.body.Count; ++i)
+            for (int i = 0; i < ship.body.Count; ++i)
             {
                 if (!IsValidCell(ship.body[i]))
                     return false;

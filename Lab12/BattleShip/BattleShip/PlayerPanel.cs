@@ -27,7 +27,7 @@ namespace BattleShip
         public PlayerType playerType;
         PanelPos panelPos;
 
-        public PlayerPanel(PlayerType playerType, PanelPos panelPos, GameDelegate turn, GameDelegate over)
+        public PlayerPanel(PlayerType playerType, PanelPos panelPos, GameDelegate turn, GameDelegate over, GameDelegate check)
         {
             this.playerType = playerType;
             this.panelPos = panelPos;
@@ -47,7 +47,7 @@ namespace BattleShip
 
             CreateBtns();
 
-            brain = new Brain(DrawBtns, over, RedrawBtns, playerType);
+            brain = new Brain(DrawBtns, over, check, RedrawBtns, playerType);
 
             if (playerType == PlayerType.human)
                 CreateSwitchBtn();
@@ -71,42 +71,7 @@ namespace BattleShip
             Controls.Add(btn);
         }
 
-        public void HumanPlacement()
-        {
-            while (brain.alives != 10)
-            {
-
-            }
-
-            brain.state = State.game;
-        }
-
-        public void HumanShot()
-        {
-            while ()
-        }
-
-        public void BotShot()
-        {
-            Random rnd = new Random();
-
-            int a = rnd.Next(0, brain.notShooted.Count);
-            int i = brain.notShooted[a] / 10;
-            int j = brain.notShooted[a] % 10;
-
-            while (brain.Play(string.Format("{0}_{1}", i, j)))
-            {
-                Thread.Sleep(500);
-
-                brain.notShooted.Remove(brain.notShooted[a]);
-
-                a = rnd.Next(0, brain.notShooted.Count);
-                i = brain.notShooted[a] / 10;
-                j = brain.notShooted[a] % 10;
-            }
-        }
-
-        public void BotPlacement()
+        private void BotPlacement()
         {
             string switcher = "switcher";
 
@@ -123,8 +88,6 @@ namespace BattleShip
 
                 brain.Process(msg);
             }
-
-            brain.state = State.game;
         }
 
         private void CreateBtns()
@@ -274,7 +237,7 @@ namespace BattleShip
 
         public void Victory(string msg)
         {
-            MessageBox.Show( msg + " win!");
+            MessageBox.Show(msg + " win!");
         }
     }
 }
