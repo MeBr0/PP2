@@ -19,7 +19,7 @@ namespace Calculator
         ShowError
     }
 
-    class Brain
+    class Brain //FSM for standart calculator
     {
         public invoker invoker;
 

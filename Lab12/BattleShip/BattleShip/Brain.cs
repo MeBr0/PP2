@@ -26,6 +26,8 @@ namespace BattleShip
 
     delegate void DrawCells(CellState[,] map);
 
+    delegate void Btns(List<Point> P, bool isGood, bool isBack);
+
     class Brain
     {
         public CellState[,] map = new CellState[10, 10];
@@ -44,18 +46,20 @@ namespace BattleShip
         DrawCells draw;
         GameDelegate over;
         GameDelegate check;
+        Btns ReDraw;
         Point direction;
 
         public bool isWinner;
 
         public int index = -1;
 
-        public Brain(DrawCells draw, GameDelegate over, GameDelegate check, PlayerType playerType)
+        public Brain(DrawCells draw, GameDelegate over, GameDelegate check, Btns Redraw, PlayerType playerType)
         {
             this.draw = draw;
             this.playerType = playerType;
             this.over = over;
             this.check = check;
+            this.ReDraw = Redraw;
 
             state = State.construction;
 
@@ -96,6 +100,48 @@ namespace BattleShip
             int j = int.Parse(values[1]);
 
             Point p = new Point(i, j);
+
+            ColorBack(p);
+        }
+
+        private void CheckShipLocation(Point p)
+        {
+            if (index + 1 < st.Length)
+            {
+                Ship ship = new Ship(st[index + 1], p, direction);
+
+                List<Point> newbody = new List<Point>();
+
+                foreach (Point point in ship.body)
+                {
+                    if (point.X > -1  && point.X < 10 && point.Y > -1 && point.Y < 10)
+                    {
+                        newbody.Add(point);
+                    }
+                }
+
+                ReDraw.Invoke(newbody, IsValidLocation(ship), false);
+            }
+        }
+
+        private void ColorBack(Point p)
+        {
+            if (index + 1 < st.Length)
+            {
+                Ship ship = new Ship(st[index + 1], p, direction);
+
+                List<Point> newbody = new List<Point>();
+
+                foreach (Point point in ship.body)
+                {
+                    if (point.X > -1 && point.X < 10 && point.Y > -1 && point.Y < 10)
+                    {
+                        newbody.Add(point);
+                    }
+                }
+
+                ReDraw.Invoke(newbody, IsValidLocation(ship), true);
+            }
         }
 
         public void Switch(string msg)
@@ -206,20 +252,6 @@ namespace BattleShip
                     {
                         CheckAdjLocation(f, CellState.destroyed, CellState.missed);
                     }
-                }
-            }
-        }
-
-        private void CheckShipLocation(Point p)
-        {
-            if (index + 1 <= st.Length)
-            {
-                Ship ship = new Ship(st[index], p, direction);
-
-                if (IsValidLocation(ship))
-                {
-                    
-                    draw.Invoke(map);
                 }
             }
         }

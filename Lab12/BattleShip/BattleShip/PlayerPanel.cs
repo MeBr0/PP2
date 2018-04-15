@@ -33,6 +33,8 @@ namespace BattleShip
             this.panelPos = panelPos;
             this.turn = turn;
 
+            cellSize = 25;
+
             switch (panelPos)
             {
                 case PanelPos.left:
@@ -43,11 +45,9 @@ namespace BattleShip
                     break;
             }
 
-            cellSize = 25;
-
             CreateBtns();
 
-            brain = new Brain(DrawBtns, over, check, playerType);
+            brain = new Brain(DrawBtns, over, check, RedrawBtns, playerType);
 
             if (playerType == PlayerType.human)
                 CreateSwitchBtn();
@@ -62,9 +62,11 @@ namespace BattleShip
 
             btn.Name = "switcher";
             btn.Click += Btn_Click;
-            btn.Size = new Size(cellSize, cellSize);
+            btn.Size = new Size(3 * cellSize, cellSize);
             btn.Location = new Point(0, 10 * cellSize + cellSize);
-            btn.BackColor = Color.Coral;
+            btn.BackColor = Color.DeepSkyBlue;
+            btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn.Text = "LeftToRight";
 
             Controls.Add(btn);
         }
@@ -103,15 +105,30 @@ namespace BattleShip
                     Button btn = new Button();
 
                     btn.Name = i + "_" + j;
-                    btn.Click += Btn_Click;
                     btn.Size = new Size(cellSize, cellSize);
                     btn.Location = new Point(i * cellSize, j * cellSize);
-                    //btn.MouseEnter += Btn_Enter;
-                    //btn.MouseLeave += Btn_Leave;
+
+                    btn.Click += Btn_Click;
+                    btn.MouseEnter += Btn_Enter;
+                    btn.MouseLeave += Btn_Leave;
 
                     Controls.Add(btn);
                 }
             }
+        }
+
+        private void Btn_Enter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            brain.Enter(btn.Name);
+        }
+
+        private void Btn_Leave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            brain.Leave(btn.Name);
         }
 
         private void DrawBtns(CellState[,] map)
@@ -144,9 +161,6 @@ namespace BattleShip
                             isEnabled = false;
                             color = Color.DarkRed;
                             break;
-                        case CellState.highlight:
-                            color = Color.Green;
-                            break;
                     }
 
                     Controls[10 * i + j].BackColor = color;
@@ -155,26 +169,20 @@ namespace BattleShip
             }
         }
 
-        private void Btn_Enter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-
-            brain.Enter(btn.Name);
-        }
-
-        private void Btn_Leave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-
-            brain.Leave(btn.Name);
-        }
-
         private void Btn_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
 
             if (btn.Name == "switcher")
+            {
                 brain.Switch(btn.Name);
+
+                if (Controls[100].Text == "LeftToRight")
+                    Controls[100].Text = "UpToDown";
+
+                else
+                    Controls[100].Text = "LeftToRight";
+            }
 
             else if (brain.state == State.construction)
             {
@@ -191,6 +199,32 @@ namespace BattleShip
                     Thread.Sleep(500);
                     turn.Invoke();
                 }
+            }
+        }
+
+        private void RedrawBtns(List<Point> P, bool isGood, bool isBack)
+        {
+            Color color;
+
+            if (isGood) color = Color.DarkSeaGreen;
+            else color = Color.PaleVioletRed;
+
+            for (int i = 0; i < P.Count; ++i)
+            {
+                if (isBack)
+                {
+                    switch (brain.map[P[i].X, P[i].Y])
+                    {
+                        case CellState.empty:
+                        case CellState.adjacent:
+                            color = Color.White;
+                            break;
+                        case CellState.busy:
+                            color = Color.Blue;
+                            break;
+                    }
+                }
+                Controls[P[i].X * 10 + P[i].Y].BackColor = color;
             }
         }
 

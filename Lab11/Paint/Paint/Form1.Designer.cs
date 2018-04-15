@@ -56,8 +56,10 @@
             this.px3 = new System.Windows.Forms.ToolStripMenuItem();
             this.px4 = new System.Windows.Forms.ToolStripMenuItem();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.currentColor = new System.Windows.Forms.ToolStripButton();
+            this.switcher = new System.Windows.Forms.ToolStripButton();
             this.sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.currentColor = new System.Windows.Forms.ToolStripButton();
+            this.sep5 = new System.Windows.Forms.ToolStripSeparator();
             this.black = new System.Windows.Forms.ToolStripButton();
             this.grey = new System.Windows.Forms.ToolStripButton();
             this.brown = new System.Windows.Forms.ToolStripButton();
@@ -68,7 +70,7 @@
             this.cyan = new System.Windows.Forms.ToolStripButton();
             this.blue = new System.Windows.Forms.ToolStripButton();
             this.magenta = new System.Windows.Forms.ToolStripButton();
-            this.sep5 = new System.Windows.Forms.ToolStripSeparator();
+            this.sep6 = new System.Windows.Forms.ToolStripSeparator();
             this.color_Dialog = new System.Windows.Forms.ToolStripButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,8 +79,6 @@
             this.Picture = new System.Windows.Forms.PictureBox();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.saveFile = new System.Windows.Forms.SaveFileDialog();
-            this.switcher = new System.Windows.Forms.ToolStripButton();
-            this.sep6 = new System.Windows.Forms.ToolStripSeparator();
             this.statusBar.SuspendLayout();
             this.menuBar.SuspendLayout();
             this.tools.SuspendLayout();
@@ -339,6 +339,22 @@
             this.sep3.Name = "sep3";
             this.sep3.Size = new System.Drawing.Size(6, 34);
             // 
+            // switcher
+            // 
+            this.switcher.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.switcher.Image = ((System.Drawing.Image)(resources.GetObject("switcher.Image")));
+            this.switcher.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.switcher.Name = "switcher";
+            this.switcher.Size = new System.Drawing.Size(47, 31);
+            this.switcher.Text = "Edge";
+            this.switcher.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switcher.Click += new System.EventHandler(this.Switcher);
+            // 
+            // sep4
+            // 
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 34);
+            // 
             // currentColor
             // 
             this.currentColor.AutoSize = false;
@@ -350,10 +366,10 @@
             this.currentColor.Size = new System.Drawing.Size(28, 28);
             this.currentColor.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
-            // sep4
+            // sep5
             // 
-            this.sep4.Name = "sep4";
-            this.sep4.Size = new System.Drawing.Size(6, 34);
+            this.sep5.Name = "sep5";
+            this.sep5.Size = new System.Drawing.Size(6, 34);
             // 
             // black
             // 
@@ -466,10 +482,10 @@
             this.magenta.Text = "Magenta";
             this.magenta.Click += new System.EventHandler(this.ColorClick);
             // 
-            // sep5
+            // sep6
             // 
-            this.sep5.Name = "sep5";
-            this.sep5.Size = new System.Drawing.Size(6, 34);
+            this.sep6.Name = "sep6";
+            this.sep6.Size = new System.Drawing.Size(6, 34);
             // 
             // color_Dialog
             // 
@@ -510,6 +526,7 @@
             this.Picture.Location = new System.Drawing.Point(5, 65);
             this.Picture.Name = "Picture";
             this.Picture.Size = new System.Drawing.Size(1239, 638);
+            this.Picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Picture.TabIndex = 2;
             this.Picture.TabStop = false;
             this.Picture.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
@@ -520,22 +537,6 @@
             // saveFile
             // 
             this.saveFile.DefaultExt = "png";
-            // 
-            // switcher
-            // 
-            this.switcher.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.switcher.Image = ((System.Drawing.Image)(resources.GetObject("switcher.Image")));
-            this.switcher.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.switcher.Name = "switcher";
-            this.switcher.Size = new System.Drawing.Size(47, 31);
-            this.switcher.Text = "Edge";
-            this.switcher.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switcher.Click += new System.EventHandler(this.Switcher);
-            // 
-            // sep6
-            // 
-            this.sep6.Name = "sep6";
-            this.sep6.Size = new System.Drawing.Size(6, 34);
             // 
             // Paint
             // 
