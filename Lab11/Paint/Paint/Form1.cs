@@ -62,6 +62,7 @@ namespace Paint
         private void Mouse_Down(object sender, MouseEventArgs e)
         {
             first = e.Location;
+            second = first;
 
             if (current == Tools.Fill)
             {
@@ -320,7 +321,7 @@ namespace Paint
             switch (b.Name)
             {
                 case "newFileTool":
-
+                    SetupPictureBox(BmpCreationMode.Init, "");
                     break;
                 case "saveFileTool":
                     if (saveFile.ShowDialog() == DialogResult.OK)

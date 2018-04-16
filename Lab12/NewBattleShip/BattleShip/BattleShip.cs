@@ -28,6 +28,8 @@ namespace BattleShip
 
             Controls.Add(game.human);
             Controls.Add(game.bot);
+
+            game.Start();
         }
     }
 }
