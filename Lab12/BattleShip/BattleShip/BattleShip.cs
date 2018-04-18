@@ -23,11 +23,11 @@ namespace BattleShip
         {
             game = new Game(PlayerType.human, PlayerType.bot);
 
-            Controls.RemoveByKey(game.player1.Name);
-            Controls.RemoveByKey(game.player2.Name);
+            Controls.RemoveByKey(game.human.Name);
+            Controls.RemoveByKey(game.bot.Name);
 
-            Controls.Add(game.player1);
-            Controls.Add(game.player2);
+            Controls.Add(game.human);
+            Controls.Add(game.bot);
         }
     }
 }

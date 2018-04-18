@@ -196,7 +196,7 @@ namespace BattleShip
             {
                 if (!brain.Play(btn.Name))
                 {
-                    Thread.Sleep(500);
+                    //Thread.Sleep(500);
                     turn.Invoke();
                 }
             }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BattleShip.Properties
+namespace TelBook.Properties
 {
 
 
