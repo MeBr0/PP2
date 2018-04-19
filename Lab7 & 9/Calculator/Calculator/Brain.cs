@@ -388,13 +388,13 @@ namespace Calculator
                 if (clear.Contains(msg))
                     Zero(true, msg);
 
-                else if (all.Contains(msg))
+                else if (all.Contains(msg) || (memory.Contains(msg) && !isDecimal))
                     AccumulateDigits(true, msg);
 
-                else if (separator.Contains(msg))
+                else if (separator.Contains(msg) || (memory.Contains(msg) && isDecimal))
                     AccumulateDigitsWithDecimal(true, msg);
 
-                else if (memory.Contains(msg) || equal.Contains(msg))
+                else if (equal.Contains(msg))
                     ComputeNoPending(true, msg);
 
                 else if (percent.Contains(msg))
